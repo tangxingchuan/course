@@ -5,7 +5,7 @@
 
 
 <!--namespace=绑定一个对应的Dao/Mapper接口-->
-<mapper namespace="com.course.system.mapper.TestMapper">
+<mapper namespace="com.course.server.mapper.TestMapper">
 
 
   <select id="list" resultType="com.course.server.Dao.Test">

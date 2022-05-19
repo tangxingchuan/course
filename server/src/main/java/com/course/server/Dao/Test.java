@@ -1,4 +1,4 @@
-package com.course.system.Dao;
+package com.course.server.Dao;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

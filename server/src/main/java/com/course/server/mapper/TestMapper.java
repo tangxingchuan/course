@@ -1,6 +1,6 @@
-package com.course.system.mapper;
+package com.course.server.mapper;
 
-import com.course.system.Dao.Test;
+import com.course.server.Dao.Test;
 
 import java.util.List;
 
