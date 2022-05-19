@@ -1,4 +1,4 @@
-package com.course.server.controller;
+package com.course.system.controller;
 
 import com.course.server.Dao.Test;
 import com.course.server.service.TestService;

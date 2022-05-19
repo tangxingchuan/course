@@ -55,6 +55,12 @@
                 <version>1.18.22</version>
                 <scope>provided</scope>
             </dependency>
+            <!--在根目录中映入子模块server  （作用：在system子模块中引入server子模块）-->
+            <dependency>
+                <groupId>com.course</groupId>
+                <artifactId>server</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
