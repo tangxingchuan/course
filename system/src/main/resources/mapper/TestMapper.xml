@@ -9,7 +9,7 @@
 
 
   <select id="list" resultType="com.course.system.Dao.Test">
-      select `id`,`name` from `test`
+        SELECT t.id,t.name FROM courseimooc.test t
   </select>
 
 </mapper>
