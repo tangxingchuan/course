@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import login from "@/views/login";
+import Login from "@/views/login";
+import Admin from "@/views/admin";
 
 Vue.use(VueRouter)
 
@@ -11,7 +12,12 @@ const routes = [
   },
     {
         path: '/login',
-        component:login,
+        component:Login,
+    },
+    {
+        name:'tang',
+        path: '/admin',
+        component:Admin,
     }
 ]
 
