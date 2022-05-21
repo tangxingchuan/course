@@ -56,7 +56,7 @@
                                                         <button type="button"
                                                                 class="width-35 pull-right btn btn-sm btn-primary">
                                                             <i class="ace-icon fa fa-key"></i>
-                                                            <span class="bigger-110" @click="userPwd">登录</span>
+                                                            <span class="bigger-110" @click="login">登录</span>
                                                         </button>
                                                     </div>
 
@@ -82,31 +82,24 @@
 </template>
 
 <script>
-    import Admin from "./admin";
+    $('body').attr('class', 'login-layout light-login');
 
-    $('body').attr('class', 'login-layout blur-login');
+    //$('body').attr('class', 'login-layout blur-login');
     export default {
         name: "login",
         data(){
           return{
              from: {
-                 Username:'',
-                 Password:'',
+                 Username:'test',
+                 Password:1234,
              }
 
 
           }
         },
         methods:{
-            userPwd(from){
-                console.log('启动函数')
-                if(from.Password=== 1234 && from.Username==='test'){
-                    console.log('进入if判断')
-                    this.$router.push('/admin')
-                    alert('登陆成功')
-                }else {
-                    alert('登录失败！')
-                }
+            login(){
+              this.$router.push('/admin')
             }
         }
     }
