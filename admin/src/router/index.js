@@ -1,15 +1,24 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+import login from "@/views/login";
 
 Vue.use(VueRouter)
 
 const routes = [
-
+  {
+    path: '*',
+    redirect:'/login'
+  },
+    {
+        path: '/login',
+        component:login,
+    }
 ]
 
 const router = new VueRouter({
-  routes
+    mode:'history',
+    base:process.env.BASE_URL,
+    routes
 })
 
 export default router
