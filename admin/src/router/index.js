@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from "@/views/login";
 import Admin from "@/views/admin";
+import Welcome from "@/views/admin/welcome";
 
 Vue.use(VueRouter)
 
@@ -15,9 +16,14 @@ const routes = [
         component:Login,
     },
     {
-        name:'tang',
         path: '/admin',
         component:Admin,
+        children:[
+            {
+                path: 'welcome',
+                component:Welcome,
+            }
+            ]
     }
 ]
 
