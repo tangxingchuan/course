@@ -82,7 +82,7 @@
 </template>
 
 <script>
-    $('body').attr('class', 'login-layout light-login');
+    //$('body').attr('class', 'login-layout light-login');
 
     //$('body').attr('class', 'login-layout blur-login');
     export default {
@@ -93,14 +93,16 @@
                  Username:'test',
                  Password:1234,
              }
-
-
           }
         },
         methods:{
             login(){
               this.$router.push('/admin')
             }
+        },
+        mounted() {
+            $('body').removeClass('no-skin');
+            $('body').attr('class', 'login-layout light-login');
         }
     }
 </script>

@@ -978,10 +978,15 @@
 </template>
 
 <script>
-    $('body').removeClass('login-layout blur-login');
-    $('body').attr('class', 'no-skin');
+    //$('body').attr('class', 'login-layout light-login');
+
+    //$('body').attr('class', 'login-layout blur-login');
     export default {
-        name: "admin"
+        name: "admin",
+        mounted() {
+            $('body').removeClass('login-layout light-login');
+            $('body').attr('class', 'no-skin');
+        }
     }
 </script>
 
