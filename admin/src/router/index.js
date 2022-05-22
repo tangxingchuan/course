@@ -25,7 +25,7 @@ const routes = [
                 component:Welcome,
             },
             {
-                path: 'chapter',
+                path: 'business/chapter',
                 component:Chapter,
             }
             ]
