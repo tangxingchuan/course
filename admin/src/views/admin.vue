@@ -483,7 +483,26 @@
         mounted() {
             $('body').removeClass('login-layout light-login');
             $('body').attr('class', 'no-skin');
+            /*养成好习惯，将this变成本地变量_this,可以预防之后一直用this的坑*/
+            let _this=this;
+            -this.activeSidebar(_this.$route.name.replace("/","-")+"-sidebar");
         },
+
+        /*这个监听，只对admin下面的子路由有用，其他跳转过来的，就无效了*/
+        watch:{
+            $route:{
+                handler:function (val,oldVal) {
+                    console.log("------->页面跳转：",val,oldVal)
+                    let _this=this;
+                    _this.$nextTick(function () {//页面加载完成后执行
+                        -this.activeSidebar(_this.$route.name.replace("/","-")+"-sidebar");
+
+                    })
+
+                }
+            }
+        },
+
         methods:{
 
             /**
