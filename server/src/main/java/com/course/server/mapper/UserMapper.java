@@ -1,7 +1,7 @@
 package com.course.server.mapper;
 
-import com.course.server.Dao.User;
-import com.course.server.Dao.UserExample;
+import com.course.server.domain.User;
+import com.course.server.domain.UserExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

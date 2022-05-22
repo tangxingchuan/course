@@ -8,7 +8,7 @@
 <mapper namespace="com.course.server.mapper.TestMapper">
 
 
-  <select id="list" resultType="com.course.server.Dao.Test">
+  <select id="list" resultType="com.course.server.domain.Test">
       select t.id,t.name from courseimooc.test t
   </select>
 

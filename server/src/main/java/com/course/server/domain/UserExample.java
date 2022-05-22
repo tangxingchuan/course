@@ -1,4 +1,4 @@
-package com.course.server.Dao;
+package com.course.server.domain;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -1,6 +1,7 @@
-package com.course.controller;
+package com.course.controller.admin;
 
-import com.course.server.Dao.Chapter;
+import com.course.server.domain.Chapter;
+import com.course.server.dto.ChapterDto;
 import com.course.server.service.ChapterService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,13 +14,14 @@ import java.util.List;
  * @date 2022/5/18 - 2:38 上午
  */
 @RestController
+@RequestMapping("/admin")
 public class ChapterController {
 
     @Resource
     private ChapterService chapterService;
 
     @RequestMapping("/chapter")
-    public List<Chapter> test(){
+    public List<ChapterDto> test(){
 
         return chapterService.list();
     }
