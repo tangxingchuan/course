@@ -357,7 +357,7 @@
 
                 <ul class="nav nav-list" id="welcome-sidebar">
                     <li class="">
-                        <router-link to="/admin/welcome">
+                        <router-link to="/welcome">
                             <i class="menu-icon fa fa-tachometer"></i>
                             <span class="menu-text"> 欢迎 </span>
                         </router-link>
@@ -378,7 +378,7 @@
 
                         <ul class="submenu">
                             <li class="">
-                                <a href="tables.html">
+                                <a href="">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     用户管理
                                 </a>
@@ -387,7 +387,7 @@
                             </li>
 
                             <li class="">
-                                <a href="jqgrid.html">
+                                <a href="">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     权限管理
                                 </a>
@@ -409,7 +409,7 @@
 
                         <ul class="submenu">
                             <li class="active" id="business-chapter-sidebar">
-                                <router-link to="/admin/business/chapter">
+                                <router-link to="/business/chapter">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     大章管理
                                 </router-link>

@@ -17,14 +17,17 @@ const routes = [
         component:Login,
     },
     {
-        path: '/admin',
+        path: '/',
+        name:'admin',
         component:Admin,
         children:[
             {
+                name:'welcome',
                 path: 'welcome',
                 component:Welcome,
             },
             {
+                name: 'business/chapter',
                 path: 'business/chapter',
                 component:Chapter,
             }
