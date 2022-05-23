@@ -93,8 +93,8 @@
                  Username:'test',
                  Password:1234,
              }
-          }
-        },
+
+          }        },
         methods:{
             login(){
               this.$router.push('/welcome')

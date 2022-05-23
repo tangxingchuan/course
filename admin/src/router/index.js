@@ -27,7 +27,7 @@ const routes = [
                 component:Welcome,
             },
             {
-                name: 'business/chapter',
+                name: 'business-chapter-sidebar',
                 path: 'business/chapter',
                 component:Chapter,
             }
