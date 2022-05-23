@@ -979,7 +979,16 @@
         name: "chapter",
         mounted() {
             //this.$parent.activeSidebar('business-chapter-sidebar')  //在admin页面通过watch监听路由路径，做了一个通用的sidebar菜单激活，解决了这个问题
+            this.list();
+
         },
+        methods:{
+            list(){
+                this.axios.get('http://127.0.0.1:9002/business/admin/chaspter/list').then((response)=>{
+                    console.log('查询大章列表结果',response)
+                })
+            }
+        }
 
     }
 </script>
