@@ -97,9 +97,15 @@
         },
         methods:{
             list(){
-                  axios.get('http://127.0.0.1:9000/business/admin/chapter/list').then((response)=>{
+                  axios.post('http://127.0.0.1:9000/business/admin/chapter/list',
+                      {
+                          page:1,
+                          size:5,
+                      }
+
+                  ).then((response)=>{
                     console.log('查询大章列表结果',response)
-                    this.chapters=response.data;
+                    this.chapters=response.data.list;
                 })
             }
         }
