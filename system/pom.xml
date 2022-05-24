@@ -50,6 +50,7 @@
         <dependency>
             <groupId>com.course</groupId>
             <artifactId>server</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
