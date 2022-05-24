@@ -1,11 +1,13 @@
 <template>
    <div>
        <p>
-           <button  @click="list()" class="btn btn-white btn-default btn-round">
+           <button  @click="list(1)" class="btn btn-white btn-default btn-round">
                <i class="ace-icon fa fa-refresh red2"></i>
                刷新
            </button>
        </p>
+
+        <pagination ref="pagination" v-bind:list="list" ></pagination>
 
 
        <table id="simple-table" class="table  table-bordered table-hover">
@@ -93,30 +95,35 @@
 <script>
 
     import axios from "axios";
+    import pagination from "../../components/pagination";
 
     export default {
         name: "chapter",
+        components: {pagination},
         data(){
           return{
               chapters:[]
           }
         },
+        comments:{pagination},
         mounted() {
             //this.$parent.activeSidebar('business-chapter-sidebar')  //在admin页面通过watch监听路由路径，做了一个通用的sidebar菜单激活，解决了这个问题
-            this.list();
+            this.$refs.pagination.size=5;
+            this.list(1);
 
         },
         methods:{
-            list(){
+            list(page){
                   axios.post('http://127.0.0.1:9000/business/admin/chapter/list',
                       {
-                          page:1,
-                          size:5,
+                          page:page,
+                          size:this.$refs.pagination.size,
                       }
 
                   ).then((response)=>{
                     console.log('查询大章列表结果',response)
                     this.chapters=response.data.list;
+                    this.$refs.pagination.render(page,response.data.total)
                 })
             }
         }
