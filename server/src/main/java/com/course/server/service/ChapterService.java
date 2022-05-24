@@ -1,18 +1,18 @@
 package com.course.server.service;
 
-import ch.qos.logback.core.joran.util.beans.BeanUtil;
+
 import com.course.server.domain.Chapter;
 import com.course.server.domain.ChapterExample;
 import com.course.server.dto.ChapterDto;
 import com.course.server.dto.PageDto;
 import com.course.server.mapper.ChapterMapper;
+import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +50,17 @@ public class ChapterService {
         }
         pageDto.setList(chapterDtoList);
 
+
+    }
+
+    /**
+     * 新增
+     */
+    public void save(ChapterDto  chapterDto) {
+        chapterDto.setId(UuidUtil.getShortUuid());//创建时，增添 uuid
+        Chapter chapter =new Chapter();
+        BeanUtils.copyProperties(chapter, chapterDto);
+        chapterMapper.insert(chapter);
 
     }
 }
