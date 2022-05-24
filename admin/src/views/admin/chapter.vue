@@ -96,7 +96,7 @@
        </table>
 
        <!--模态框和表单-->
-       <div class="modal fade" tabindex="-1" role="dialog">
+       <div  id="from-modal" class="modal fade" tabindex="-1" role="dialog">
            <div class="modal-dialog" role="document">
                <div class="modal-content">
                    <div class="modal-header">
@@ -155,7 +155,7 @@
         },
         methods:{
             add(){
-                $(".modal").modal("show");
+                $("#from-modal").modal("show");
             },
             list(page){
                   axios.post('http://127.0.0.1:9000/business/admin/chapter/list',
@@ -166,14 +166,18 @@
 
                   ).then((response)=>{
                     console.log('查询大章列表结果',response)
-                    this.chapters=response.data.list;
-                    this.$refs.pagination.render(page,response.data.total)
+                    this.chapters=response.data.content.list;
+                    this.$refs.pagination.render(page,response.data.content.total)
                 })
             },
 
-            save(){
+            save(page){
                 axios.post('http://127.0.0.1:9000/business/admin/chapter/save',this.chapter).then((response)=>{
-                    console.log('保存课程名字和id',response)
+                    console.log('保存课程名字和id',response);
+                    if (response.data.success){
+                        $("#from-modal").modal("hide");
+                        this.list(1);
+                    }
 
                 })
             }
