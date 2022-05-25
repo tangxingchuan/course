@@ -43,7 +43,7 @@
                            <i class="ace-icon fa fa-pencil bigger-120"></i>
                        </button>
 
-                       <button class="btn btn-xs btn-danger">
+                       <button @click="dele(chapter.id)" class="btn btn-xs btn-danger">
                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
                        </button>
                    </div>
@@ -142,6 +142,17 @@
                     console.log('保存课程名字和id',response);
                     if (response.data.success){
                         $("#from-modal").modal("hide");
+                        this.list(1);
+                    }
+
+                })
+            },
+
+            dele(id){
+                axios.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id).then((response)=>{
+                    console.log('删除大章列表结果',response);
+                    if (response.data.success){
+                       
                         this.list(1);
                     }
 

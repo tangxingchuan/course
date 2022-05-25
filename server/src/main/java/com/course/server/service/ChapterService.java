@@ -56,7 +56,7 @@ public class ChapterService {
     }
 
     /**
-     * 新增
+     * 保存
      */
     public void save(ChapterDto  chapterDto) {
 
@@ -74,7 +74,7 @@ public class ChapterService {
 
 
     /**
-     *
+     * 新增
      */
     private void insert(Chapter  chapter) {
         chapter.setId(UuidUtil.getShortUuid());
@@ -84,11 +84,20 @@ public class ChapterService {
 
 
     /**
-     *
+     *修改
      */
     private void update(Chapter  chapter) {
         chapterMapper.updateByPrimaryKey(chapter);
 
     }
+
+    /**
+     *根据id删除
+     */
+    public void delete(String id) {
+        chapterMapper.deleteByPrimaryKey(id);
+
+    }
+
 
 }
