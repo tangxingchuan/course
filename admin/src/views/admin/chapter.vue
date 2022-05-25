@@ -96,6 +96,7 @@
     import axios from "axios";
     import pagination from "../../components/pagination";
 
+
     export default {
         name: "chapter",
         components: {pagination},
@@ -149,14 +150,33 @@
             },
 
             dele(id){
-                axios.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id).then((response)=>{
-                    console.log('删除大章列表结果',response);
-                    if (response.data.success){
-                       
-                        this.list(1);
-                    }
+                Swal.fire({
+                    title: '确认删除？',
+                    text: "您将无法还原此内容!",
+                    icon: '警告',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '确认!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        axios.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id).then((response)=>{
+                            console.log('删除大章列表结果',response);
+                            if (response.data.success){
 
-                })
+                                this.list(1);
+                                Swal.fire(
+                                    '删除成功!',
+                                    '您的文件已被删除',
+
+
+                                )
+                            }
+
+                        });
+                    }
+                });
+
             },
 
 
