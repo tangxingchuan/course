@@ -36,60 +36,19 @@
                <td>{{chapter.name}}</td>
 
                <td>{{chapter.courseId}}</td>
-
                <td>
                    <div class="hidden-sm hidden-xs btn-group">
-                       <button class="btn btn-xs btn-success">
-                           <i class="ace-icon fa fa-check bigger-120"></i>
-                       </button>
 
-                       <button class="btn btn-xs btn-info">
+                       <button @click="edit(chapter)" class="btn btn-xs btn-info">
                            <i class="ace-icon fa fa-pencil bigger-120"></i>
                        </button>
 
                        <button class="btn btn-xs btn-danger">
                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
                        </button>
-
-                       <button class="btn btn-xs btn-warning">
-                           <i class="ace-icon fa fa-flag bigger-120"></i>
-                       </button>
-                   </div>
-
-                   <div class="hidden-md hidden-lg">
-                       <div class="inline pos-rel">
-                           <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                               <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-                           </button>
-
-                           <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                               <li>
-                                   <a href="#" class="tooltip-info" data-rel="tooltip" title="View">
-																			<span class="blue">
-																				<i class="ace-icon fa fa-search-plus bigger-120"></i>
-																			</span>
-                                   </a>
-                               </li>
-
-                               <li>
-                                   <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
-																			<span class="green">
-																				<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-																			</span>
-                                   </a>
-                               </li>
-
-                               <li>
-                                   <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
-																			<span class="red">
-																				<i class="ace-icon fa fa-trash-o bigger-120"></i>
-																			</span>
-                                   </a>
-                               </li>
-                           </ul>
-                       </div>
                    </div>
                </td>
+
            </tr>
 
            </tbody>
@@ -106,9 +65,9 @@
                    <div class="modal-body">
                        <form class="form-horizontal">
                            <div class="form-group">
-                               <label v-model="chapter.name"  class="col-sm-2 control-label">名称</label>
+                               <label   class="col-sm-2 control-label">名称</label>
                                <div class="col-sm-10">
-                                   <input type="text" class="form-control"  placeholder="名称">
+                                   <input v-model="chapter.name" type="text" class="form-control"  placeholder="名称">
                                </div>
                            </div>
                            <div class="form-group">
@@ -155,8 +114,15 @@
         },
         methods:{
             add(){
+                this.chapter={};
                 $("#from-modal").modal("show");
             },
+
+            edit(chapter){
+                $("#from-modal").modal("show");
+                this.chapter = $.extend({}, chapter);
+            },
+
             list(page){
                   axios.post('http://127.0.0.1:9000/business/admin/chapter/list',
                       {
@@ -180,7 +146,9 @@
                     }
 
                 })
-            }
+            },
+
+
         }
 
     }
