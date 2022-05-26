@@ -46,13 +46,6 @@ toast={
             title: message
         });
     },
-    info:function (message) {
-
-        Toast.fire({
-            icon: 'info',
-            title: message
-        });
-    },
     question:function (message) {
 
         Toast.fire({

@@ -132,6 +132,7 @@
                       }
 
                   ).then((response)=>{
+                      Loading.show();
                     console.log('查询大章列表结果',response)
                     this.chapters=response.data.content.list;
                     this.$refs.pagination.render(page,response.data.content.total)
@@ -140,6 +141,7 @@
 
             save(page){
                 axios.post('http://127.0.0.1:9000/business/admin/chapter/save',this.chapter).then((response)=>{
+                    Loading.hide();
                     console.log('保存课程名字和id',response);
                     if (response.data.success){
                         $("#from-modal").modal("hide");
@@ -161,17 +163,15 @@
                     confirmButtonText: '确认!'
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        Loading.hide();
                         axios.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id).then((response)=>{
+                            Loading.hide();
                             console.log('删除大章列表结果',response);
                             if (response.data.success){
 
                                 this.list(1);
-                                Swal.fire(
-                                    '删除成功!',
-                                    '您的文件已被删除',
+                                toast.success('删除成功！')
 
-
-                                )
 
                             }
 
