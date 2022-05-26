@@ -144,6 +144,7 @@
                     if (response.data.success){
                         $("#from-modal").modal("hide");
                         this.list(1);
+                        toast.success('保存成功')
                     }
 
                 })
@@ -171,6 +172,7 @@
 
 
                                 )
+
                             }
 
                         });
