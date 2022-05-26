@@ -1,58 +1,31 @@
-const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-right',
-    iconColor: 'white',
-    customClass: {
-        popup: 'colored-toast'
-    },
-    showConfirmButton: false,
-    timer: 1500,
-    timerProgressBar: true,
-    title:message,
-});
+Toast = {
+  success: function (message) {
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: message,
+      showConfirmButton: false,
+      timer: 10000
+    })
+  },
 
+  error: function (message) {
+    Swal.fire({
+      position: 'top-end',
+      icon: 'error',
+      title: message,
+      showConfirmButton: false,
+      timer: 5000
+    })
+  },
 
-
-
-
-toast={
-    success:function (message) {
-
-        Toast.fire({
-            icon: 'success',
-            title: message
-        });
-    },
-
-    error:function (message) {
-
-        Toast.fire({
-            icon: 'error',
-            title: message
-        });
-    },
-
-    warning:function (message) {
-
-        Toast.fire({
-            icon: 'warning',
-            title: message
-        });
-    },
-    info:function (message) {
-
-        Toast.fire({
-            icon: 'info',
-            title: message
-        });
-    },
-    question:function (message) {
-
-        Toast.fire({
-            icon: 'question',
-            title: message
-        });
-    },
-
-
+  warning: function (message) {
+    Swal.fire({
+      position: 'top-end',
+      icon: 'warning',
+      title: message,
+      showConfirmButton: false,
+      timer: 5000
+    })
+  }
 };

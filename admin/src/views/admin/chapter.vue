@@ -125,6 +125,7 @@
             },
 
             list(page){
+                Loading.show();
                   axios.post('http://127.0.0.1:9000/business/admin/chapter/list',
                       {
                           page:page,
@@ -132,7 +133,7 @@
                       }
 
                   ).then((response)=>{
-                      Loading.show();
+                      Loading.hide();
                     console.log('查询大章列表结果',response)
                     this.chapters=response.data.content.list;
                     this.$refs.pagination.render(page,response.data.content.total)
@@ -146,7 +147,7 @@
                     if (response.data.success){
                         $("#from-modal").modal("hide");
                         this.list(1);
-                        toast.success('保存成功')
+                        Toast.success('保存成功')
                     }
 
                 })
@@ -170,7 +171,7 @@
                             if (response.data.success){
 
                                 this.list(1);
-                                toast.success('删除成功！')
+                                Toast.success('删除成功！')
 
 
                             }
