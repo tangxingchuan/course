@@ -1,4 +1,4 @@
-package com.course.controller.admin;
+package com.course.${module}.controller.admin;
 
 import com.course.server.dto.${Domain}Dto;
 import com.course.server.dto.PageDto;
@@ -16,14 +16,14 @@ import java.util.List;
 
 /**
 * @author TangKe（唐柯）
-* @date 2022/5/18 - 2:38 上午
+* @date
 */
 @RestController
 @RequestMapping("/admin/${domain}")
 public class ${Domain}Controller {
 
 private static final Logger LOG = LoggerFactory.getLogger(${Domain}Controller.class);
-public static final String BUSINESS_NAME = "大章";
+public static final String BUSINESS_NAME = "${tableNameCn}";
 
 @Resource
 private ${Domain}Service ${domain}Service;
