@@ -141,6 +141,16 @@
             },
 
             save(page){
+
+                //保存校验
+                if(!Validator.require(this.chapter.name,"名称")
+                    || !Validator.require(this.chapter.courseId,'课程ID')
+                    ||  !Validator.length(this.chapter.courseId,'课程ID',1,10)){
+
+                    return;
+                }
+
+
                 axios.post('http://127.0.0.1:9000/business/admin/chapter/save',this.chapter).then((response)=>{
                     Loading.hide();
                     console.log('保存课程名字和id',response);
@@ -148,6 +158,8 @@
                         $("#from-modal").modal("hide");
                         this.list(1);
                         Toast.success('保存成功')
+                    }else {
+                        Toast.warning(response.chapter.message)
                     }
 
                 })

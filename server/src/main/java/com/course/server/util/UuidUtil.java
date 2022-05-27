@@ -2,6 +2,8 @@ package com.course.server.util;
 
 import java.util.UUID;
 
+
+//自动生成ID工具类
 public class UuidUtil {
 
     public static String[] chars = new String[] { "a", "b", "c", "d", "e", "f",
