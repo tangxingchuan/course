@@ -14,6 +14,7 @@ import java.util.Map;
 public class ServerGenerator {
 
     static String toServicePath = "server/src/main/java/com/course/server/service/";
+    static String toControllerPath = "business/src/main/java/com/course/controller/admin/";
 
     public static void main(String[] args) throws IOException, TemplateException {
 
@@ -23,8 +24,12 @@ public class ServerGenerator {
         map.put("Domain",Domain);
         map.put("domain",domain);
 
-        //替换ftlName，就可以生成不同的service层
+        //生成service
         FreemarkerUtil.initConfig("service.ftl");
         FreemarkerUtil.generator(toServicePath+Domain+"Section.java",map);
+
+        //生成controller
+        FreemarkerUtil.initConfig("controller.ftl");
+        FreemarkerUtil.generator(toControllerPath+Domain+"Controller.java",map);
     }
 }
