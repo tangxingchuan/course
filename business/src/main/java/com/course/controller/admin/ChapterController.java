@@ -67,7 +67,7 @@ public class ChapterController {
      * 删除
      */
     @DeleteMapping("/delete/{id}")
-    public ResponseDto list(@PathVariable String id){
+    public ResponseDto delete(@PathVariable String id){
 
 
             ResponseDto responseDto = new ResponseDto();
