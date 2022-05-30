@@ -126,7 +126,7 @@
 
             list(page){
                 Loading.show();
-                  axios.post('http://127.0.0.1:9000/business/admin/chapter/list',
+                  axios.post(process.env.VUE_APP_SERVER+'/business/admin/chapter/list',
                       {
                           page:page,
                           size:this.$refs.pagination.size,
@@ -151,7 +151,7 @@
                 }
 
 
-                axios.post('http://127.0.0.1:9000/business/admin/chapter/save',this.chapter).then((response)=>{
+                axios.post(process.env.VUE_APP_SERVER +'/business/admin/chapter/save',this.chapter).then((response)=>{
                     Loading.hide();
                     console.log('保存课程名字和id',response);
                     if (response.data.success){
@@ -177,7 +177,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         Loading.hide();
-                        axios.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id).then((response)=>{
+                        axios.delete(process.env.VUE_APP_SERVER +'/business/admin/chapter/delete/'+id).then((response)=>{
                             Loading.hide();
                             console.log('删除大章列表结果',response);
                             if (response.data.success){

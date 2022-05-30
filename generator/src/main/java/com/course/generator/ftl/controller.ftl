@@ -1,4 +1,4 @@
-package com.course.${module}.controller.admin;
+package com.course.controller.admin;
 
 import com.course.server.dto.${Domain}Dto;
 import com.course.server.dto.PageDto;
