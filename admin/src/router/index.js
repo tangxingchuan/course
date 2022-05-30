@@ -4,6 +4,7 @@ import Login from "@/views/login";
 import Admin from "@/views/admin";
 import Welcome from "@/views/admin/welcome";
 import Chapter from "@/views/admin/chapter";
+import Section from "@/views/admin/section";
 
 Vue.use(VueRouter)
 
@@ -27,9 +28,14 @@ const routes = [
                 component:Welcome,
             },
             {
-                name: 'business-chapter-sidebar',
+                name: 'business/chapter',
                 path: 'business/chapter',
                 component:Chapter,
+            },
+            {
+                name: 'business/section',
+                path: 'business/section',
+                component:Section,
             }
             ]
     }
