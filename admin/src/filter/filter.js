@@ -93,5 +93,5 @@ export default {
     optionKV,
     formatSecond,
     formatFileSize,
-    optionKVArray
+
 }

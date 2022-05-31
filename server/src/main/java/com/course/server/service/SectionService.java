@@ -5,6 +5,7 @@ import com.course.server.domain.Section;
 import com.course.server.domain.SectionExample;
 import com.course.server.dto.SectionDto;
 import com.course.server.dto.PageDto;
+import com.course.server.enums.SectionChargeEnum;
 import com.course.server.mapper.SectionMapper;
 import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -68,11 +70,14 @@ List<Section> sectionList = sectionMapper.selectByExample(sectionExample);
             * 新增
             */
             private void insert(Section  section) {
-            section.setId(UuidUtil.getShortUuid());
-            sectionMapper.insert(section);
+                Date now =new Date();
+                section.setCreatedAt(now);
+                section.setUpdatedAt(now);
+                section.setCharge(SectionChargeEnum.CHARGE.getCode());
+                section.setId(UuidUtil.getShortUuid());
+                sectionMapper.insert(section);
 
             }
-
 
             /**
             *修改
