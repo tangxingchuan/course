@@ -3,8 +3,10 @@ import VueRouter from 'vue-router'
 import Login from "@/views/login";
 import Admin from "@/views/admin";
 import Welcome from "@/views/admin/welcome";
+import Course from "@/views/admin/course";
 import Chapter from "@/views/admin/chapter";
 import Section from "@/views/admin/section";
+
 
 Vue.use(VueRouter)
 
@@ -26,6 +28,11 @@ const routes = [
                 name:'welcome',
                 path: 'welcome',
                 component:Welcome,
+            },
+            {
+                name: 'business/course',
+                path: 'business/course',
+                component:Course,
             },
             {
                 name: 'business/chapter',

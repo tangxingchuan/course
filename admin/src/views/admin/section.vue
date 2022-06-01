@@ -25,7 +25,6 @@
         <th>时长</th>
         <th>收费</th>
         <th>顺序</th>
-        <th>vod</th>
         <th>操作</th>
       </tr>
       </thead>
@@ -40,7 +39,6 @@
         <td>{{section.time}}</td>
         <td>{{CHARGE | optionKV(section.charge) }}</td>
         <td>{{section.sort}}</td>
-        <td>{{section.vod}}</td>
       <td>
         <div class="hidden-sm hidden-xs btn-group">
           <button v-on:click="edit(section)" class="btn btn-xs btn-info">
@@ -106,12 +104,6 @@
                 <label class="col-sm-2 control-label">顺序</label>
                 <div class="col-sm-10">
                   <input v-model="section.sort" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">vod</label>
-                <div class="col-sm-10">
-                  <input v-model="section.vod" class="form-control">
                 </div>
               </div>
             </form>
