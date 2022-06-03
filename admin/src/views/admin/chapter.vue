@@ -106,7 +106,6 @@
               chapters:[]
           }
         },
-        comments:{pagination},
         mounted() {
             //this.$parent.activeSidebar('business-chapter-sidebar')  //在admin页面通过watch监听路由路径，做了一个通用的sidebar菜单激活，解决了这个问题
             this.$refs.pagination.size=5;
@@ -114,16 +113,23 @@
 
         },
         methods:{
+            /**
+             * 点击【新增】
+             */
             add(){
                 this.chapter={};
                 $("#from-modal").modal("show");
             },
-
+            /**
+             * 点击【编辑】
+             */
             edit(chapter){
                 $("#from-modal").modal("show");
                 this.chapter = $.extend({}, chapter);
             },
-
+            /**
+             * 列表查询
+             */
             list(page){
                 Loading.show();
                   axios.post(process.env.VUE_APP_SERVER+'/business/admin/chapter/list',
@@ -140,6 +146,9 @@
                 })
             },
 
+            /**
+             * 点击【保存】
+             */
             save(page){
 
                 //保存校验
@@ -165,35 +174,24 @@
                 })
             },
 
+            /**
+             * 点击【删除】
+             */
             dele(id){
-                Confirm.show({
-                    title: '确认删除？',
-                    text: "您将无法还原此内容!",
-                    icon: '警告',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: '确认!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Loading.show();
-                        axios.delete(process.env.VUE_APP_SERVER +'/business/admin/chapter/delete/'+id).then((response)=>{
-                            Loading.hide();
-                            console.log('删除大章列表结果',response);
-                            if (response.data.success){
+                Confirm.show('删除大章后不可恢复，确认删除？',function () {
+                    Loading.show();
+                    axios.delete(process.env.VUE_APP_SERVER +'/business/admin/chapter/delete/'+id).then((response)=>{
+                        Loading.hide();
+                        let resp = response.data;
+                        if (resp.success) {
+                            this.list(1);
+                            Toast.success("删除成功！");
+                        }
 
-                                this.list(1);
-                                Toast.success('删除成功！')
+                    })
 
-
-                            }
-
-                        });
-                    }
                 });
-
             },
-
 
         }
 

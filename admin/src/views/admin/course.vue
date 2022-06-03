@@ -22,24 +22,43 @@
                       <img v-show="course.image" class="media-object" v-bind:src="course.image" />
                       <div class="caption">
                           <div class="clearfix">
-                              <span class="pull-right label label-grey info-label">{{COURSE_LEVEL | optionKV(course.level)}}</span>
+                              <span class="pull-right label label-primary info-label">{{COURSE_LEVEL | optionKV(course.level)}}</span>
 
-                              <span class="pull-right label label-grey info-label">{{COURSE_CHARGE | optionKV(course.charge)}}</span>
+                              <span class="pull-right label label-primary info-label">{{COURSE_CHARGE | optionKV(course.charge)}}</span>
 
-                              <span class="pull-right label label-grey info-label">{{COURSE_STATUS | optionKV(course.status)}}</span>
+                              <span class="pull-right label label-primary info-label">{{COURSE_STATUS | optionKV(course.status)}}</span>
                           </div>
 
                           <h3 class="search-title">
                               <a href="#" class="blue">{{course.name}}</a>
                           </h3>
+
+                          <p>
+                              <span class="blue bolder bigger-150">{{course.price}}&nbsp;<i class="fa fa-rmb"></i></span>&nbsp;
+                          </p>
                           <p>{{course.summary}}</p>
                           <p>
-                              <button v-on:click="edit(course)" class="btn btn-xs btn-info">
-                                  <i class="ace-icon fa fa-pencil bigger-120"></i>
+                              <span class="badge badge-info">{{course.id}}</span>
+                              <span class="badge badge-info">排序：{{course.sort}}</span>
+                              <span class="badge badge-info">{{course.time | formatSecond}}</span>
+                          </p>
+                          <p>
+                              <button v-on:click="toChapter(course)" class="btn btn-white btn-xs btn-info btn-round">
+                                  大章
+                              </button>&nbsp;
+                              <button v-on:click="toContent(course)" class="btn btn-white btn-xs btn-info btn-round">
+                                  内容
+                              </button>&nbsp;
+                              <button v-on:click="openSortModal(course)" class="btn btn-white btn-xs btn-info btn-round">
+                                  排序
+                              </button>&nbsp;
+                              <button v-on:click="edit(course)" class="btn btn-white btn-xs btn-info btn-round">
+                                  编辑
+                              </button>&nbsp;
+                              <button v-on:click="del(course.id)" class="btn btn-white btn-xs btn-warning btn-round">
+                                  删除
                               </button>
-                              <button v-on:click="del(course.id)" class="btn btn-xs btn-danger">
-                                  <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                              </button>
+                          </p>
                           </p>
 
                       </div>
@@ -207,7 +226,7 @@
       /**
        * 点击【新增】
        */
-      add() {
+      add:function() {
 
          this.course = {};
         $("#form-modal").modal("show");
@@ -290,3 +309,9 @@
     }
   }
 </script>
+
+<style scoped>
+    .caption h3 {
+        font-size: 20px;
+    }
+</style>
