@@ -305,7 +305,16 @@
             }
           })
         });
-      }
+      },
+
+        /**
+         *
+         */
+        toChapter(course){
+          SessionStorage.set('course',course)
+            this.$router.push("/business/chapter");
+
+        }
     }
   }
 </script>

@@ -1,17 +1,24 @@
 <template>
    <div>
+       <h3>{{course.name}}</h3>
 
        <!--按钮-->
        <p>
+           <router-link to="/business/course"  @click="add" class="btn btn-white btn-default btn-round">
+               <i class="ace-icon fa fa-arrow-left red2"></i>
+               返回课程
+           </router-link>
+           &nbsp;
            <button  @click="add" class="btn btn-white btn-default btn-round">
                <i class="ace-icon fa fa-edit red2"></i>
                新增
            </button>
-            &nbsp;
+            &nbsp;&nbsp;
            <button  @click="list(1)" class="btn btn-white btn-default btn-round">
                <i class="ace-icon fa fa-refresh red2"></i>
                刷新
            </button>
+           &nbsp;
        </p>
 
         <!--分页-->
@@ -95,6 +102,7 @@
 
     import axios from "axios";
     import pagination from "../../components/pagination";
+    import course from "./course";
 
 
     export default {
@@ -103,13 +111,21 @@
         data(){
           return{
               chapter:{},
-              chapters:[]
+              chapters:[],
+              course:{},
           }
         },
         mounted() {
             //this.$parent.activeSidebar('business-chapter-sidebar')  //在admin页面通过watch监听路由路径，做了一个通用的sidebar菜单激活，解决了这个问题
             this.$refs.pagination.size=5;
             this.list(1);
+             let course  = SessionStorage.get('course') || {};
+             if (Tool.isEmpty(course)){
+
+                 this.$router.push('/welcome')
+             }
+
+             this.course=course;
 
         },
         methods:{
