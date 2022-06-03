@@ -1,4 +1,4 @@
-package com.course.controller.ex;
+package com.course.business.controller.ex;
 
 import com.course.server.dto.ResponseDto;
 //import com.course.server.exception.BusinessException;

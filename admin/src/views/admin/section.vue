@@ -210,7 +210,7 @@
        */
       del(id) {
 
-        Confirm.show("删除小节后不可恢复，确认删除？", function () {
+          Confirm.show("删除小节后不可恢复，确认删除？", function () {
           Loading.show();
           axios.delete(process.env.VUE_APP_SERVER + '/business/admin/section/delete/' + id).then((response)=>{
             Loading.hide();

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -1220,20 +1220,20 @@
 														</div>
 
 														<div class="col-xs-6 col-sm-4 col-md-3">
-															<div class="thumbnail search-thumbnail">
-																<img class="media-object" data-src="holder.js/100px200?theme=gray" />
-																<div class="caption">
-																	<div class="clearfix">
-																		<span class="pull-right label label-grey info-label">Tokyo</span>
-																	</div>
+                                                        <div class="thumbnail search-thumbnail">
+                                                            <img class="media-object" data-src="holder.js/100px200?theme=gray" />
+                                                            <div class="caption">
+                                                                <div class="clearfix">
+                                                                    <span class="pull-right label label-grey info-label">Tokyo</span>
+                                                                </div>
 
-																	<h3 class="search-title">
-																		<a href="#" class="blue">Thumbnail label</a>
-																	</h3>
-																	<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam ...</p>
-																</div>
-															</div>
-														</div>
+                                                                <h3 class="search-title">
+                                                                    <a href="#" class="blue">Thumbnail label</a>
+                                                                </h3>
+                                                                <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam ...</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
 														<div class="col-xs-6 col-sm-4 col-md-3">
 															<div class="thumbnail search-thumbnail">
@@ -1599,7 +1599,7 @@
 		<!-- inline scripts related to this page -->
 		<script type="text/javascript">
 			jQuery(function($) {
-			
+
 				//data for tree element
 				var category = {
 					'for-sale' : {text: 'For Sale', type: 'folder'}	,
@@ -1620,7 +1620,7 @@
 						'sports-fitness' : {text: 'Sports & Fitness', type: 'item'}
 					}
 				}
-				
+
 				var dataSource1 = function(options, callback){
 					var $data = null
 					if(!("text" in options) && !("type" in options)){
@@ -1633,10 +1633,10 @@
 							$data = options.additionalParameters.children || {};
 						else $data = {}//no data
 					}
-					
+
 					callback({ data: $data })
 				}
-				
+
 				$('#cat-tree').ace_tree({
 					dataSource: dataSource1,
 					multiSelect: true,
@@ -1649,19 +1649,19 @@
 					'unselected-icon' : 'ace-icon fa fa-times',
 					loadingHTML : '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>'
 				});
-				
-			
+
+
 				$('.tree-container').ace_scroll({size: 250, mouseWheelLock: true});
 				$('#cat-tree').on('closed.fu.tree disclosedFolder.fu.tree', function() {
-					$('.tree-container').ace_scroll('reset').ace_scroll('start');	
+					$('.tree-container').ace_scroll('reset').ace_scroll('start');
 				});
-				
-				
-				
+
+
+
 				//select2 location element
 				$('.select2').css('min-width', '150px').select2({allowClear:true});
-				
-				
+
+
 				//jQuery ui distance slider
 				$( "#slider-range" ).css('width','150px').slider({
 					range: true,
@@ -1670,7 +1670,7 @@
 					values: [ 17, 67 ],
 					slide: function( event, ui ) {
 						var val = ui.values[$(ui.handle).index()-1] + "";
-			
+
 						if( !ui.handle.firstChild ) {
 							$("<div class='tooltip bottom in' style='display:none;left:-6px;top:14px;'><div class='tooltip-arrow'></div><div class='tooltip-inner'></div></div>")
 							.prependTo(ui.handle);
@@ -1680,16 +1680,16 @@
 				}).find('span.ui-slider-handle').on('blur', function(){
 					$(this.firstChild).hide();
 				});
-				
-			
+
+
 				//this is for demo only
 				$('.thumbnail').on('mouseenter', function() {
 					$(this).find('.info-label').addClass('label-primary');
 				}).on('mouseleave', function() {
 					$(this).find('.info-label').removeClass('label-primary');
 				});
-				
-			
+
+
 				//toggle display format buttons
 				$('#toggle-result-format .btn').tooltip({container: 'body'}).on('click', function(e){
 					$(this).siblings().each(function() {
@@ -1697,7 +1697,7 @@
 					});
 					$(this).removeClass('btn-grey').addClass($(this).attr('data-class'));
 				});
-				
+
 				////////////////////
 				//show different search page
 				$('#toggle-result-page .btn').on('click', function(e){

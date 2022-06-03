@@ -5,9 +5,10 @@ import store from './store'
 import axios from "axios";
 import filter from "@/filter/filter";
 
-
 Vue.config.productionTip = false
 Vue.use(axios);
+
+
 
 // 全局过滤器
 Object.keys(filter).forEach(key => {

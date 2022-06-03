@@ -166,7 +166,7 @@
             },
 
             dele(id){
-                Swal.fire({
+                Confirm.show({
                     title: '确认删除？',
                     text: "您将无法还原此内容!",
                     icon: '警告',
@@ -176,7 +176,7 @@
                     confirmButtonText: '确认!'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Loading.hide();
+                        Loading.show();
                         axios.delete(process.env.VUE_APP_SERVER +'/business/admin/chapter/delete/'+id).then((response)=>{
                             Loading.hide();
                             console.log('删除大章列表结果',response);
@@ -184,7 +184,7 @@
 
                                 this.list(1);
                                 Toast.success('删除成功！')
- 
+
 
                             }
 

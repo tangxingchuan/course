@@ -1,7 +1,7 @@
 Loading = {
   show: function () {
     $.blockUI({
-      message: '<img src="/static/img/loading.gif" />',
+      message: '<image src="/static/image/loading.gif" />',
       css: {
         zIndex: "10011",
         padding: "10px",
