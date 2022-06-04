@@ -1,7 +1,11 @@
 <template>
    <div>
-       <h3>{{course.name}}</h3>
 
+       <h4 class="lighter">
+           <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+           <router-link to="/business/course" class="pink"> {{course.name}} </router-link>
+       </h4>
+       <hr>
        <!--按钮-->
        <p>
            <router-link to="/business/course"  @click="add" class="btn btn-white btn-default btn-round">
@@ -35,6 +39,7 @@
            </tr>
            </thead>
 
+
            <tbody>
            <tr v-for="chapter in chapters" :key="chapter">
 
@@ -42,16 +47,16 @@
 
                <td>{{chapter.name}}</td>
 
-               <td>{{chapter.courseId}}</td>
                <td>
                    <div class="hidden-sm hidden-xs btn-group">
-
-                       <button @click="edit(chapter)" class="btn btn-xs btn-info">
-                           <i class="ace-icon fa fa-pencil bigger-120"></i>
-                       </button>
-
-                       <button @click="dele(chapter.id)" class="btn btn-xs btn-danger">
-                           <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                       <button v-on:click="toSection(chapter)" class="btn btn-white btn-xs btn-info btn-round">
+                           小节
+                       </button>&nbsp;
+                       <button v-on:click="edit(chapter)" class="btn btn-white btn-xs btn-info btn-round">
+                           编辑
+                       </button>&nbsp;
+                       <button v-on:click="dele(chapter.id)" class="btn btn-white btn-xs btn-warning btn-round">
+                           删除
                        </button>
                    </div>
                </td>
@@ -125,7 +130,7 @@
              }
 
              this.course=course;
-             this.list(2);
+             this.list(1);
 
         },
         methods:{
@@ -161,7 +166,6 @@
                     this.chapters=response.data.content.list;
                     this.$refs.pagination.render(page,response.data.content.total)
                 })
-                this.list(1);
             },
 
             /**

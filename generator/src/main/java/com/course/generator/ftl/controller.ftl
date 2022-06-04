@@ -53,7 +53,6 @@ public ResponseDto list(@RequestBody ${Domain}Dto  ${domain}Dto){
 LOG.info("${Domain}Dto:{}",${domain}Dto);
 
 //保存校验
-ResponseDto responseDto = new ResponseDto();
 <#list fieldList as field>
     <#if field.name!="id" && field.nameHump!="createdAt" && field.nameHump!="updatedAt" && field.nameHump!="sort">
         <#if !field.nullAble>
@@ -64,6 +63,7 @@ ResponseDto responseDto = new ResponseDto();
         </#if>
     </#if>
 </#list>
+ResponseDto responseDto = new ResponseDto();
 ${domain}Service.save(${domain}Dto);
 responseDto.setContent(${domain}Dto);
 return responseDto;
