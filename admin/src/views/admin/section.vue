@@ -39,7 +39,7 @@
           <td>{{section.id}}</td>
           <td>{{section.title}}</td>
           <td>{{section.time}}</td>
-          <td>{{section.time | formatSecond}}</td>
+          <td>{{section.time}}</td>
           <td>{{CHARGE | optionKV(section.charge) }}</td>
           <td>{{section.sort}}</td>
       <td>
@@ -139,14 +139,14 @@
     mounted: function() {
 
        this.$refs.pagination.size = 5;
-        let course = SessionStorage.get(SESSION_KEY_COURSE) || {};
-        let chapter = SessionStorage.get(SESSION_KEY_CHAPTER) || {};
-        /*if (Tool.isEmpty(course) || Tool.isEmpty(chapter)) {
-            this.$router.push("/welcome");
-        }*/
+        let course = SessionStorage.get("course") || {};
+        let chapter = SessionStorage.get("chapter") || {};
+             if (Tool.isEmpty(course) || Tool.isEmpty(chapter)) {
+                   this.$router.push("/welcome");
+                }
         this.course = course;
         this.chapter = chapter;
-       this.list(1);
+        this.list(1);
       // sidebar激活样式方法一
       // this.$parent.activeSidebar("business-section-sidebar");
 
@@ -179,8 +179,8 @@
          axios.post(process.env.VUE_APP_SERVER + '/business/admin/section/list', {
           page: page,
           size:  this.$refs.pagination.size,
-             courseId: this.course.id,
-             chapterId: this.chapter.id
+         courseId: this.course.id,
+         chapterId: this.chapter.id
 
         }).then((response)=>{
           Loading.hide();

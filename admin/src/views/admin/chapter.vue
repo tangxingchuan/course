@@ -1,6 +1,6 @@
 <template>
    <div>
-
+       <h3>{{course.name}}</h3>
        <h4 class="lighter">
            <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
            <router-link to="/business/course" class="pink"> {{course.name}} </router-link>
@@ -34,7 +34,6 @@
            <tr>
                <th>ID</th>
                <th>名称</th>
-               <th>课程ID</th>
                <th>操作</th>
            </tr>
            </thead>
@@ -179,8 +178,9 @@
                     return;
                 }
 
-                this.chapter.courseId = this.course.id
+                this.chapter.courseId = this.course.id;
 
+                Loading.show();
                 axios.post(process.env.VUE_APP_SERVER +'/business/admin/chapter/save',this.chapter).then((response)=>{
                     Loading.hide();
                     console.log('保存课程名字和id',response);

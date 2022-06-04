@@ -1,14 +1,17 @@
 package com.course.server.service;
 
 
+
 import com.course.server.domain.Section;
 import com.course.server.domain.SectionExample;
 import com.course.server.dto.SectionDto;
 import com.course.server.dto.SectionPageDto;
 import com.course.server.enums.SectionChargeEnum;
 import com.course.server.mapper.SectionMapper;
+import com.course.server.mapper.my.MyCourseMapper;
 import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
+
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -33,6 +36,8 @@ private SectionMapper sectionMapper;
 
     @Resource
     private CourseService courseService;
+
+
 /**
 * 列表查询
 */
@@ -43,13 +48,13 @@ public void list(SectionPageDto sectionPageDto) {
     if (!StringUtils.isEmpty(sectionPageDto.getCourseId())) {
         criteria.andCourseIdEqualTo(sectionPageDto.getCourseId());
     }
-    if (!StringUtils.isEmpty(sectionPageDto.getChapterId())) {
+    if(!StringUtils.isEmpty(sectionPageDto.getChapterId())){
         criteria.andChapterIdEqualTo(sectionPageDto.getChapterId());
     }
-    sectionExample.setOrderByClause("sort asc");
     List<Section> sectionList = sectionMapper.selectByExample(sectionExample);
     PageInfo<Section> pageInfo = new PageInfo<>(sectionList);
     sectionPageDto.setTotal(pageInfo.getTotal());
+
     List<SectionDto> sectionDtoList = CopyUtil.copyList(sectionList, SectionDto.class);
     sectionPageDto.setList(sectionDtoList);
 
@@ -70,6 +75,7 @@ public void list(SectionPageDto sectionPageDto) {
             }else {
             this.update(section);
             }
+            courseService.updateTime(sectionDto.getCourseId());
 
             }
 
@@ -103,6 +109,7 @@ public void list(SectionPageDto sectionPageDto) {
             sectionMapper.deleteByPrimaryKey(id);
 
             }
+
 
 
             }
