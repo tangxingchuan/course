@@ -218,7 +218,7 @@
              * 点击【小节】
              */
             toSection(chapter) {
-                SessionStorage.set(SESSION_KEY_CHAPTER, chapter);
+                SessionStorage.set('chapter', chapter);
                 this.$router.push("/business/section");
             }
 
