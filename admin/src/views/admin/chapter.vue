@@ -78,9 +78,9 @@
                                </div>
                            </div>
                            <div class="form-group">
-                               <label  class="col-sm-2 control-label">课程ID</label>
+                               <label  class="col-sm-2 control-label">课程</label>
                                <div class="col-sm-10">
-                                   <input v-model="chapter.courseId"  type="text" class="form-control"  placeholder="课程ID">
+                                   <p class="form-control" >{{course.name}}</p>
                                </div>
                            </div>
 
@@ -118,7 +118,6 @@
         mounted() {
             //this.$parent.activeSidebar('business-chapter-sidebar')  //在admin页面通过watch监听路由路径，做了一个通用的sidebar菜单激活，解决了这个问题
             this.$refs.pagination.size=5;
-            this.list(1);
              let course  = SessionStorage.get('course') || {};
              if (Tool.isEmpty(course)){
 
@@ -126,6 +125,7 @@
              }
 
              this.course=course;
+             this.list(2);
 
         },
         methods:{
@@ -152,6 +152,7 @@
                       {
                           page:page,
                           size:this.$refs.pagination.size,
+                          courseId:this.course.id
                       }
 
                   ).then((response)=>{
@@ -160,6 +161,7 @@
                     this.chapters=response.data.content.list;
                     this.$refs.pagination.render(page,response.data.content.total)
                 })
+                this.list(1);
             },
 
             /**
@@ -169,12 +171,11 @@
 
                 //保存校验
                 if(!Validator.require(this.chapter.name,"名称")
-                    || !Validator.require(this.chapter.courseId,'课程ID')
                     ||  !Validator.length(this.chapter.courseId,'课程ID',1,10)){
-
                     return;
                 }
 
+                this.chapter.courseId = this.course.id
 
                 axios.post(process.env.VUE_APP_SERVER +'/business/admin/chapter/save',this.chapter).then((response)=>{
                     Loading.hide();
@@ -208,6 +209,14 @@
 
                 });
             },
+
+            /**
+             * 点击【小节】
+             */
+            toSection(chapter) {
+                SessionStorage.set(SESSION_KEY_CHAPTER, chapter);
+                this.$router.push("/business/section");
+            }
 
         }
 
