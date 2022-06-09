@@ -47,7 +47,7 @@ ResponseDto responseDto = new ResponseDto();
 */
 
 @PostMapping("/save")
-public ResponseDto list(@RequestBody SectionDto  sectionDto){
+public ResponseDto list(@RequestBody SectionDto  sectionDto) throws Exception {
 
 // 保存校验
     ValidatorUtil.require(sectionDto.getTitle(), "标题");
@@ -56,6 +56,7 @@ public ResponseDto list(@RequestBody SectionDto  sectionDto){
 
 ResponseDto responseDto = new ResponseDto();
 sectionService.save(sectionDto);
+
 responseDto.setContent(sectionDto);
 return  responseDto;
 }
