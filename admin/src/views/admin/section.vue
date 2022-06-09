@@ -38,8 +38,7 @@
       <tr v-for="section in sections">
           <td>{{section.id}}</td>
           <td>{{section.title}}</td>
-          <td>{{section.time}}</td>
-          <td>{{section.time}}</td>
+          <td>{{section.time |formatSecond}}</td>
           <td>{{CHARGE | optionKV(section.charge) }}</td>
           <td>{{section.sort}}</td>
       <td>
@@ -92,7 +91,7 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">时长</label>
                 <div class="col-sm-10">
-                  <input v-model="section.time" class="form-control">
+                  <input v-model="section.time | formatSecond" class="form-control">
                 </div>
               </div>
               <div class="form-group">
