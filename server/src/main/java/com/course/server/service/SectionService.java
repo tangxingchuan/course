@@ -64,8 +64,8 @@ public void list(SectionPageDto sectionPageDto) {
             /**
             * 保存
             */
-            @Transactional
-            public void save(SectionDto  sectionDto) {
+            @Transactional(rollbackFor = Exception.class)
+            public void save(SectionDto  sectionDto) throws Exception {
 
             Section section = CopyUtil.copy(sectionDto,Section.class);
 
@@ -74,6 +74,9 @@ public void list(SectionPageDto sectionPageDto) {
 
             }else {
             this.update(section);
+            }
+            if(true){
+                throw new  Exception("事务测试");
             }
             courseService.updateTime(sectionDto.getCourseId());
 

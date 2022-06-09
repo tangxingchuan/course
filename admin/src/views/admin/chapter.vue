@@ -1,6 +1,6 @@
 <template>
    <div>
-       <h3>{{course.name}}</h3>
+
        <h4 class="lighter">
            <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
            <router-link to="/business/course" class="pink"> {{course.name}} </router-link>
