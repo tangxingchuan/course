@@ -179,6 +179,7 @@
         COURSE_LEVEL: COURSE_LEVEL,
         COURSE_CHARGE: COURSE_CHARGE,
         COURSE_STATUS: COURSE_STATUS,
+          tree:{},
       }
     },
     mounted: function() {
@@ -233,6 +234,7 @@
       save(page) {
 
 
+
         // 保存校验
         if (1 != 1
           || !Validator.require( this.course.name, "名称")
@@ -242,6 +244,14 @@
         ) {
           return;
         }
+
+          let  categorys =  this.tree.getChangeCheckedNodes();
+            if (Tool.isEmpty(categorys)){
+            Toast.warning('请选择分类！');
+            return;
+            }
+
+           this.course.categorys = categorys;
 
         Loading.show();
         axios.post(process.env.VUE_APP_SERVER + '/business/admin/course/save',  this.course).then((response)=>{
@@ -317,7 +327,7 @@
             };
 
             let zNodes = this.categorys;
-            $.fn.zTree.init($("#tree"), setting, zNodes);
+            this.tree =  $.fn.zTree.init($("#tree"), setting, zNodes);
         }
     }
   }

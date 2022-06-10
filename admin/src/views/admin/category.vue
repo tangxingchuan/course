@@ -199,42 +199,42 @@
       },
 
       /**
-       * 列表查询
-       */
-      all() {
-        Loading.show();
-         axios.post(process.env.VUE_APP_SERVER + '/business/admin/category/all'
-        ).then((response)=>{
-          Loading.hide();
-          let resp = response.data;
-           this.categorys = resp.content;
-           //将所有记录格式化成树形结构
-             this.level1 = [];
-             for (let i = 0; i < this.categorys.length; i++) {
-                 let c = this.categorys[i];
-                 if (c.parent === '00000000'){
-                    this.level1.push(c);
-                     for (let j = 0; j < this.categorys.length; j++) {
-                         let child = this.categorys[j];
-                         if (child.parent === c.id){
-                             if (Tool.isEmpty(c.childre)){
-                                 c.childre =[];
-                             }
-                             c.childre.push(child)
-                         }
-                     }
-                 }
+         * 列表查询
+         */
+        all() {
+            Loading.show();
+            axios.post(process.env.VUE_APP_SERVER + '/business/admin/category/all'
+            ).then((response)=>{
+                Loading.hide();
+                let resp = response.data;
+                this.categorys = resp.content;
+                //将所有记录格式化成树形结构
+                this.level1 = [];
+                for (let i = 0; i < this.categorys.length; i++) {
+                    let c = this.categorys[i];
+                    if (c.parent === '00000000'){
+                        this.level1.push(c);
+                        for (let j = 0; j < this.categorys.length; j++) {
+                            let child = this.categorys[j];
+                            if (child.parent === c.id){
+                                if (Tool.isEmpty(c.childre)){
+                                    c.childre =[];
+                                }
+                                c.childre.push(child)
+                            }
+                        }
+                    }
 
-             }
-             this.level2=[];
-             //对当前一级分类中选中的表格触发一次点击事件，以刷新二级菜单列表
-             //注意：界面的渲染需要等vue绑定好变量后才做，所以加延时100ms
-             setTimeout(function () {
-                 $("tr.active").trigger('click')
+                }
+                this.level2=[];
+                //对当前一级分类中选中的表格触发一次点击事件，以刷新二级菜单列表
+                //注意：界面的渲染需要等vue绑定好变量后才做，所以加延时100ms
+                setTimeout(function () {
+                    $("tr.active").trigger('click')
 
-             },100);
-        })
-      },
+                },100);
+            })
+        },
 
       /**
        * 点击【保存】

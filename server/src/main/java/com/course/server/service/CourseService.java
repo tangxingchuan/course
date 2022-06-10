@@ -5,6 +5,7 @@ import com.course.server.domain.Course;
 import com.course.server.domain.CourseExample;
 import com.course.server.dto.CourseDto;
 import com.course.server.dto.PageDto;
+import com.course.server.mapper.CourseCategoryMapper;
 import com.course.server.mapper.CourseMapper;
 import com.course.server.mapper.my.MyCourseMapper;
 import com.course.server.util.CopyUtil;
@@ -31,13 +32,17 @@ public class CourseService {
     private  static  final Logger LOG = LoggerFactory.getLogger(CourseService.class);
 
 
-@Resource
-private CourseMapper courseMapper;
+    @Resource
+    private CourseMapper courseMapper;
 
 
 
     @Resource
     private MyCourseMapper myCourseMapper;
+
+
+    @Resource
+    private CourseCategoryService courseCategoryService;
 
 
 /**
@@ -71,6 +76,9 @@ List<Course> courseList = courseMapper.selectByExample(courseExample);
             }else {
             this.update(course);
             }
+            //批量保存课程分类
+                courseCategoryService.saveBatch(courseDto.getId(),courseDto.getCategorys());
+
 
             }
 
