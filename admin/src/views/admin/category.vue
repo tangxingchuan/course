@@ -4,9 +4,9 @@
           <div class="row">
               <div class="col-md-6">
                   <p>
-                      <button v-on:click="add()" class="btn btn-white btn-default btn-round">
+                      <button v-on:click="add1()" class="btn btn-white btn-default btn-round">
                           <i class="ace-icon fa fa-edit"></i>
-                          新增
+                          新增一级
                       </button>
                       &nbsp;
                       <button v-on:click="all()" class="btn btn-white btn-default btn-round">
@@ -48,9 +48,9 @@
 
               <div class="col-md-6">
                   <p>
-                      <button v-on:click="add()" class="btn btn-white btn-default btn-round">
+                      <button v-on:click="add2()" class="btn btn-white btn-default btn-round">
                           <i class="ace-icon fa fa-edit"></i>
-                          新增
+                          新增二级
                       </button>
                       &nbsp;
                   </p>
@@ -104,7 +104,7 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">父id</label>
                 <div class="col-sm-10">
-                  <input v-model="category.parent" class="form-control">
+                  <p class="form-control-static">{{active.name || "无"}}</p>
                 </div>
               </div>
               <div class="form-group">
@@ -162,13 +162,32 @@
 
 
         /**
-       * 点击【新增】
+       * 点击【新增一级】
        */
-      add() {
+      add1() {
+         this.active ={};
+         this.level2=[];
+         this.category = {
+             parent:'00000000'
+         };
 
-         this.category = {};
         $("#form-modal").modal("show");
       },
+
+        /**
+         * 点击【新增二级】
+         */
+        add2() {
+           if(Tool.isEmpty(this.active)){
+               Toast.warning("请先点击一级分类");
+               return;
+           }
+            this.category = {
+                parent:this.active.id
+            };
+
+            $("#form-modal").modal("show");
+        },
 
       /**
        * 点击【编辑】
