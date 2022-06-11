@@ -192,80 +192,80 @@
 
     },
     methods: {
-      /**
-       * 点击【新增】
-       */
-      add:function() {
+        /**
+         * 点击【新增】
+         */
+        add:function() {
 
-         this.course = {};
-        $("#form-modal").modal("show");
-      },
+            this.course = {};
+            this.tree.checkAllNodes=false;
+            $("#form-modal").modal("show");
+        },
 
-      /**
-       * 点击【编辑】
-       */
-      edit(course) {
+        /**
+         * 点击【编辑】
+         */
+        edit: function (course) {
 
-         this.course = $.extend({}, course);
-        $("#form-modal").modal("show");
-      },
+            this.course = $.extend({}, course);
+            this.listCategory(course.id);
+            $("#form-modal").modal("show");
+        },
 
-      /**
-       * 列表查询
-       */
-      list(page) {
+        /**
+         * 列表查询
+         */
+        list: function (page) {
 
-        Loading.show();
-         axios.post(process.env.VUE_APP_SERVER + '/business/admin/course/list', {
-          page: page,
-          size:  this.$refs.pagination.size,
-        }).then((response)=>{
-          Loading.hide();
-          let resp = response.data;
-           this.courses = resp.content.list;
-           this.$refs.pagination.render(page, resp.content.total);
+            Loading.show();
+            axios.post(process.env.VUE_APP_SERVER + '/business/admin/course/list', {
+                page: page,
+                size: this.$refs.pagination.size,
+            }).then((response) => {
+                Loading.hide();
+                let resp = response.data;
+                this.courses = resp.content.list;
+                this.$refs.pagination.render(page, resp.content.total);
 
-        })
-      },
+            })
+        },
 
-      /**
-       * 点击【保存】
-       */
-      save(page) {
+        /**
+         * 点击【保存】
+         */
+        save: function (page) {
 
-
-
-        // 保存校验
-        if (1 != 1
-          || !Validator.require( this.course.name, "名称")
-          || !Validator.length( this.course.name, "名称", 1, 50)
-          || !Validator.length( this.course.summary, "概述", 1, 2000)
-          || !Validator.length( this.course.image, "封面", 1, 100)
-        ) {
-          return;
-        }
-
-          let  categorys =  this.tree.getChangeCheckedNodes();
-            if (Tool.isEmpty(categorys)){
-            Toast.warning('请选择分类！');
-            return;
+            // 保存校验
+            if (1 != 1
+                || !Validator.require(this.course.name, "名称")
+                || !Validator.length(this.course.name, "名称", 1, 50)
+                || !Validator.length(this.course.summary, "概述", 1, 2000)
+                || !Validator.length(this.course.image, "封面", 1, 100)
+            ) {
+                return;
             }
 
-           this.course.categorys = categorys;
+            let categorys = this.tree.getChangeCheckedNodes();
+            if (Tool.isEmpty(categorys)) {
+                Toast.warning('请选择分类！');
+                return;
+            }
 
-        Loading.show();
-        axios.post(process.env.VUE_APP_SERVER + '/business/admin/course/save',  this.course).then((response)=>{
-          Loading.hide();
-          let resp = response.data;
-          if (resp.success) {
-            $("#form-modal").modal("hide");
-             this.list(1);
-            Toast.success("保存成功！");
-          } else {
-            Toast.warning(resp.message)
-          }
-        })
-      },
+            this.course.categorys = categorys;
+
+            Loading.show();
+            axios.post(process.env.VUE_APP_SERVER + '/business/admin/course/save', this.course).then((response) => {
+                Loading.hide();
+                let resp = response.data;
+                if (resp.success) {
+                    $("#form-modal").modal("hide");
+                    this.list(1);
+                    Toast.success("保存成功！");
+                } else {
+                    Toast.warning(resp.message)
+                }
+            })
+        },
 
       /**
        * 点击【删除】
@@ -310,25 +310,56 @@
             })
         },
 
-
-        initTree(){
+        /**
+         * 初始化树
+         */
+        initTree: function () {
             let setting = {
                 check: {
                     enable: true
                 },
                 data: {
                     simpleData: {
-                        idKey:'id',
-                        pIdKey:'parent',
-                        rootPId:'00000000',
+                        idKey: 'id',
+                        pIdKey: 'parent',
+                        rootPId: '00000000',
                         enable: true
                     }
                 }
             };
 
             let zNodes = this.categorys;
-            this.tree =  $.fn.zTree.init($("#tree"), setting, zNodes);
+            this.tree = $.fn.zTree.init($("#tree"), setting, zNodes);
+
+            //展开所有的节点
+            //this.tree.expandAll(true);
+
+        },
+
+        /**
+         *查找课程下的所有节点
+         * @param courseId
+         */
+        listCategory: function (courseId) {
+
+            Loading.show();
+            axios.post(process.env.VUE_APP_SERVER + '/business/admin/course/list-category/' + courseId).then((res)=>{
+                Loading.hide();
+                console.log("查找课程下所有分类结果：", res);
+                let response = res.data;
+                let categorys = response.content;
+
+                // 勾选查询到的分类
+                this.tree.checkAllNodes(false);
+                for (let i = 0; i < categorys.length; i++) {
+                    let node = this.tree.getNodeByParam("id", categorys[i].categoryId);
+                    this.tree.checkNode(node, true);
+                }
+            });
+
+
         }
+
     }
   }
 </script>

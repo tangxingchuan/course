@@ -1,9 +1,12 @@
 package com.course.server.service;
 
+import com.course.server.domain.Course;
 import com.course.server.domain.CourseCategory;
 import com.course.server.domain.CourseCategoryExample;
+import com.course.server.domain.CourseExample;
 import com.course.server.dto.CategoryDto;
 import com.course.server.dto.CourseCategoryDto;
+import com.course.server.dto.CourseDto;
 import com.course.server.dto.PageDto;
 import com.course.server.mapper.CourseCategoryMapper;
 import com.course.server.util.CopyUtil;
@@ -11,6 +14,7 @@ import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -71,11 +75,12 @@ List<CourseCategoryDto> courseCategoryDtoList = CopyUtil.copyList(courseCategory
 
 
     /**
-     * 批量保存
+     * 根据某一课程，先清空课程分类，再保存课程分类
      * @param courseId
      * @param dtoList
      */
 
+    @Transactional
     public void saveBatch(String courseId, List<CategoryDto> dtoList){
 
         CourseCategoryExample example = new CourseCategoryExample();
@@ -94,5 +99,18 @@ List<CourseCategoryDto> courseCategoryDtoList = CopyUtil.copyList(courseCategory
         }
 
     }
+
+    /**
+     * 查找课程下所有分类
+     * @param courseId
+     */
+      public List<CourseCategoryDto> listByCourse(String courseId){
+          CourseCategoryExample example = new CourseCategoryExample();
+          example.createCriteria().andCourseIdEqualTo(courseId);
+          List<CourseCategory> courseCategoryList = courseCategoryMapper.selectByExample(example);
+          return CopyUtil.copyList(courseCategoryList,CourseCategoryDto.class);
+
+
+      }
 
     }
