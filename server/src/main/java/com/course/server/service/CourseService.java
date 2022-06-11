@@ -76,7 +76,8 @@ List<Course> courseList = courseMapper.selectByExample(courseExample);
             }else {
             this.update(course);
             }
-            //批量保存课程分类
+            //批量保存课程分类 CourseCategoryService的saveBatch
+
                 courseCategoryService.saveBatch(courseDto.getId(),courseDto.getCategorys());
 
 
