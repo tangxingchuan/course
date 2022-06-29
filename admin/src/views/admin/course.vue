@@ -159,35 +159,40 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
       <div id="course-content-modal" class="modal fade" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-lg" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
+          <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                       <h4 class="modal-title">内容编辑</h4>
-                   </div>
-                    <div class="modal-body">
+                  </div>
+                  <div class="modal-body">
                       <form class="form-horizontal">
-                        <div class="form-group">
-                          <div class="col-lg-12">
-                            <div id="content"></div>
-                         </div>
-                        </div>
+                          <div class="form-group">
+                              <div class="col-lg-12">
+                                  {{saveContentLabel}}
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <div class="col-lg-12">
+                                  <div id="content"></div>
+                              </div>
+                          </div>
                       </form>
-                    </div>
-                    <div class="modal-footer">
+                  </div>
+                  <div class="modal-footer">
                       <button type="button" class="btn btn-white btn-default btn-round" data-dismiss="modal">
-                        <i class="ace-icon fa fa-times"></i>
-                        取消
+                          <i class="ace-icon fa fa-times"></i>
+                          取消
                       </button>
                       <button type="button" class="btn btn-white btn-info btn-round" v-on:click="saveContent()">
-                        <i class="ace-icon fa fa-plus blue"></i>
-                        保存
+                          <i class="ace-icon fa fa-plus blue"></i>
+                          保存
                       </button>
-                    </div>
-               </div>
-
+                  </div>
+              </div>
+          </div>
+      </div>
   </div>
 </template>
 
@@ -206,6 +211,7 @@
         COURSE_CHARGE: COURSE_CHARGE,
         COURSE_STATUS: COURSE_STATUS,
           tree:{},
+          saveContentLabel:'',
       }
     },
     mounted: function() {
@@ -397,6 +403,8 @@
               });
               // 先清空历史文本
                   $("#content").summernote('code', '');
+                  this.saveContentLabel='';
+
               Loading.show();
               axios.get(process.env.VUE_APP_SERVER + '/business/admin/course/find-content/' + id).then((response)=>{
                     Loading.hide();
@@ -405,7 +413,15 @@
                           $("#course-content-modal").modal({backdrop: 'static', keyboard: false});
                           if (resp.content) {
                                 $("#content").summernote('code', resp.content.content);
-                              }
+                          }
+                           // 定时自动保存
+                             let saveContentInterval = setInterval(function() {
+                                   this.saveContent();
+                                 }, 5000);
+                                       // 关闭内容框时，清空自动保存任务
+                              $('#course-content-modal').on('hidden.bs.modal', function (e) {
+                                  clearInterval(saveContentInterval);
+                              })
                         } else {
                           Toast.warning(resp.message);
                         }
@@ -424,7 +440,9 @@
                     Loading.hide();
                     let resp = response.data;
                     if (resp.success) {
-                          Toast.success("内容保存成功");
+                         /* Toast.success("内容保存成功");*/
+                        let now = Tool.dateFormat('yy:MM:dd:hh:mm:ss');
+                        this.saveContentLabel="最后保存时间 ："+now;
                         } else {
                           Toast.warning(resp.message);
                         }
