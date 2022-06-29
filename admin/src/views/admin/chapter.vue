@@ -122,7 +122,7 @@
         mounted() {
             //this.$parent.activeSidebar('business-chapter-sidebar')  //在admin页面通过watch监听路由路径，做了一个通用的sidebar菜单激活，解决了这个问题
             this.$refs.pagination.size=5;
-             let course  = SessionStorage.get('course') || {};
+             let course  = SessionStorage.get(SESSION_KEY_COURSE) || {};
              if (Tool.isEmpty(course)){
 
                  this.$router.push('/welcome')
@@ -220,7 +220,7 @@
              * 点击【小节】
              */
             toSection(chapter) {
-                SessionStorage.set('chapter', chapter);
+                SessionStorage.set(SESSION_KEY_CHAPTER, chapter);
                 this.$router.push("/business/section");
             }
 
