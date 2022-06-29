@@ -7,6 +7,7 @@ import com.course.server.domain.CourseExample;
 import com.course.server.dto.CourseContentDto;
 import com.course.server.dto.CourseDto;
 import com.course.server.dto.PageDto;
+import com.course.server.dto.SortDto;
 import com.course.server.mapper.CourseCategoryMapper;
 import com.course.server.mapper.CourseContentMapper;
 import com.course.server.mapper.CourseMapper;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,7 +36,6 @@ public class CourseService {
 
     //日志
     private  static  final Logger LOG = LoggerFactory.getLogger(CourseService.class);
-
 
     @Resource
     private CourseMapper courseMapper;
@@ -87,7 +88,7 @@ List<Course> courseList = courseMapper.selectByExample(courseExample);
             }
             //批量保存课程分类 CourseCategoryService的saveBatch
 
-                courseCategoryService.saveBatch(courseDto.getId(),courseDto.getCategorys());
+                courseCategoryService.saveBatch(course.getId(),courseDto.getCategorys());
 
 
             }
@@ -98,7 +99,10 @@ List<Course> courseList = courseMapper.selectByExample(courseExample);
             * 新增
             */
             private void insert(Course  course) {
-            course.setId(UuidUtil.getShortUuid());
+                Date now = new Date();
+                course.setCreatedAt(now);
+                course.setUpdatedAt(now);
+                course.setId(UuidUtil.getShortUuid());
             courseMapper.insert(course);
 
             }
@@ -162,5 +166,30 @@ List<Course> courseList = courseMapper.selectByExample(courseExample);
 
            return i;
        }
+
+    /**
+      * 排序
+      * @param sortDto
+      */
+     @Transactional
+     public void sort(SortDto sortDto) {
+
+         // 修改当前记录的排序值
+               myCourseMapper.updateSort(sortDto);
+
+          // 如果排序值变大
+         if (sortDto.getNewSort() > sortDto.getOldSort()) {
+             myCourseMapper.moveSortsForward(sortDto);
+
+
+         }
+
+           // 如果排序值变小
+          if (sortDto.getNewSort() < sortDto.getOldSort()) {
+             myCourseMapper.moveSortsBackward(sortDto);
+
+          }
+
+     }
 
 }
