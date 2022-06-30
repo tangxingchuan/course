@@ -7,7 +7,7 @@ import Course from "@/views/admin/course";
 import Chapter from "@/views/admin/chapter";
 import Section from "@/views/admin/section";
 import Category from "@/views/admin/category";
-
+import Teacher from "@/views/admin/teacher";
 
 Vue.use(VueRouter)
 
@@ -49,7 +49,13 @@ const routes = [
                 name: 'business/section',
                 path: 'business/section',
                 component:Section,
-            }
+            },
+            {
+                name: 'business/teacher',
+                path: 'business/teacher',
+                component:Teacher,
+            },
+
             ]
     }
 ]
