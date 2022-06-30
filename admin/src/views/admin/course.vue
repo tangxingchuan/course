@@ -16,7 +16,7 @@
     <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
 
       <div class="row">
-          <div v-for="course in courses"  class="col-md-4">
+          <div v-for="course in courses"  class="col-md-4 " >
                   <div class="thumbnail search-thumbnail">
                       <img v-show="!course.image" class="media-object" src="/static/image/demo-course.jpg" />
                       <img v-show="course.image" class="media-object" v-bind:src="course.image" />
@@ -33,7 +33,7 @@
                               <a href="#" class="blue">{{course.name}}</a>
                           </h3>
 
-                          <!--Too-->
+
                           <div v-for="teacher in teachers.filter(t=>{return t.id===course.teacherId})" class="profile-activity clearfix">
                               <div>
                               <img v-show="!teacher.image" class="pull-left" src="/ace/assets/images/avatars/avatar5.png" />
@@ -441,6 +441,7 @@
 
             //展开所有的节点
             //this.tree.expandAll(true);
+            this.tree.expandAll(false);
 
         },
 
@@ -588,4 +589,5 @@
             font-size: 16px;
         }
     }
+
 </style>
