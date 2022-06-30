@@ -1,12 +1,11 @@
 package com.course.business.controller.admin;
 
+
 import com.course.server.dto.TeacherDto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.ResponseDto;
-import com.course.server.exception.ValidatorException;
 import com.course.server.service.TeacherService;
 import com.course.server.util.ValidatorUtil;
-import org.apache.ibatis.annotations.Delete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +26,18 @@ public static final String BUSINESS_NAME = "讲师";
 
 @Resource
 private TeacherService teacherService;
+
+    /**
+     * 列表全部查询
+     */
+    @PostMapping("/all")
+    public ResponseDto all(){
+
+        ResponseDto responseDto = new ResponseDto();
+        List<TeacherDto> teacherDtoList = teacherService.all();
+        responseDto.setContent(teacherDtoList);
+        return responseDto;
+    }
 
 
 /**
