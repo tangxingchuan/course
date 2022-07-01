@@ -73,7 +73,7 @@ List<Course> courseList = courseMapper.selectByExample(courseExample);
             }
 
             /**
-            * 保存
+            * 保存,id有值时更新，无值时新增
             */
             @Transactional
             public void save(CourseDto  courseDto) {
@@ -109,10 +109,11 @@ List<Course> courseList = courseMapper.selectByExample(courseExample);
 
 
             /**
-            *修改
+            *更新
             */
             private void update(Course  course) {
-            courseMapper.updateByPrimaryKey(course);
+                course.setUpdatedAt(new Date());
+                courseMapper.updateByPrimaryKey(course);
 
             }
 
@@ -183,7 +184,6 @@ List<Course> courseList = courseMapper.selectByExample(courseExample);
 
 
          }
-
            // 如果排序值变小
           if (sortDto.getNewSort() < sortDto.getOldSort()) {
              myCourseMapper.moveSortsBackward(sortDto);

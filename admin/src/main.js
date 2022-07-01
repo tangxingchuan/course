@@ -6,7 +6,7 @@ import axios from "axios";
 import filter from "@/filter/filter";
 
 Vue.config.productionTip = false
-Vue.use(axios);
+Vue.prototype.$axios = axios
 
 
 

@@ -421,38 +421,36 @@
         /**
          * 初始化树
          */
-        initTree: function () {
+        initTree() {
             let setting = {
                 check: {
                     enable: true
                 },
                 data: {
                     simpleData: {
-                        idKey: 'id',
-                        pIdKey: 'parent',
-                        rootPId: '00000000',
+                        idKey: "id",
+                        pIdKey: "parent",
+                        rootPId: "00000000",
                         enable: true
                     }
                 }
             };
 
             let zNodes = this.categorys;
+
             this.tree = $.fn.zTree.init($("#tree"), setting, zNodes);
 
-            //展开所有的节点
-            //this.tree.expandAll(true);
-            this.tree.expandAll(false);
-
+            // 展开所有的节点
+            // _this.tree.expandAll(true);
         },
 
         /**
-         *查找课程下的所有节点
+         * 查找课程下所有分类
          * @param courseId
          */
-        listCategory: function (courseId) {
-
+        listCategory(courseId) {
             Loading.show();
-            axios.post(process.env.VUE_APP_SERVER + '/business/admin/course/list-category/'  + courseId).then((res)=>{
+            axios.post(process.env.VUE_APP_SERVER + '/business/admin/course/list-category/' + courseId).then((res)=>{
                 Loading.hide();
                 console.log("查找课程下所有分类结果：", res);
                 let response = res.data;
@@ -460,11 +458,11 @@
 
                 // 勾选查询到的分类
                 this.tree.checkAllNodes(false);
-                for (let i = 0; i < categorys.length; i  ) {
+                for (let i = 0; i < categorys.length; i++) {
                     let node = this.tree.getNodeByParam("id", categorys[i].categoryId);
                     this.tree.checkNode(node, true);
                 }
-            });
+            })
         },
 
         /**

@@ -75,9 +75,6 @@ public void list(SectionPageDto sectionPageDto) {
             }else {
             this.update(section);
             }
-            if(true){
-                throw new  Exception("事务测试");
-            }
             courseService.updateTime(sectionDto.getCourseId());
 
             }
