@@ -124,6 +124,7 @@
 <script>
   import axios from "axios";
   import Pagination from "../../components/pagination";
+
   export default {
     components: {Pagination},
     name: "business-section",

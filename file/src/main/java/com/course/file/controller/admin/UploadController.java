@@ -6,6 +6,7 @@ import com.course.server.service.TestService;
 import com.course.server.util.UuidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +25,12 @@ import java.util.List;
 @RequestMapping("/admin")
 public class UploadController {
 
+    @Value("${file.domain}")
+    public String FILE_DOMAIN;
+
+    @Value("${file.path}")
+    public String FILE_PATH;
+
     private static final Logger LOG = LoggerFactory.getLogger(UploadController.class);
     public static final String BUSINESS_NAME = "文件上传";
 
@@ -36,12 +43,13 @@ public class UploadController {
                  // 保存文件到本地
                  String fileName = file.getOriginalFilename();
                  String key = UuidUtil.getShortUuid();
-                 String fullPath = "/Users/tangtao/Desktop/图片本地保存/图片/" +  key + "-" + fileName;
+                 String fullPath = FILE_PATH +  key + "-" + fileName;
                  File dest = new File(fullPath);
                  file.transferTo(dest);
                  LOG.info(dest.getAbsolutePath());
 
                   ResponseDto responseDto = new ResponseDto();
+                  responseDto.setContent(FILE_DOMAIN + key + "-" + fileName);
                  return responseDto;
              }
 
