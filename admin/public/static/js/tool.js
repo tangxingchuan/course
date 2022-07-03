@@ -50,7 +50,7 @@ Tool = {
   },
 
   /**
-   * 移除对象数组中的对象
+   *  移除对象数组中的对象
    * @param array
    * @param obj
    * @returns {number}

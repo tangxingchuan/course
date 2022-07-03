@@ -16,10 +16,10 @@ import java.util.*;
  */
 public class ServerGenerator {
 
-    static String MODULE = "file";
+    static String MODULE = "business";
     static String toDtoPath="server/src/main/java/com/course/server/dto/";
     static String toServicePath = "server/src/main/java/com/course/server/service/";
-    static String toControllerPath = MODULE+"/src/main/java/com/course/file/controller/admin/";
+    static String toControllerPath = MODULE+"/src/main/java/com/course/business/controller/admin/";
     static String generatorConfigPath = "/Users/tangtao/Desktop/course/server/src/main/resources/generator/generatorConfig.xml";
 
 
