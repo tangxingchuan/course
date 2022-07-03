@@ -27,6 +27,9 @@
         suffixs:{
             default:[]
         },
+        use:{
+            default:" "
+        }
 
     },
     data: function () {
@@ -60,6 +63,7 @@
 
             // key："file"必须和后端controller参数名一致
             formData.append('file', file);
+            formData.append('use', this.use);
             Loading.show();
             axios.post(process.env.VUE_APP_SERVER + '/file/admin/upload', formData).then((response) => {
                 Loading.hide();
