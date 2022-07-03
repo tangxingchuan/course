@@ -86,7 +86,17 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">视频</label>
                 <div class="col-sm-10">
-                  <input v-model="section.video" class="form-control">
+                    <!--在file组件中，和组件不相关的业务代码应该由外部通过回调函数传进来。afterUpload()就是我们的外部回调函数-->
+                    <flie v-bind:suffixs="['mp4', 'jpeg', 'png']"
+                          v-bind:input-id="'video-upload'"
+                          v-bind:text="'上传视频'"
+                          v-bind:after-upload="afterUpload"
+                          v-bind:use="FILE_USE.COURSE.key"></flie>
+                    <div v-show="course.image" class="row">
+                        <div class="col-md-9">
+                            <video  v-bind:src="section.video" content="controls" ></video>
+                        </div>
+                    </div>
                 </div>
               </div>
               <div class="form-group">
@@ -124,15 +134,17 @@
 <script>
   import axios from "axios";
   import Pagination from "../../components/pagination";
+  import Flie from "../../components/file";
 
   export default {
-    components: {Pagination},
+    components: {Pagination,Flie},
     name: "business-section",
     data: function() {
       return {
             section: {},
             sections: [],
             CHARGE:CHARGE,
+            FILE_USE:FILE_USE,
             course: {},
             chapter: {},
       }
@@ -239,7 +251,25 @@
             }
           })
         });
-      }
+      },
+
+        //在file组件中，和组件不相关的业务代码应该由外部通过回调函数传进来。
+        afterUpload(resp){
+
+            let video = resp.content.path;
+            this.section. video= video;
+            this.$forceUpdate();
+        },
+
     }
   }
 </script>
+
+<style scoped>
+    video{
+        width: 100%;
+        height: auto;
+        margin-top: 10px;
+    }
+
+</style>

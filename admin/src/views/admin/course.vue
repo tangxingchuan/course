@@ -98,6 +98,22 @@
                         <ul id="tree" class="ztree"></ul>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">封面</label>
+                    <div class="col-sm-10">
+                        <!--在file组件中，和组件不相关的业务代码应该由外部通过回调函数传进来。afterUpload()就是我们的外部回调函数-->
+                        <flie v-bind:suffixs="['jpg', 'jpeg', 'png']"
+                              v-bind:input-id="'image-upload'"
+                              v-bind:text="'上传封面'"
+                              v-bind:after-upload="afterUpload"
+                              v-bind:use="FILE_USE.COURSE.key"></flie>
+                        <div v-show="course.image" class="row">
+                            <div class="col-md-6">
+                                <img  v-bind:src="course.image" class="img-responsive" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
               <div class="form-group">
                 <label class="col-sm-2 control-label">名称</label>
@@ -129,12 +145,6 @@
                 <label class="col-sm-2 control-label">价格（元）</label>
                 <div class="col-sm-10">
                   <input v-model="course.price" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">封面</label>
-                <div class="col-sm-10">
-                  <input v-model="course.image" class="form-control">
                 </div>
               </div>
               <div class="form-group">
@@ -265,8 +275,10 @@
 
   import axios from "axios";
   import Pagination from "../../components/pagination";
+  import Flie from "../../components/file";
+
   export default {
-    components: {Pagination},
+    components: {Pagination,Flie},
     name: "business-course",
     data: function() {
       return {
@@ -275,6 +287,7 @@
         COURSE_LEVEL: COURSE_LEVEL,
         COURSE_CHARGE: COURSE_CHARGE,
         COURSE_STATUS: COURSE_STATUS,
+          FILE_USE:FILE_USE,
           tree:{},
           saveContentLabel:'',
           sort: {
@@ -571,6 +584,13 @@
                 let resp = response.data;
                 this.teachers = resp.content;
             })
+        },
+
+        afterUpload(resp){
+
+            let image = resp.content.path;
+            this.course.image=image;
+            this.$forceUpdate();
         },
 
     },

@@ -248,7 +248,7 @@
         //在file组件中，和组件不相关的业务代码应该由外部通过回调函数传进来。
         afterUpload(resp){
 
-           let image = resp.content;
+           let image = resp.content.path;
             this.teacher.image=image;
             this.$forceUpdate();
         },
