@@ -12,7 +12,6 @@
       </button>
     </p>
 
-
     <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
 
       <div class="row">
@@ -58,7 +57,7 @@
                               <button v-on:click="toChapter(course)" class="btn btn-white btn-xs btn-info btn-round">
                                   大章
                               </button>&nbsp;
-                              <button v-on:click="editContent(course)" class="btn btn-white btn-xs btn-info btn-round">
+                              <button v-on:click="toContent(course)" class="btn btn-white btn-xs btn-info btn-round">
                                   内容
                               </button>&nbsp;
                               <button v-on:click="openSortModal(course)" class="btn btn-white btn-xs btn-info btn-round">
@@ -193,72 +192,7 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
       <!--富文本编辑器-->
-      <div id="course-content-modal" class="modal fade" tabindex="-1" role="dialog">
-          <div class="modal-dialog modal-lg" role="document">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title">内容编辑</h4>
-                  </div>
-                  <div class="modal-body">
-                      <!--在富文本框中添加图片上传组件-->
-                      <!--在file组件中，和组件不相关的业务代码应该由外部通过回调函数传进来。afterUpload()就是我们的外部回调函数-->
-                      <file v-bind:input-id="'content-file-upload'"
-                                               v-bind:text="'上传文件1'"
-                                               v-bind:suffixs="['jpg', 'jpeg', 'png', 'mp4']"
-                                               v-bind:use="FILE_USE.COURSE.key"
-                                               v-bind:after-upload="afterUploadContentFile"></file>
-                                   <br>
-                                   <table id="file-table" class="table  table-bordered table-hover">
-                                     <thead>
-                                     <tr>
-                                       <th>名称</th>
-                                       <th>地址</th>
-                                       <th>大小</th>
-                                       <th>操作</th>
-                                     </tr>
-                                 </thead>
 
-                                     <tbody>
-                                 <tr v-for="(f, i) in files" v-bind:key="f.id">
-                                       <td>{{f.name}}</td>
-                                       <td>{{f.url}}</td>
-                                       <td>{{f.size | formatFileSize}}</td>
-                                       <td>
-                                         <button v-on:click="delFile(f)" class="btn btn-white btn-xs btn-warning btn-round">
-                                           <i class="ace-icon fa fa-times red2"></i>
-                                           删除
-                                         </button>
-                                       </td>
-                                     </tr>
-                                 </tbody>
-                                   </table>
-                      <form class="form-horizontal">
-                          <div class="form-group">
-                              <div class="col-lg-12">
-                                  {{saveContentLabel}}
-                              </div>
-                          </div>
-                          <div class="form-group">
-                              <div class="col-lg-12">
-                                  <div id="content"></div>
-                              </div>
-                          </div>
-                      </form>
-                  </div>
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-white btn-default btn-round" data-dismiss="modal">
-                          <i class="ace-icon fa fa-times"></i>
-                          取消
-                      </button>
-                      <button type="button" class="btn btn-white btn-info btn-round" v-on:click="saveContent()">
-                          <i class="ace-icon fa fa-plus blue"></i>
-                          保存
-                      </button>
-                  </div>
-              </div>
-          </div>
-      </div>
       <!--排序弹出框-->
       <div id="course-sort-modal" class="modal fade" tabindex="-1" role="dialog">
                  <div class="modal-dialog" role="document">
@@ -438,14 +372,23 @@
           })
         });
       },
-
         /**
          *章节跳转到课程
          */
         toChapter(course){
-          SessionStorage.set(SESSION_KEY_COURSE,course)
+            SessionStorage.set(SESSION_KEY_COURSE,course)
             this.$router.push("/business/chapter");
         },
+
+
+        /**
+         * 点击【内容】
+         */
+        toContent(course) {
+            SessionStorage.set(SESSION_KEY_COURSE, course);
+            this.$router.push("/business/content");
+        },
+
 
         /**
          * 列表查询
@@ -458,8 +401,6 @@
                 let resp = response.data;
                 this.categorys = resp.content;
                 this.initTree();
-
-
 
             })
         },
@@ -510,68 +451,6 @@
                 }
             })
         },
-
-        /**
-         * 打开内容编辑框
-         */
-        editContent(course) {
-
-              let id = course.id;
-              this.course = course;
-              $("#content").summernote({
-                    focus: true,
-                    height: 300
-              });
-              // 先清空历史文本
-                  $("#content").summernote('code', '');
-                  this.saveContentLabel='';
-                    // 加载内容文件列表
-                  this.listContentFiles();
-
-              Loading.show();
-              axios.get(process.env.VUE_APP_SERVER +'/business/admin/course/find-content/'  + id).then((response)=>{
-                    Loading.hide();
-                    let resp = response.data;
-                       if (resp.success) {
-                          $("#course-content-modal").modal({backdrop: 'static', keyboard: false});
-                          if (resp.content) {
-                                $("#content").summernote('code', resp.content.content);
-                          }
-                           // 定时自动保存
-                             let saveContentInterval = setInterval(function() {
-                                   this.saveContent();
-                                 }, 5000);
-                                       // 关闭内容框时，清空自动保存任务
-                              $('#course-content-modal').on('hidden.bs.modal', function (e) {
-                                  clearInterval(saveContentInterval);
-                              })
-                        } else {
-                          Toast.warning(resp.message);
-                        }
-                  });
-            },
-
-            /**
-              * 保存内容
-              */
-                saveContent () {
-              let content = $("#content").summernote("code");
-              axios.post(process.env.VUE_APP_SERVER + '/business/admin/course/save-content', {
-                    id: this.course.id,
-                    content: content
-              }).then((response)=>{
-                    Loading.hide();
-                    let resp = response.data;
-                    if (resp.success) {
-                         /* Toast.success("内容保存成功");*/
-                        let now = Tool.dateFormat('yy:MM:dd:hh:mm:ss');
-                        this.saveContentLabel="最后保存时间 ：" +now;
-                        } else {
-                          Toast.warning(resp.message);
-                        }
-                  });
-            },
-
         /*
         *
         * 课程排序
@@ -627,53 +506,6 @@
             this.course.image=image;
             this.$forceUpdate();
         },
-        /**
-         * 加载内容文件列表
-          */
-                listContentFiles() {
-
-                axios.get(process.env.VUE_APP_SERVER   + '/business/admin/course-content-file/list/' + this.course.id).then((response)=>{
-                      let resp = response.data;
-                      if (resp.success) {
-                            this.files = resp.content;
-                          }
-                    });
-              },
-
-              /**
-                * 上传内容文件后，保存内容文件记录
-                */
-                  afterUploadContentFile(response) {
-
-                console.log("开始保存文件记录");
-                let file = response.content;
-                file.courseId = this.course.id;
-                file.url = file.path;
-                axios.post(process.env.VUE_APP_SERVER +'/business/admin/course-content-file/save', file).then((response)=>{
-                      let resp = response.data;
-                      if (resp.success) {
-                            Toast.success("上传文件成功");
-                            this.files.push(resp.content);
-                          }
-                    });
-
-                  },
-
-              /**
-                * 删除内容文件
-                */
-                  delFile(f) {
-                let _this = this;
-                Confirm.show("删除课程后不可恢复，确认删除？", function () {
-                      axios.delete(process.env.VUE_APP_SERVER +'/business/admin/course-content-file/delete/' +f.id).then((response)=>{
-                            let resp = response.data;
-                            if (resp.success) {
-                                  Toast.success("删除文件成功");
-                                  Tool.removeObj(_this.files, f);
-                                }
-                          });
-                    });
-              },
            }
 
    }

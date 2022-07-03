@@ -9,6 +9,7 @@ import Section from "@/views/admin/section";
 import Category from "@/views/admin/category";
 import Teacher from "@/views/admin/teacher";
 import File from "@/views/admin/file";
+import Content from "@/views/admin/content";
 
 Vue.use(VueRouter)
 
@@ -55,6 +56,11 @@ const routes = [
                 name: 'business/teacher',
                 path: 'business/teacher',
                 component:Teacher,
+            },
+            {
+                name: 'business/content',
+                path: 'business/content',
+                component:Content,
             },
             {
                 name: 'file/file',
