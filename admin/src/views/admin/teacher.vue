@@ -248,6 +248,7 @@
 
            let image = resp.content;
             this.teacher.image=image;
+            this.$forceUpdate();
         },
 
 
