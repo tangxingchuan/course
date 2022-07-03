@@ -94,7 +94,7 @@
                           v-bind:use="FILE_USE.COURSE.key"></flie>
                     <div v-show="course.image" class="row">
                         <div class="col-md-9">
-                            <video  v-bind:src="section.video" content="controls" ></video>
+                            <video  v-bind:src="section.video" content="controls" id="video"></video>
                         </div>
                     </div>
                 </div>
@@ -259,7 +259,18 @@
             let video = resp.content.path;
             this.section. video= video;
             this.$forceUpdate();
+            this.getTime();
         },
+
+        /*
+        * 自动获取时长
+        * */
+        getTime(){
+
+            let ele =document.getElementById('video');
+            this.section.time = parseInt(ele.duration,10)
+        },
+
 
     }
   }
