@@ -14,10 +14,6 @@ import Content from "@/views/admin/content";
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '*',
-    redirect:'/login'
-  },
     {
         path: '/login',
         component:Login,

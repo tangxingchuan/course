@@ -134,7 +134,7 @@
 <script>
   import axios from "axios";
   import Pagination from "../../components/pagination";
-  import BigFile from "../../components/big-fiee";
+  import BigFile from "../../components/big-file";
 
   export default {
     components: {Pagination,BigFile},
@@ -266,7 +266,6 @@
         * 自动获取时长
         * */
         getTime(){
-
             let ele =document.getElementById('video');
             this.section.time = parseInt(ele.duration,10)
         },
