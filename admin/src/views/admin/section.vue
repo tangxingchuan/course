@@ -87,11 +87,11 @@
                 <label class="col-sm-2 control-label">视频</label>
                 <div class="col-sm-10">
                     <!--在file组件中，和组件不相关的业务代码应该由外部通过回调函数传进来。afterUpload()就是我们的外部回调函数-->
-                    <flie v-bind:suffixs="['mp4', 'jpeg', 'png']"
+                    <big-file v-bind:suffixs="['mp4', 'jpeg', 'png']"
                           v-bind:input-id="'video-upload'"
-                          v-bind:text="'上传视频'"
+                          v-bind:text="'上传大视频'"
                           v-bind:after-upload="afterUpload"
-                          v-bind:use="FILE_USE.COURSE.key"></flie>
+                          v-bind:use="FILE_USE.COURSE.key"></big-file>
                     <div v-show="course.image" class="row">
                         <div class="col-md-9">
                             <video  v-bind:src="section.video" content="controls" id="video"></video>
@@ -134,10 +134,10 @@
 <script>
   import axios from "axios";
   import Pagination from "../../components/pagination";
-  import Flie from "../../components/file";
+  import BigFile from "../../components/big-fiee";
 
   export default {
-    components: {Pagination,Flie},
+    components: {Pagination,BigFile},
     name: "business-section",
     data: function() {
       return {

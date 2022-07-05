@@ -12,10 +12,10 @@
   import axios from "axios";
 
   export default {
-    name: 'file',
+    name: 'big-file',
     props: {
         text:{
-            default:"上传文件"
+            default:"上传大文件"
         },
         inputId:{
             default:"file-upload"
@@ -44,6 +44,7 @@
             let formData = new window.FormData();
             let file = this.$refs.file.files[0];
 
+
             // 判断文件格式
             let suffixs = this.suffixs;
             let fileName = file.name;
@@ -61,8 +62,16 @@
                 return;
             }
 
+            //文件分片
+            let shardSize=20 * 1024 * 1024; //以20MB为一个分片
+            let shardIndex=0; //分片索引
+            let start=shardIndex * shardSize; //当前分片的起始位置
+            let end = Math.min(file.size,start+shardSize); //分片结束的位置
+            let fileShard = file.slice(start,end); //从文件中截取当前分片数据
+
+
             // key："file"必须和后端controller参数名一致
-            formData.append('file', file);
+            formData.append('file', fileShard);
             formData.append('use', this.use);
             Loading.show();
             axios.post(process.env.VUE_APP_SERVER + '/file/admin/upload', formData).then((response) => {
