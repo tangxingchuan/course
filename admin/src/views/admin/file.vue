@@ -60,23 +60,24 @@
 
     },
 
-      /**
-       * 列表查询
-       */
-      list(page) {
+      methods: {
+          /**
+           * 列表查询
+           */
+          list(page) {
 
-        Loading.show();
-         axios.post(process.env.VUE_APP_SERVER + '/file/admin/file/list', {
-          page: page,
-          size:  this.$refs.pagination.size,
-        }).then((response)=>{
-          Loading.hide();
-          let resp = response.data;
-           this.files = resp.content.list;
-           this.$refs.pagination.render(page, resp.content.total);
+              Loading.show();
+              axios.post(process.env.VUE_APP_SERVER + '/file/admin/file/list', {
+                  page: page,
+                  size: this.$refs.pagination.size,
+              }).then((response) => {
+                  Loading.hide();
+                  let resp = response.data;
+                  this.files = resp.content.list;
+                  this.$refs.pagination.render(page, resp.content.total);
 
-        })
-      },
-
+              })
+          },
+      }
   }
 </script>

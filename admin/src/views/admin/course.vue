@@ -51,7 +51,7 @@
                           <p>
                               <span class="badge badge-info">{{course.id}}</span>
                               <span class="badge badge-info">排序：{{course.sort}}</span>
-                              <span class="badge badge-info">{{course.time | formatSecond}}</span>
+                              <span class="badge badge-info">{{course.time | formatSecond }}</span>
                           </p>
                           <p>
                               <button v-on:click="toChapter(course)" class="btn btn-white btn-xs btn-info btn-round">
@@ -242,6 +242,7 @@
   import axios from "axios";
   import Pagination from "../../components/pagination";
   import Flie from "../../components/file";
+  import filter from "../../filter/filter";
 
   export default {
     components: {Pagination,Flie},

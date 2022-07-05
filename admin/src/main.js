@@ -3,10 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from "axios";
-import filter from "@/filter/filter";
+import filter from "./filter/filter";
 
-Vue.config.productionTip = false
-Vue.prototype.$axios = axios
+Vue.config.productionTip = false;
+Vue.prototype.$axios = axios;
 
 
 // 全局过滤器
