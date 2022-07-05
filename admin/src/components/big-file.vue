@@ -69,10 +69,20 @@
             let end = Math.min(file.size,start+shardSize); //分片结束的位置
             let fileShard = file.slice(start,end); //从文件中截取当前分片数据
 
+            let size = file.size;
+            let shardTotal = Math.ceil(size / shardSize);//总片数
 
             // key："file"必须和后端controller参数名一致
-            formData.append('file', fileShard);
+            formData.append('shard', fileShard);
             formData.append('use', this.use);
+            formData.append('shardIndex',shardIndex); //分片索引
+            formData.append('shardSize', shardSize); //以20MB为一个分片
+            formData.append('shardTotal',shardTotal);//总片数
+            formData.append('name', file.name);
+            formData.append('suffix', suffix);
+            formData.append('size', size);
+
+
             Loading.show();
             axios.post(process.env.VUE_APP_SERVER + '/file/admin/upload', formData).then((response) => {
                 Loading.hide();
