@@ -3,16 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from "axios";
-import filter from "./filter/filter";
+import filter from "@/filter/filter";
 
 Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;
-
-
-// 全局过滤器
-Object.keys(filter).forEach(key => {
-    Vue.filter(key, filter[key])
-});
 
 
 /**
@@ -27,6 +21,11 @@ axios.interceptors.response.use(function (response) {
     return response;
 },error => {});
 
+
+//全局过滤
+Object.keys(filter).forEach(key=>{
+    Vue.filter(key,filter[key])
+});
 
 
 new Vue({
