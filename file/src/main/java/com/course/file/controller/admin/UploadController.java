@@ -7,6 +7,7 @@ import com.course.server.dto.ResponseDto;
 import com.course.server.enums.FileUseEnum;
 import com.course.server.service.FileService;
 import com.course.server.service.TestService;
+import com.course.server.util.Base64ToMultipartFile;
 import com.course.server.util.UuidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,18 +45,16 @@ public class UploadController {
     public static final String BUSINESS_NAME = "文件上传";
 
     @RequestMapping("/upload")
-     public ResponseDto upload(@RequestParam MultipartFile shard,
-                               String use,
-                               String name,
-                               String suffix,
-                               String key,
-                               Integer size,
-                               Integer shardIndex,
-                               Integer shardSize,
-                               Integer shardTotal) throws IOException {
+     public ResponseDto upload(@RequestBody FileDto fileDto ) throws IOException {
                  LOG.info("上传文件开始：{}");
 
                  // 保存文件到本地
+               String use = fileDto.getUse();
+               String key = fileDto.getKey();
+               String suffix = fileDto.getSuffix();
+               String shardBase64 = fileDto.getShard();
+               MultipartFile shard = Base64ToMultipartFile.base64ToMultipart(shardBase64);
+
                  FileUseEnum useEnum = FileUseEnum.getByCode(use);
 
 
@@ -75,16 +74,7 @@ public class UploadController {
                  LOG.info(dest.getAbsolutePath());
 
                  LOG.info("保存文件记录开始");
-                 FileDto fileDto = new FileDto();
                  fileDto.setPath(path);
-                 fileDto.setName(name);
-                 fileDto.setSize(size);
-                 fileDto.setSuffix(suffix);
-                 fileDto.setUse(use);
-                 fileDto.setShardIndex(shardIndex);
-                 fileDto.setShardSize(shardSize);
-                 fileDto.setShardTotal(shardTotal);
-                 fileDto.setKey(key);
                  fileService.save(fileDto);
 
 
