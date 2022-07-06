@@ -94,7 +94,6 @@
                let fileReader = new FileReader();
                fileReader.onabort = function(e){
                    let base64 = e.target.result;
-                   console.log("base64",base64);
 
                    let param = {
 

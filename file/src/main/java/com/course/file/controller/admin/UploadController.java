@@ -1,18 +1,14 @@
 package com.course.file.controller.admin;
 
-import com.alibaba.fastjson.JSON;
-import com.course.server.domain.Test;
 import com.course.server.dto.FileDto;
 import com.course.server.dto.ResponseDto;
 import com.course.server.enums.FileUseEnum;
 import com.course.server.service.FileService;
-import com.course.server.service.TestService;
 import com.course.server.util.Base64ToMultipartFile;
-import com.course.server.util.UuidUtil;
 import org.slf4j.Logger;
+import java.util.Base64.Decoder;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,7 +17,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * @author TangKe（唐柯）
@@ -67,7 +62,13 @@ public class UploadController {
                  }
 
 
-                 String path = dir+ File.separator +key + "." + suffix;
+                 // String path = dir+ File.separator +key + "." + suffix + "."+fileDto.getShardIndex();
+                 String path =  new StringBuffer(dir).
+                         append(File.separator).
+                         append(key).append(".").
+                         append(suffix).
+                         append(".").
+                         append(fileDto.getShardIndex()).toString();
                  String fullPath = FILE_PATH +  path;
                  File dest = new File(fullPath);
                  shard.transferTo(dest);
