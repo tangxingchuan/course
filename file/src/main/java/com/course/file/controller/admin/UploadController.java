@@ -48,6 +48,7 @@ public class UploadController {
                                String use,
                                String name,
                                String suffix,
+                               String key,
                                Integer size,
                                Integer shardIndex,
                                Integer shardSize,
@@ -56,7 +57,7 @@ public class UploadController {
 
                  // 保存文件到本地
                  FileUseEnum useEnum = FileUseEnum.getByCode(use);
-                 String key = UuidUtil.getShortUuid();
+
 
 
                  //如果文件夹不在则创建

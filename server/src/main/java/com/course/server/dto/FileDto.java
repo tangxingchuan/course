@@ -53,7 +53,7 @@ public class FileDto {
 
     private Integer shardTotal;
 
-    private Integer key;
+    private String key;
 
 
     public String getId() {
@@ -145,7 +145,7 @@ public class FileDto {
         this.shardTotal = shardTotal;
     }
 
-    public Integer getKey() {
+    public String getKey() {
         return key;
     }
 
@@ -167,7 +167,8 @@ public class FileDto {
                 ", shardIndex=" + shardIndex +
                 ", shardSize=" + shardSize +
                 ", shardTotal=" + shardTotal +
-                ", key=" + key +
+                ", key='" + key + '\'' +
                 '}';
     }
 }
+

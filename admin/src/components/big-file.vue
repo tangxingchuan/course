@@ -44,6 +44,13 @@
             let formData = new window.FormData();
             let file = this.$refs.file.files[0];
 
+            //生成文件标识，标识多次上传的是不是同一个文件
+            let key = hex_md5(file);
+            let key10=parseInt(key,16);
+            let key62=Tool._10to62(key10);
+            console.log(key,key10,key62);
+            //key比key62长，62进制是，26个大写字母，26个小写字母，10个数字，所以我们上面转成key62
+
 
             // 判断文件格式
             let suffixs = this.suffixs;
@@ -81,6 +88,7 @@
             formData.append('name', file.name);
             formData.append('suffix', suffix);
             formData.append('size', size);
+            formData.append('key', key62);
 
 
             Loading.show();
