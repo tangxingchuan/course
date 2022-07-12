@@ -114,12 +114,14 @@
                           param.shardIndex = 1;
                           console.log("没有找到文件记录，从分片1开始上传");
                          this.upload(param);
+
                       } else if (obj.shardIndex === obj.shardTotal) {
                           // 已上传分片 = 分片总数，说明已全部上传完，不需要再上传
-                          Toast.success("文件极速秒传成功！");
+                          Toast.success("文件极速秒传成功");
                          this.afterUpload(resp);
                           $("#" +this.inputId + "-input").val("");
                       }  else {
+
                           param.shardIndex = obj.shardIndex + 1;
                           console.log("找到文件记录，从分片" + param.shardIndex + "开始上传");
                          this.upload(param);
@@ -144,6 +146,7 @@
               let fileReader = new FileReader();
 
               Progress.show(parseInt((shardIndex - 1) * 100 / shardTotal));
+
               fileReader.onload = function (e) {
                   let base64 = e.target.result;
                   // console.log("base64:", base64);
@@ -153,13 +156,17 @@
                    axios.post(process.env.VUE_APP_SERVER + '/file/admin/' +this.url, param).then((response) => {
                       let resp = response.data;
                       console.log("上传文件成功：", resp);
+
                       Progress.show(parseInt(shardIndex * 100 / shardTotal));
+
                       if (shardIndex < shardTotal) {
                           // 上传下一个分片
                           param.shardIndex = param.shardIndex + 1;
                          this.upload(param);
                       } else {
+
                           Progress.hide();
+
                          this.afterUpload(resp);
                           $("#" +this.inputId + "-input").val("");
                       }
