@@ -242,7 +242,7 @@
   import axios from "axios";
   import Pagination from "../../components/pagination";
   import Flie from "../../components/file";
-  import filter from "../../filter/filter";
+
 
   export default {
     components: {Pagination,Flie},

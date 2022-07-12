@@ -47,7 +47,7 @@ List<FileDto> fileDtoList = CopyUtil.copyList(fileList, FileDto.class);
     if (fileDb==null) {
          this.insert(file);
     } else {
-        fileDb.setShardIndex(fileDb.getShardIndex());
+        fileDb.setShardIndex(fileDto.getShardIndex());
         this.update(fileDb);
     }
     }
@@ -77,6 +77,8 @@ List<FileDto> fileDtoList = CopyUtil.copyList(fileList, FileDto.class);
     public void delete(String id) {
     fileMapper.deleteByPrimaryKey(id);
     }
+
+
 
     public File selectByKey(String key) {
         FileExample example = new FileExample();

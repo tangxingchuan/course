@@ -6,7 +6,6 @@ import com.course.server.enums.FileUseEnum;
 import com.course.server.service.FileService;
 import com.course.server.util.Base64ToMultipartFile;
 import org.slf4j.Logger;
-import java.util.Base64.Decoder;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -40,50 +39,53 @@ public class UploadController {
     public static final String BUSINESS_NAME = "文件上传";
 
     @RequestMapping("/upload")
-     public ResponseDto upload(@RequestBody FileDto fileDto ) throws IOException {
-                 LOG.info("上传文件开始：{}");
+    public ResponseDto upload(@RequestBody FileDto fileDto) throws IOException {
+        LOG.info("上传文件开始");
 
-                 // 保存文件到本地
-               String use = fileDto.getUse();
-               String key = fileDto.getKey();
-               String suffix = fileDto.getSuffix();
-               String shardBase64 = fileDto.getShard();
-               MultipartFile shard = Base64ToMultipartFile.base64ToMultipart(shardBase64);
+        // 保存文件到本地
+        String use = fileDto.getUse();
+        String key = fileDto.getKey();
+        String suffix = fileDto.getSuffix();
+        String shardBase64 = fileDto.getShard();
+        MultipartFile shard = Base64ToMultipartFile.base64ToMultipart(shardBase64);
 
-                 FileUseEnum useEnum = FileUseEnum.getByCode(use);
-
-
-
-                 //如果文件夹不在则创建
-                 String dir = useEnum.name().toLowerCase();
-                 File fullDir = new File(FILE_PATH + dir);
-                 if (!fullDir.exists()){
-                     fullDir.mkdir();
-                 }
+        //保存到本地
+        FileUseEnum useEnum = FileUseEnum.getByCode(use);
 
 
-                 // String path = dir+ File.separator +key + "." + suffix + "."+fileDto.getShardIndex();
-                 String path =  new StringBuffer(dir).
-                         append(File.separator).
-                         append(key).append(".").
-                         append(suffix).
-                         append(".").
-                         append(fileDto.getShardIndex()).toString();
-                 String fullPath = FILE_PATH +  path;
-                 File dest = new File(fullPath);
-                 shard.transferTo(dest);
-                 LOG.info(dest.getAbsolutePath());
-
-                 LOG.info("保存文件记录开始");
-                 fileDto.setPath(path);
-                 fileService.save(fileDto);
+        //如果文件夹不在则创建
+        String dir = useEnum.name().toLowerCase();
+        File fullDir = new File(FILE_PATH + dir);
+        if (! fullDir.exists()) {
+            fullDir.mkdir();
+        }
 
 
-                 ResponseDto responseDto = new ResponseDto();
-                 fileDto.setPath(FILE_DOMAIN + path);
-                 responseDto.setContent(fileDto);
-                 return responseDto;
-             }
+        // String path = dir+ File.separator +key + "." + suffix + "."+fileDto.getShardIndex();
+        String path = new StringBuffer(dir).
+                append(File.separator).
+                append(key).
+                append(".").
+                append(suffix).
+                append(".").
+                append(fileDto.getShardIndex()).
+                toString();
+        String fullPath = FILE_PATH + path;
+        File dest = new File(fullPath);
+        shard.transferTo(dest);
+        LOG.info(dest.getAbsolutePath());
+
+        LOG.info("保存文件记录开始");
+        fileDto.setPath(path);
+        fileService.save(fileDto);
+
+
+        ResponseDto responseDto = new ResponseDto();
+        fileDto.setPath(FILE_DOMAIN + path);
+        responseDto.setContent(fileDto);
+        return responseDto;
+
+    }
 
     @GetMapping("/merge")
      public ResponseDto merge() throws Exception {

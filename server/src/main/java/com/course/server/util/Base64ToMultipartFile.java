@@ -3,8 +3,6 @@ package com.course.server.util;
 import org.springframework.web.multipart.MultipartFile;
 import sun.misc.BASE64Decoder;
 
-import java.util.Base64.Decoder;
-
 import java.io.*;
 
 public class Base64ToMultipartFile implements MultipartFile {
