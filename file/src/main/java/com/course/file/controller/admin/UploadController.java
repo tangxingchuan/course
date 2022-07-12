@@ -139,6 +139,21 @@ public class UploadController {
             }
         }
          LOG.info("合并分片结束");
+
+
+        System.gc(); //告诉虚拟机，可以执行一次垃圾回收
+
+        //删除分片
+         LOG.info("删除分片开始");
+         for (int i = 0; i < shardTotal; i++) {
+             String filPath = FILE_PATH + path +"."+(i+1);
+             File file = new File(filPath);
+             boolean result = file.delete();
+             LOG.info("删除{},{}",filPath,result ? "成功":"失败");
+
+         }
+
+         LOG.info("删除分片结束");
     }
 
 }
