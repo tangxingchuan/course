@@ -101,11 +101,11 @@
                     <label class="col-sm-2 control-label">封面</label>
                     <div class="col-sm-10">
                         <!--在file组件中，和组件不相关的业务代码应该由外部通过回调函数传进来。afterUpload()就是我们的外部回调函数-->
-                        <flie v-bind:suffixs="['jpg', 'jpeg', 'png']"
+                        <big-file v-bind:suffixs="['jpg', 'jpeg', 'png']"
                               v-bind:input-id="'image-upload'"
                               v-bind:text="'上传封面'"
                               v-bind:after-upload="afterUpload"
-                              v-bind:use="FILE_USE.COURSE.key"></flie>
+                              v-bind:use="FILE_USE.COURSE.key"></big-file>
                         <div v-show="course.image" class="row">
                             <div class="col-md-6">
                                 <img  v-bind:src="course.image" class="img-responsive" >
@@ -241,11 +241,11 @@
 
   import axios from "axios";
   import Pagination from "../../components/pagination";
-  import Flie from "../../components/file";
+  import BigFile from "../../components/big-file";
 
 
   export default {
-    components: {Pagination,Flie},
+    components: {Pagination,BigFile},
     name: "business-course",
     data: function() {
       return {

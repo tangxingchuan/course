@@ -1,11 +1,11 @@
 <template>
- <div>
-     <button type="button"  v-on:click="selectFile()" class="btn btn-white btn-default btn-round">
-         <i class="ace-icon fa fa-upload"></i>
-         {{text}}
-     </button>
-     <input  class="hidden" type="file" ref="file" v-on:change="uploadFile()" v-bind:id="inputId+'-input'">
- </div>
+    <div>
+        <button type="button" v-on:click="selectFile()" class="btn btn-white btn-default btn-round">
+            <i class="ace-icon fa fa-upload"></i>
+            {{text}}
+        </button>
+        <input class="hidden" type="file" ref="file" v-on:change="uploadFile()" v-bind:id="inputId+'-input'">
+    </div>
 </template>
 
 <script>
@@ -13,31 +13,32 @@
 
   export default {
     name: 'file',
-    props: {
-        text:{
-            default:"上传文件"
-        },
-        inputId:{
-            default:"file-upload"
-        },
-        afterUpload:{
-            type:Function,
-            default: null,
-        },
-        suffixs:{
-            default:[]
-        },
-        use:{
-            default:" "
-        }
-
-    },
+      props: {
+          text: {
+              default: "上传文件"
+          },
+          inputId: {
+              default: "file-upload"
+          },
+          suffixs: {
+              default: []
+          },
+          use: {
+              default: ""
+          },
+          afterUpload: {
+              type: Function,
+              default: null
+          },
+      },
     data: function () {
       return {
 
       }
     },
     methods: {
+
+        #
 
         uploadFile () {
 
@@ -55,9 +56,9 @@
                     break;
                 }
             }
-            if (! validateSuffix) {
+            if (!validateSuffix) {
                 Toast.warning("文件格式不正确！只支持上传：" + suffixs.join(","));
-                $("#"+this.inputId+"-input").val("");
+                $("#" + this.inputId + "-input").val("");
                 return;
             }
 
@@ -65,16 +66,15 @@
             formData.append('file', file);
             formData.append('use', this.use);
             Loading.show();
-            axios.post(process.env.VUE_APP_SERVER + '/file/admin/upload', formData).then((response) => {
+            axios.post(process.env.VUE_APP_SERVER + '/file/admin/oss-simple', formData).then((response)=>{
                 Loading.hide();
                 let resp = response.data;
-                console.log('上传文件成功',resp);
-                //在file组件中，和组件不相关的业务代码应该由外部通过回调函数传进来。afterUpload()就是我们的外部回调函数
+                console.log("上传文件成功：", resp);
                 this.afterUpload(resp);
-                $("#"+this.inputId+"-input").val("");
+                $("#" + this.inputId + "-input").val("");
             });
-
         },
+
 
         /**
          * 文件上传单独按键

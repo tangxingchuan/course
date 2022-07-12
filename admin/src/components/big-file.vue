@@ -39,6 +39,7 @@
               let formData = new window.FormData();
               let file =this.$refs.file.files[0];
 
+
               console.log(JSON.stringify(file));
               /*
                 name: "test.mp4"
@@ -51,9 +52,11 @@
 
               // 生成文件标识，标识多次上传的是不是同一个文件
               let key = hex_md5(file.name + file.size + file.type);
+
               let key10 = parseInt(key, 16);
               let key62 = Tool._10to62(key10);
               console.log(key, key10, key62);
+
               console.log(hex_md5(Array()));
               /*
                 d41d8cd98f00b204e9800998ecf8427e
