@@ -42,7 +42,7 @@ public class VodUtil {
         request.setTitle(fileName);
         //request.setDescription("this is desc");
         //request.setTags("tag1,tag2");
-        request.setCoverURL("http://vod.aliyun.com/test_cover_url.jpg");
+        //request.setCoverURL("http://vod.aliyun.com/test_cover_url.jpg");
         request.setCateId(1000424241L);
         request.setTemplateGroupId("d1e932b412925b935f6918637905f147" );
         //request.setWorkflowId("");
@@ -80,6 +80,7 @@ public class VodUtil {
         // 单文件上传
         ossClient.putObject(bucketName, objectName, inputStream);
 
+
         /* 视频点播不支持追加上传
         // 追加上传
         ObjectMetadata meta = new ObjectMetadata();
@@ -87,6 +88,7 @@ public class VodUtil {
         AppendObjectRequest request = new AppendObjectRequest(bucketName, objectName, file, meta);
         request.setPosition(0L);
         ossClient.appendObject(request);*/
+
     }
 
     /**
