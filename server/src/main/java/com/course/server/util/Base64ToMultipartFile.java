@@ -1,6 +1,7 @@
 package com.course.server.util;
 
 import org.springframework.web.multipart.MultipartFile;
+import java.util.Base64.Decoder;
 import sun.misc.BASE64Decoder;
 
 import java.io.*;
