@@ -156,7 +156,7 @@
 
                   param.shard = base64;
 
-                   axios.post(process.env.VUE_APP_SERVER + '/file/admin/' +this.url, param).then((response) => {
+                   axios.post(process.env.VUE_APP_SERVER + '/file/admin/oss-append' , param).then((response) => {
                       let resp = response.data;
                       console.log("上传文件成功：", resp);
 

@@ -38,8 +38,6 @@
     },
     methods: {
 
-        #
-
         uploadFile () {
 
             let formData = new window.FormData();
