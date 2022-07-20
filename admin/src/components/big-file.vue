@@ -25,6 +25,13 @@
             use: {
                 default: ""
             },
+            shardSize:{
+                default: 50 * 1024
+            } ,
+            url:{
+                default:"oss-append"
+            },
+
             afterUpload: {
                 type: Function,
                 default: null
@@ -80,8 +87,9 @@
                 }
 
                 // 文件分片
-                 let shardSize = 10 * 1024 * 1024;    //以10MB为一个分片
+                 //let shardSize = 10 * 1024 * 1024;    //以10MB为一个分片
                 //let shardSize = 50 * 1024;    //以50KB为一个分片
+                let shardSize = this.shardSize;
                 let shardIndex = 1;		//分片索引，1表示第1个分片
                 let size = file.size;
                 let shardTotal = Math.ceil(size / shardSize); //总片数
@@ -151,7 +159,7 @@
 
                     param.shard = base64;
 
-                    axios.post(process.env.VUE_APP_SERVER + '/file/admin/oss-append', param).then((response) => {
+                    axios.post(process.env.VUE_APP_SERVER + '/file/admin/' + this.url, param).then((response) => {
                         let resp = response.data;
                         console.log("上传文件成功：", resp);
                         Progress.show(parseInt(shardIndex * 100 / shardTotal));

@@ -87,11 +87,11 @@
                 <label class="col-sm-2 control-label">视频</label>
                 <div class="col-sm-10">
                     <!--在file组件中，和组件不相关的业务代码应该由外部通过回调函数传进来。afterUpload()就是我们的外部回调函数-->
-                    <big-file v-bind:suffixs="['mp4', 'jpeg', 'png']"
+                    <vod v-bind:suffixs="['mp4', 'jpeg', 'png']"
                           v-bind:input-id="'video-upload'"
                           v-bind:text="'上传大视频'"
                           v-bind:after-upload="afterUpload"
-                          v-bind:use="FILE_USE.COURSE.key"></big-file>
+                          v-bind:use="FILE_USE.COURSE.key"></vod>
                     <div v-show="course.image" class="row">
                         <div class="col-md-9">
                             <video  v-bind:src="section.video" content="controls" id="video"></video>
@@ -146,10 +146,10 @@
 <script>
   import axios from "axios";
   import Pagination from "../../components/pagination";
-  import BigFile from "../../components/big-file";
+  import vod from "../../components/vod";
 
   export default {
-    components: {Pagination,BigFile},
+    components: {Vod, Pagination,BigFile},
     name: "business-section",
     data: function() {
       return {
@@ -278,8 +278,11 @@
         * 自动获取时长
         * */
         getTime(){
-            let ele =document.getElementById('video');
-            this.section.time = parseInt(ele.duration,10)
+            setTimeout(function () {
+                let ele =document.getElementById('video');
+                this.section.time = parseInt(ele.duration,10);
+            },100)
+
         },
 
 
