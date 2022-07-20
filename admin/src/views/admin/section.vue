@@ -232,6 +232,7 @@
         }
           this.section.courseId = this.course.id;
           this.section.chapterId = this.chapter.id;
+          this.section.video='';
 
         Loading.show();
         axios.post(process.env.VUE_APP_SERVER + '/business/admin/section/save',  this.section).then((response)=>{
@@ -269,7 +270,9 @@
         afterUpload(resp){
 
             let video = resp.content.path;
+            let vod =resp.content.vod;
             this.section. video= video;
+            this.section. vod= vod;
             this.$forceUpdate();
             this.getTime();
         },
@@ -280,8 +283,9 @@
         getTime(){
             setTimeout(function () {
                 let ele =document.getElementById('video');
+                console.log(ele)
                 this.section.time = parseInt(ele.duration,10);
-            },100)
+            },1000)
 
         },
 
