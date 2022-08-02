@@ -121,6 +121,8 @@ public class VodController {
         return responseDto;
     }
 
+
+
     @RequestMapping(value = "/get-auth/{vod}", method = RequestMethod.GET)
     public ResponseDto getAuth(@PathVariable String vod) throws ClientException {
         LOG.info("获取播放授权开始: ");

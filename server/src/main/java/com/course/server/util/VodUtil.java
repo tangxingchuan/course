@@ -42,8 +42,9 @@ public class VodUtil {
         request.setTitle(fileName);
         //request.setDescription("this is desc");
         //request.setTags("tag1,tag2");
-        //request.setCoverURL("http://vod.aliyun.com/test_cover_url.jpg");
-
+        request.setCoverURL("http://vod.aliyun.com/test_cover_url.jpg");
+        request.setCateId(1000424241L);
+        request.setTemplateGroupId("d1e932b412925b935f6918637905f147");
         //request.setWorkflowId("");
         //request.setStorageLocation("");
         //request.setAppId("app-1000000");
@@ -142,6 +143,7 @@ public class VodUtil {
         return client.getAcsResponse(request);
     }
 
+     //增加获取播放凭证函数
     /**
      * 获取播放凭证函数
      * @param client
@@ -153,6 +155,7 @@ public class VodUtil {
         request.setVideoId(videoId);
         return client.getAcsResponse(request);
     }
+
 
     public static void main(String[] argv) {
         //您的AccessKeyId

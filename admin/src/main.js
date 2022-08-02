@@ -24,7 +24,8 @@ axios.interceptors.response.use(function (response) {
 
 //全局过滤
 Object.keys(filter).forEach(key=>{
-    Vue.filter(key,filter[key])
+    let f = Vue.filter(key,filter[key]);
+    console.log("全局过滤",f);
 });
 
 

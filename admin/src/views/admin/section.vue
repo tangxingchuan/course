@@ -26,7 +26,7 @@
       <tr>
         <th>id</th>
         <th>标题</th>
-        <th>视频</th>
+        <th>VOD</th>
         <th>时长</th>
         <th>收费</th>
         <th>顺序</th>
@@ -38,11 +38,14 @@
       <tr v-for="section in sections">
           <td>{{section.id}}</td>
           <td>{{section.title}}</td>
-          <td>{{section.video}}</td>
-          <td>{{section.time | formatSecond}}</td>
+          <td>{{section.vod}}</td>
+          <td>{{section.time | formatSecond }}</td>
           <td>{{CHARGE | optionKV(section.charge) }}</td>
           <td>{{section.sort}}</td>
       <td>
+          <button v-on:click="play(section)" class="btn btn-xs btn-info">
+              <i class="ace-icon fa fa-video-camera bigger-120"></i>
+          </button>
         <div class="hidden-sm hidden-xs btn-group">
           <button v-on:click="edit(section)" class="btn btn-xs btn-info">
             <i class="ace-icon fa fa-pencil bigger-120"></i>
@@ -94,7 +97,8 @@
                           v-bind:use="FILE_USE.COURSE.key"></vod>
                     <div v-show="course.image" class="row">
                         <div class="col-md-9">
-                            <video  v-bind:src="section.video" content="controls" id="video"></video>
+                            <player v-bind:player-id=" 'form-plater-div' " ref="player"></player>
+                            <video  v-bind:src="section.video" class="hidden" content="controls" id="video"></video>
                         </div>
                     </div>
                 </div>
@@ -147,9 +151,11 @@
   import axios from "axios";
   import Pagination from "../../components/pagination";
   import vod from "../../components/vod";
+  import Player from "../../components/player";
+
 
   export default {
-    components: {Vod, Pagination,BigFile},
+    components: {Player, vod, Pagination},
     name: "business-section",
     data: function() {
       return {
@@ -174,6 +180,7 @@
         this.list(1);
       // sidebar激活样式方法一
         this.$parent.activeSidebar("business-course-sidebar");
+
 
     },
     methods: {
@@ -275,6 +282,7 @@
             this.section. vod= vod;
             this.$forceUpdate();
             this.getTime();
+            this.$refs.player.playUrl(video);
         },
 
         /*
@@ -283,13 +291,19 @@
         getTime(){
             setTimeout(function () {
                 let ele =document.getElementById('video');
-                console.log(ele)
+
                 this.section.time = parseInt(ele.duration,10);
             },1000)
 
         },
 
+        /**
+         *
+         */
 
+        play(section){
+            this.$refs.modalPlayer.playVod(section.vod);
+        }
     }
   }
 </script>
