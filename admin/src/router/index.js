@@ -10,6 +10,7 @@ import Category from "@/views/admin/category";
 import Teacher from "@/views/admin/teacher";
 import File from "@/views/admin/file";
 import Content from "@/views/admin/content";
+import UserCourse from "@/views/admin/userCourse";
 
 Vue.use(VueRouter)
 
@@ -63,7 +64,11 @@ const routes = [
                 path: 'file/file',
                 component:File,
             },
-
+            {
+                name: 'system/userCourse',
+                path: 'system/userCourse',
+                component:UserCourse,
+            },
             ]
     }
 ]
