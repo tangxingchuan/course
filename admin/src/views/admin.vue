@@ -83,7 +83,7 @@
                                                     <span class="pull-right">90%</span>
                                                 </div>
 
-                                                <div class="progress progress-mini progress-striped   ">
+                                                <div class="progress progress-mini progress-striped active">
                                                     <div style="width:90%" class="progress-bar progress-bar-success"></div>
                                                 </div>
                                             </a>
@@ -366,7 +366,7 @@
                     </li>
 
 
-                    <li class="      ">
+                    <li class=" ">
                         <a href="#" class="dropdown-toggle">
                             <i class="menu-icon fa fa-list"></i>
                             <span class="menu-text"> 系统管理 </span>
@@ -377,7 +377,7 @@
                         <b class="arrow"></b>
 
                         <ul class="submenu">
-                            <li class="  " id="system-userCourse-sidebar">
+                            <li class="" id="system-userCourse-sidebar">
 
                                 <router-link to="/system/userCourse">
                                     <i class="menu-icon fa fa-caret-right"></i>
@@ -398,7 +398,7 @@
                         </ul>
                     </li>
 
-                    <li class="      ">
+                    <li class=" ">
                         <a href="#" class="dropdown-toggle">
                             <i class="menu-icon fa fa-list"></i>
                             <span class="menu-text"> 业务管理 </span>
@@ -410,7 +410,7 @@
 
                         <ul class="submenu">
 
-                            <li class="  " id="business-category-sidebar">
+                            <li class="" id="business-category-sidebar">
                                 <router-link to="/business/category">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     分类管理
@@ -419,7 +419,7 @@
                                 <b class="arrow"></b>
                             </li>
 
-                            <li class="  " id="business-course-sidebar">
+                            <li class="" id="business-course-sidebar">
                                 <router-link to="/business/course">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     课程管理
@@ -428,7 +428,7 @@
                                 <b class="arrow"></b>
                             </li>
 
-                            <li class="  " id="business-teacher-sidebar">
+                            <li class="" id="business-teacher-sidebar">
                                 <router-link to="/business/teacher">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     讲师管理
@@ -437,7 +437,7 @@
                                 <b class="arrow"></b>
                             </li>
 
-<!--                            <li class="  " id="business-chapter-sidebar">-->
+<!--                            <li class="active" id="business-chapter-sidebar">-->
 <!--                                <router-link to="/business/chapter">-->
 <!--                                    <i class="menu-icon fa fa-caret-right"></i>-->
 <!--                                    大章管理-->
@@ -446,7 +446,7 @@
 <!--                                <b class="arrow"></b>-->
 <!--                            </li>-->
 
-<!--                            <li class="  " id="business-section-sidebar">-->
+<!--                            <li class="active" id="business-section-sidebar">-->
 <!--                                <router-link to="/business/section">-->
 <!--                                    <i class="menu-icon fa fa-caret-right"></i>-->
 <!--                                    小节管理-->
@@ -457,7 +457,7 @@
                         </ul>
                     </li>
 
-                    <li class="      ">
+                    <li class="active open">
                         <a href="#" class="dropdown-toggle">
                             <i class="menu-icon fa fa-list"></i>
                             <span class="menu-text"> 文件管理 </span>
@@ -469,7 +469,7 @@
 
                         <ul class="submenu">
 
-                            <li class="  " id="file-file-sidebar">
+                            <li class="   " id="file-file-sidebar">
                                 <router-link to="/file/file">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     文件管理
@@ -549,7 +549,7 @@
             $('body').attr('class', 'no-skin');
             /*养成好习惯，将this变成本地变量_this,可以预防之后一直用this的坑*/
             let _this=this;
-            -this.  Sidebar(_this.$route.name.replace("/","-")+"-sidebar");
+            -this.activeSidebar(_this.$route.name.replace("/","-")+"-sidebar");
         },
 
         /*这个监听，只对admin下面的子路由有用，其他跳转过来的，就无效了*/
@@ -557,10 +557,10 @@
             $route:{
                 handler:function (val,oldVal) {
                     console.log("------->页面跳转：",val,oldVal)
-                    let _this=this;
-                    _this.$nextTick(function () {//页面加载完成后执行
-                        -this.  Sidebar(_this.$route.name.replace("/","-")+"-sidebar");
+                    this.$nextTick(function () {//页面加载完成后执行
+                        this.activeSidebar(this.$route.name.replace("/","-")+"-sidebar");
 
+                        $.getScript('/ace/assets/js/ace.min.js')
                     })
 
                 }
@@ -570,22 +570,24 @@
         methods:{
 
             /**
-             *菜单激活样式，id是当前点击的菜单id
+             * 菜单激活样式，id是当前点击的菜单的id
+             * @param id
              */
-              Sidebar(){
-               //兄弟菜单去掉  样式，自身增加  样式
-               $("#",id).siblings().removeClass('  ');
-               $("#",id).siblings().find('li').removeClass('  ');
-               $("#",id).addClass('  ');
+            activeSidebar: function (id) {
+                // 兄弟菜单去掉active样式，自身增加active样式
+                $("#" + id).siblings().removeClass("active");
+                $("#" + id).siblings().find("li").removeClass("active");
+                $("#" + id).addClass("active");
 
-               //如果有父菜单，父菜单的兄弟菜单去掉       ，父菜单增加
-               let parentLi =$("#"+id).parents('li');
-               if (parentLi){
-                   parentLi.siblings().removeClass(' open  active    ');
-                   parentLi.siblings().find("li").removeClass(" active ");
-                   parentLi.addClass('open  active       ');
-               }
-           }
+                // 如果有父菜单，父菜单的兄弟菜单去掉open active，父菜单增加open active
+                let parentLi = $("#" + id).parents("li");
+                if (parentLi) {
+                    parentLi.siblings().removeClass("open active");
+                    parentLi.siblings().find("li").removeClass("active");
+                    parentLi.addClass("open active");
+                }
+            },
+
         }
     }
 </script>
