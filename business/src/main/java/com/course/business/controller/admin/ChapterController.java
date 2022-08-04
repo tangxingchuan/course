@@ -44,7 +44,7 @@ public class ChapterController {
      */
 
     @PostMapping("/save")
-    public ResponseDto list(@RequestBody ChapterDto  chapterDto){
+    public ResponseDto save(@RequestBody ChapterDto  chapterDto){
 
         LOG.info("ChapterDto:{}",chapterDto);
 

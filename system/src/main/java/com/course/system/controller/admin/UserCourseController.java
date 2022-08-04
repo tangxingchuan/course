@@ -9,6 +9,7 @@ import com.course.server.util.ValidatorUtil;
 import org.apache.ibatis.annotations.Delete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -48,9 +49,12 @@ return responseDto;
 */
 
 @PostMapping("/save")
-public ResponseDto list(@RequestBody UserCourseDto  userCourseDto){
+public ResponseDto save(@RequestBody UserCourseDto  userCourseDto){
 
-LOG.info("UserCourseDto:{}",userCourseDto);
+    userCourseDto.setPassword(DigestUtils.md5DigestAsHex(userCourseDto.getPassword().getBytes()));
+
+
+    LOG.info("UserCourseDto:{}",userCourseDto);
 
 //保存校验
             ValidatorUtil.require(userCourseDto.getLoginName(), "登录名");

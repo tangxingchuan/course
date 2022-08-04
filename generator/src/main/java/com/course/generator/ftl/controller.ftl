@@ -48,7 +48,7 @@ return responseDto;
 */
 
 @PostMapping("/save")
-public ResponseDto list(@RequestBody ${Domain}Dto  ${domain}Dto){
+public ResponseDto save(@RequestBody ${Domain}Dto  ${domain}Dto){
 
 LOG.info("${Domain}Dto:{}",${domain}Dto);
 

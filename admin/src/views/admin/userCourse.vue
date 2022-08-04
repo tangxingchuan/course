@@ -146,6 +146,7 @@
        */
       save() {
 
+          this.userCourses.password = hex_md5(this.userCourses.password + KEY);
 
         // 保存校验
         if (1 != 1

@@ -63,7 +63,7 @@ return responseDto;
 */
 
 @PostMapping("/save")
-public ResponseDto list(@RequestBody CategoryDto  categoryDto){
+public ResponseDto save(@RequestBody CategoryDto  categoryDto){
 
 LOG.info("CategoryDto:{}",categoryDto);
 

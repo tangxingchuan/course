@@ -50,7 +50,7 @@ return responseDto;
 */
 
 @PostMapping("/save")
-public ResponseDto list(@RequestBody CourseDto  courseDto){
+public ResponseDto save(@RequestBody CourseDto  courseDto){
 
 LOG.info("CourseDto:{}",courseDto);
 

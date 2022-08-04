@@ -59,7 +59,7 @@ return responseDto;
 */
 
 @PostMapping("/save")
-public ResponseDto list(@RequestBody TeacherDto  teacherDto){
+public ResponseDto save(@RequestBody TeacherDto  teacherDto){
 
 LOG.info("TeacherDto:{}",teacherDto);
 
