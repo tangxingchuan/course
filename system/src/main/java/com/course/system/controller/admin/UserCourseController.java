@@ -82,4 +82,22 @@ return  responseDto;
 }
 
 
+    /**
+     * 保存密码
+     */
+
+    @PostMapping("/save-password")
+    public ResponseDto savePassword(@RequestBody UserCourseDto  userCourseDto){
+
+        userCourseDto.setPassword(DigestUtils.md5DigestAsHex(userCourseDto.getPassword().getBytes()));
+
+
+        LOG.info("UserCourseDto:{}",userCourseDto);
+        ResponseDto responseDto = new ResponseDto();
+        userCourseService.savePassword(userCourseDto);
+        responseDto.setContent(userCourseDto);
+        return responseDto;
+    }
+
+
 }

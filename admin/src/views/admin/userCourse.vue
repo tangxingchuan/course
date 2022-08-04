@@ -33,6 +33,9 @@
         <td>{{userCourse.password}}</td>
       <td>
         <div class="hidden-sm hidden-xs btn-group">
+            <button v-on:click="editPassword(userCourse)" class="btn btn-xs btn-info">
+                <i class="ace-icon fa fa-key bigger-120"></i>
+            </button>
           <button v-on:click="edit(userCourse)" class="btn btn-xs btn-info">
             <i class="ace-icon fa fa-pencil bigger-120"></i>
           </button>
@@ -66,7 +69,7 @@
                   <input v-model="userCourse.name" class="form-control">
                 </div>
               </div>
-              <div class="form-group">
+              <div v-show="!userCourse.id" class="form-group">
                 <label class="col-sm-2 control-label">密码</label>
                 <div class="col-sm-10">
                   <input v-model="userCourse.password" class="form-control">
@@ -81,6 +84,33 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+
+      <div id="password-modal" class="modal fade" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">修改密码</h4>
+                  </div>
+                  <div class="modal-body">
+                      <form class="form-horizontal">
+                          <div  class="form-group">
+                              <label class="col-sm-2 control-label">密码</label>
+                              <div class="col-sm-10">
+                                  <input v-model="userCourse.password" type="password" class="form-control">
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                      <button v-on:click="savePassword()" type="button" class="btn btn-primary">保存密码</button>
+                  </div>
+              </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
   </div>
 </template>
 
@@ -188,7 +218,38 @@
             }
           })
         });
-      }
+      },
+
+        /**
+         * 点击【重置密码】
+         */
+        editPassword(userCourse) {
+
+            this.userCourse = $.extend({}, userCourse);
+            this.userCourse.password = null;
+            $("#password-modal").modal("show");
+        },
+
+        /**
+         * 点击【保存密码】
+         */
+        savePassword() {
+
+            this.userCourses.password = hex_md5(this.userCourses.password + KEY);
+            Loading.show();
+            axios.post(process.env.VUE_APP_SERVER + '/system/admin/userCourse/save-password',  this.userCourse).then((response)=>{
+                Loading.hide();
+                let resp = response.data;
+                if (resp.success) {
+                    $("#password-modal").modal("hide");
+                    this.list(1);
+                    Toast.success("保存成功！");
+                } else {
+                    Toast.warning(resp.message)
+                }
+            })
+        },
+
     }
   }
 </script>

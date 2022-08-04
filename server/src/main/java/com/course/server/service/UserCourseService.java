@@ -71,7 +71,9 @@ List<UserCourseDto> userCourseDtoList = CopyUtil.copyList(userCourseList, UserCo
     * 更新
     */
     private void update(UserCourse userCourse) {
-    userCourseMapper.updateByPrimaryKey(userCourse);
+
+        userCourse.setId(null);
+    userCourseMapper.updateByPrimaryKeySelective(userCourse);
     }
 
     /**
@@ -101,6 +103,19 @@ List<UserCourseDto> userCourseDtoList = CopyUtil.copyList(userCourseList, UserCo
         }
 
 
+    }
+
+    /**
+     * 重置密码
+     * @param userCourseDto
+     */
+    public void savePassword(UserCourseDto userCourseDto) {
+
+        UserCourse user = new UserCourse();
+        user.setId(userCourseDto.getId());
+        user.setPassword(userCourseDto.getPassword());
+
+       userCourseMapper.updateByPrimaryKeySelective(user);
     }
 
 
