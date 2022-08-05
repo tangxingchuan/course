@@ -85,12 +85,14 @@ Tool = {
     return arr.join('');
   },
 
+
   /**
    * 保存登录用户信息
    */
   setLoginUser  (loginUser) {
     SessionStorage.set(SESSION_KEY_LOGIN_USER, loginUser);
   },
+
 
   /**
    * 获取登录用户信息

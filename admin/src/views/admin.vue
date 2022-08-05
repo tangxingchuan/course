@@ -1,5 +1,7 @@
 <template>
     <div>
+
+        <!--头部栏-->
         <div id="navbar" class="navbar navbar-default          ace-save-state">
             <div class="navbar-container ace-save-state" id="navbar-container">
                 <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
@@ -282,8 +284,8 @@
                             <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                                 <img class="nav-user-photo" src="../../public/ace/assets/images/avatars/user.jpg" alt="Jason's Photo" />
                                 <span class="user-info">
-									<small>欢迎,</small>
-									唐先生
+									<small>{{loginUser.name}}</small>
+
 								</span>
 
                                 <i class="ace-icon fa fa-caret-down"></i>
@@ -319,10 +321,12 @@
             </div><!-- /.navbar-container -->
         </div>
 
+
+        <!--侧边栏-->
         <div class="main-container ace-save-state" id="main-container">
 
 
-            <div id="sidebar" class="sidebar                  responsive                    ace-save-state">
+            <div id="sidebar" class="sidebar      responsive        ace-save-state">
 
 
                 <div class="sidebar-shortcuts" id="sidebar-shortcuts">
@@ -359,7 +363,7 @@
                     <li class="">
                         <router-link to="/welcome">
                             <i class="menu-icon fa fa-tachometer"></i>
-                            <span class="menu-text"> 欢迎 </span>
+                            <span class="menu-text"> 欢迎：{{loginUser.name}} </span>
                         </router-link>
 
                         <b class="arrow"></b>
@@ -544,12 +548,23 @@
     //$('body').attr('class', 'login-layout blur-login');
     export default {
         name: "admin",
+        data(){
+            return{
+                loginUser: {},
+            }
+        },
         mounted() {
             $('body').removeClass('login-layout light-login');
             $('body').attr('class', 'no-skin');
             /*养成好习惯，将this变成本地变量_this,可以预防之后一直用this的坑*/
-            let _this=this;
-            -this.activeSidebar(_this.$route.name.replace("/","-")+"-sidebar");
+
+            this.activeSidebar(this.$route.name.replace("/","-")+"-sidebar");
+
+            //关闭ace的js文件的自动刷新
+            $.getScript('/ace/assets/js/ace.min.js')
+
+            //接收传过来的用户数据
+            this.loginUser =Tool.getLoginUser();
         },
 
         /*这个监听，只对admin下面的子路由有用，其他跳转过来的，就无效了*/
@@ -559,8 +574,6 @@
                     console.log("------->页面跳转：",val,oldVal)
                     this.$nextTick(function () {//页面加载完成后执行
                         this.activeSidebar(this.$route.name.replace("/","-")+"-sidebar");
-
-                        $.getScript('/ace/assets/js/ace.min.js')
                     })
 
                 }
