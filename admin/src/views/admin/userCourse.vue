@@ -235,7 +235,7 @@
          */
         savePassword() {
 
-            this.userCourses.password = hex_md5(this.userCourses.password + KEY);
+            this.userCourse.password = hex_md5(this.userCourse.password + KEY);
             Loading.show();
             axios.post(process.env.VUE_APP_SERVER + '/system/admin/userCourse/save-password',  this.userCourse).then((response)=>{
                 Loading.hide();

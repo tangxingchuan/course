@@ -1,19 +1,17 @@
 package com.course.business.controller.admin;
 
+import com.course.server.dto.LoginUserCourseDto;
 import com.course.server.dto.UserCourseDto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.ResponseDto;
-import com.course.server.exception.ValidatorException;
 import com.course.server.service.UserCourseService;
 import com.course.server.util.ValidatorUtil;
-import org.apache.ibatis.annotations.Delete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
 * @author TangKe（唐柯）
@@ -34,10 +32,10 @@ private UserCourseService userCourseService;
 * 列表查询
 */
 @PostMapping("/list")
-public ResponseDto list(@RequestBody  PageDto pageDto){
+public ResponseDto<PageDto> list(@RequestBody  PageDto pageDto){
 
 LOG.info("pageDto:{}",pageDto);
-ResponseDto responseDto = new ResponseDto();
+ResponseDto<PageDto> responseDto = new ResponseDto<PageDto>();
 userCourseService.list(pageDto);
 responseDto.setContent(pageDto);
 return responseDto;
@@ -49,7 +47,7 @@ return responseDto;
 */
 
 @PostMapping("/save")
-public ResponseDto save(@RequestBody UserCourseDto  userCourseDto){
+public ResponseDto<UserCourseDto> save(@RequestBody UserCourseDto  userCourseDto){
 
     userCourseDto.setPassword(DigestUtils.md5DigestAsHex(userCourseDto.getPassword().getBytes()));
 
@@ -61,7 +59,7 @@ public ResponseDto save(@RequestBody UserCourseDto  userCourseDto){
             ValidatorUtil.length(userCourseDto.getLoginName(), "登录名", 1, 60);
             ValidatorUtil.length(userCourseDto.getName(), "昵称", 1, 50);
             ValidatorUtil.require(userCourseDto.getPassword(), "密码");
-ResponseDto responseDto = new ResponseDto();
+ResponseDto<UserCourseDto> responseDto = new ResponseDto<UserCourseDto>();
 userCourseService.save(userCourseDto);
 responseDto.setContent(userCourseDto);
 return responseDto;
@@ -87,17 +85,29 @@ return  responseDto;
      */
 
     @PostMapping("/save-password")
-    public ResponseDto savePassword(@RequestBody UserCourseDto  userCourseDto){
-
-        userCourseDto.setPassword(DigestUtils.md5DigestAsHex(userCourseDto.getPassword().getBytes()));
-
+    public ResponseDto<UserCourseDto> savePassword(@RequestBody UserCourseDto  userCourseDto){
 
         LOG.info("UserCourseDto:{}",userCourseDto);
-        ResponseDto responseDto = new ResponseDto();
+        userCourseDto.setPassword(DigestUtils.md5DigestAsHex(userCourseDto.getPassword().getBytes()));
+        ResponseDto<UserCourseDto> responseDto = new ResponseDto<>();
         userCourseService.savePassword(userCourseDto);
         responseDto.setContent(userCourseDto);
         return responseDto;
     }
 
+
+    /**
+     * 重置密码
+     */
+
+    @PostMapping("/login")
+    public ResponseDto login(@RequestBody UserCourseDto  userCourseDto){
+
+        userCourseDto.setPassword(DigestUtils.md5DigestAsHex(userCourseDto.getPassword().getBytes()));
+        ResponseDto responseDto = new ResponseDto();
+        LoginUserCourseDto loginUserDto = userCourseService.login(userCourseDto);
+        responseDto.setContent(loginUserDto);
+        return responseDto;
+    }
 
 }

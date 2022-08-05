@@ -2,6 +2,7 @@ package com.course.server.service;
 
 import com.course.server.domain.UserCourse;
 import com.course.server.domain.UserCourseExample;
+import com.course.server.dto.LoginUserCourseDto;
 import com.course.server.dto.UserCourseDto;
 import com.course.server.dto.PageDto;
 import com.course.server.exception.BusinessException;
@@ -11,6 +12,8 @@ import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -23,6 +26,9 @@ public class UserCourseService {
 
 @Resource
 private UserCourseMapper userCourseMapper;
+
+
+    private static final Logger LOG = LoggerFactory.getLogger(UserCourseMapper.class);
 
 /**
 * 列表查询
@@ -72,7 +78,7 @@ List<UserCourseDto> userCourseDtoList = CopyUtil.copyList(userCourseList, UserCo
     */
     private void update(UserCourse userCourse) {
 
-        userCourse.setId(null);
+        userCourse.setPassword(null);
     userCourseMapper.updateByPrimaryKeySelective(userCourse);
     }
 
@@ -118,6 +124,39 @@ List<UserCourseDto> userCourseDtoList = CopyUtil.copyList(userCourseList, UserCo
        userCourseMapper.updateByPrimaryKeySelective(user);
     }
 
+
+
+
+    /**
+     *登录
+     * @param userCourseDto
+     */
+    public LoginUserCourseDto login(UserCourseDto userCourseDto) {
+
+        UserCourse user = selectByLoginName(userCourseDto.getLoginName());
+
+        if ( user == null){
+            //用户存在
+            LOG.info("用户存在:{}",userCourseDto.getLoginName());
+            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+        }else {
+
+            if (user.getPassword().equals(userCourseDto.getPassword())){
+                 // 登录成功
+                return CopyUtil.copy(user,LoginUserCourseDto.class);
+            }else {
+
+                LOG.info("密码不对， 输入密码:{}  数据库密码:{}", userCourseDto.getPassword(),user.getPassword());
+                throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+            }
+
+        }
+
+
+
+
+
+    }
 
     }
 

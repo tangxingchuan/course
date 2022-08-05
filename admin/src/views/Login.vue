@@ -32,7 +32,7 @@
                                                     <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
 															<input type="text" class="form-control"
-                                                                   placeholder="Username" v-model="from.Username"/>
+                                                                   placeholder="用户名" v-model=" userCourse.loginName"/>
 															<i class="ace-icon fa fa-user"></i>
 														</span>
                                                     </label>
@@ -40,7 +40,7 @@
                                                     <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
 															<input type="password" class="form-control"
-                                                                   placeholder="Password" v-model.number="from.Password"/>
+                                                                 v-model="userCourse.password"  placeholder="密码"/>
 															<i class="ace-icon fa fa-lock"></i>
 														</span>
                                                     </label>
@@ -85,19 +85,30 @@
     //$('body').attr('class', 'login-layout light-login');
 
     //$('body').attr('class', 'login-layout blur-login');
+    import axios from "axios";
+
     export default {
         name: "login",
         data(){
           return{
-             from: {
-                 Username:'test',
-                 Password:1234,
-             }
+              userCourse: {},
+          }
+          },
 
-          }        },
         methods:{
             login(){
-              this.$router.push('/welcome')
+                this.userCourse.password = hex_md5(this.userCourse.password + KEY);
+                Loading.show();
+                axios.post(process.env.VUE_APP_SERVER + '/system/admin/userCourse/login',  this.userCourse).then((response)=>{
+                    Loading.hide();
+                    let resp = response.data;
+                    if (resp.success) {
+                        console.log(resp.content);
+                        this.$router.push('/welcome')
+                    } else {
+                        Toast.warning(resp.message)
+                    }
+                })
             },
         },
         mounted() {
