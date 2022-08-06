@@ -49,7 +49,7 @@
 
                                                     <div class="clearfix">
                                                         <label class="inline">
-                                                            <input type="checkbox" class="ace"/>
+                                                            <input type="checkbox" v-model="remember" class="ace"/>
                                                             <span class="lbl"> 记住账号</span>
                                                         </label>
 
@@ -92,19 +92,45 @@
         data(){
           return{
               userCourse: {},
+              remember:true,
           }
           },
+        mounted: function () {
+            $('body').removeClass('no-skin');
+            $('body').attr('class', 'login-layout light-login');
+
+            //从缓存中，获取用户名和密码，如果没有，说明上一次没勾选"记住我"
+                       let rememberUser  = LocalStorage.get(LOCAL_KEY_REMEMBER_USER);
+                       if (rememberUser){
+                           this.userCourse = rememberUser
+                       }
+
+
+
+        },
 
         methods:{
             login(){
+
+                let passwordShow = this.userCourse.password;
                 this.userCourse.password = hex_md5(this.userCourse.password + KEY);
                 Loading.show();
                 axios.post(process.env.VUE_APP_SERVER + '/system/admin/userCourse/login',  this.userCourse).then((response)=>{
                     Loading.hide();
                     let resp = response.data;
+                    let loginUser = resp.content;
                     if (resp.success) {
                         console.log("登录成功 ：",resp.content);
                         Tool.setLoginUser(resp.content);
+                        if (this.remember){
+                            LocalStorage.set(LOCAL_KEY_REMEMBER_USER,{
+                                loginName: loginUser.loginName,
+                                password: passwordShow
+                            })
+                        }else {
+                            LocalStorage.set(LOCAL_KEY_REMEMBER_USER,null)
+                        }
+
                         this.$router.push('/welcome')
                     } else {
                         Toast.warning(resp.message)
@@ -112,10 +138,7 @@
                 })
             },
         },
-        mounted() {
-            $('body').removeClass('no-skin');
-            $('body').attr('class', 'login-layout light-login');
-        }
+
     }
 </script>
 
