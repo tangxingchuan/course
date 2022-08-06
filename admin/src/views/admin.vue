@@ -309,7 +309,7 @@
                                 <li class="divider"></li>
 
                                 <li>
-                                    <a href="#">
+                                    <a href="#" @click="loginOut">
                                         <i class="ace-icon fa fa-power-off"></i>
                                         登出
                                     </a>
@@ -546,6 +546,8 @@
     //$('body').attr('class', 'login-layout light-login');
 
     //$('body').attr('class', 'login-layout blur-login');
+    import axios from "axios";
+
     export default {
         name: "admin",
         data(){
@@ -600,6 +602,23 @@
                     parentLi.addClass("open active");
                 }
             },
+
+            loginOut(){
+
+                Loading.show();
+                axios.get(process.env.VUE_APP_SERVER + '/system/admin/userCourse/loginOut').then((response)=>{
+                    Loading.hide();
+                    let resp = response.data;
+                    if (resp.success) {
+                        console.log("退出成功 ：",resp.content);
+                        Tool.setLoginUser(null);
+                        this.$router.push('/login')
+                    } else {
+                        Toast.warning(resp.message)
+                    }
+                })
+
+            }
 
         }
     }

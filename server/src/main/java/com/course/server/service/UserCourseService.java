@@ -19,6 +19,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Service
@@ -152,11 +153,9 @@ List<UserCourseDto> userCourseDtoList = CopyUtil.copyList(userCourseList, UserCo
 
         }
 
-
-
-
-
     }
+
+
 
     }
 

@@ -1,9 +1,6 @@
 package com.course.business.controller.admin;
 
-import com.course.server.dto.LoginUserCourseDto;
-import com.course.server.dto.UserCourseDto;
-import com.course.server.dto.PageDto;
-import com.course.server.dto.ResponseDto;
+import com.course.server.dto.*;
 import com.course.server.service.UserCourseService;
 import com.course.server.util.ValidatorUtil;
 import org.slf4j.Logger;
@@ -12,6 +9,9 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
 * @author TangKe（唐柯）
@@ -101,13 +101,30 @@ return  responseDto;
      */
 
     @PostMapping("/login")
-    public ResponseDto login(@RequestBody UserCourseDto  userCourseDto){
+    public ResponseDto login(@RequestBody UserCourseDto  userCourseDto, HttpServletRequest request){
 
         userCourseDto.setPassword(DigestUtils.md5DigestAsHex(userCourseDto.getPassword().getBytes()));
         ResponseDto responseDto = new ResponseDto();
         LoginUserCourseDto loginUserDto = userCourseService.login(userCourseDto);
+        request.getSession().setAttribute(constant.LOGIN_USER,loginUserDto);
         responseDto.setContent(loginUserDto);
         return responseDto;
+    }
+
+
+
+    /**
+     * 退出登录
+     */
+
+    @GetMapping("/loginOut")
+    public ResponseDto loginOut( HttpServletRequest request){
+
+        ResponseDto responseDto = new ResponseDto();
+        request.getSession().removeAttribute(constant.LOGIN_USER);
+        return responseDto;
+
+
     }
 
 }
