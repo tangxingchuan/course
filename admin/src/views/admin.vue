@@ -606,7 +606,7 @@
             loginOut(){
 
                 Loading.show();
-                axios.get(process.env.VUE_APP_SERVER + '/system/admin/userCourse/loginOut' + this.loginUser.token).then((response)=>{
+                axios.get(process.env.VUE_APP_SERVER + '/system/admin/userCourse/loginOut/' + this.loginUser.token).then((response)=>{
                     Loading.hide();
                     let resp = response.data;
                     if (resp.success) {
