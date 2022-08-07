@@ -45,6 +45,23 @@
 														</span>
                                                     </label>
 
+                                                    <label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+                                                           <div class="input-group">
+                                                            <input type="text"  v-model="userCourse.imageCode" class="form-control" placeholder="验证码" >
+                                                            <span class="input-group-addon" id="basic-addon2">
+                                                            <img @click="loadImageCode()" id="image-code"  alt="验证码">
+                                                            </span>
+                                                            </div>
+														</span>
+                                                    </label>
+
+
+
+                                                    <div class="input-group">
+
+                                                    </div>
+
                                                     <div class="space"></div>
 
                                                     <div class="clearfix">
@@ -92,13 +109,15 @@
         data(){
           return{
               userCourse: {},
-              remember:true,
+              remember: true, // 默认勾选记住我
+              imageCodeToken: ""
           }
           },
         mounted: function () {
             $('body').removeClass('no-skin');
             $('body').attr('class', 'login-layout light-login');
 
+            this.userCourse.imageCodeToken = this.imageCodeToken;
             //从缓存中，获取用户名和密码，如果没有，说明上一次没勾选"记住我"
                        let rememberUser  = LocalStorage.get(LOCAL_KEY_REMEMBER_USER);
                        if (rememberUser){
@@ -126,6 +145,7 @@
                         this.userCourse.password = hex_md5(this.userCourse.password + KEY);
                     }
 
+                this.userCourse.imageCodeToken = this.imageCodeToken;
                 Loading.show();
                 axios.post(process.env.VUE_APP_SERVER + '/system/admin/userCourse/login',  this.userCourse).then((response)=>{
                     Loading.hide();
@@ -153,15 +173,26 @@
 
                         this.$router.push('/welcome')
                     } else {
-                        Toast.warning(resp.message)
+                        Toast.warning(resp.message);
+                        this.userCourse.password='';
+                        this.loadImageCode();
                     }
                 })
             },
+
+            loadImageCode(){
+
+                     this.imageCodeToken = Tool.uuid(8);
+                     $('#image-code').attr('src',process.env.VUE_APP_SERVER + '/system/admin/kaptcha/image-code/'+this.imageCodeToken);
+            }
         },
 
     }
 </script>
 
 <style scoped>
+    .input-group-addon{
+        padding: 0;
+    }
 
 </style>

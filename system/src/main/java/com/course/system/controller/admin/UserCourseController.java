@@ -5,6 +5,7 @@ import com.course.server.service.UserCourseService;
 import com.course.server.util.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +24,13 @@ import javax.servlet.http.HttpSession;
 public class UserCourseController {
 
 private static final Logger LOG = LoggerFactory.getLogger(UserCourseController.class);
-public static final String BUSINESS_NAME = "用户";
+
 
 @Resource
 private UserCourseService userCourseService;
+
+@Resource
+private RedisTemplate redisTemplate;
 
 
 /**
@@ -111,7 +115,11 @@ return  responseDto;
 
 
         // 根据验证码token去获取缓存中的验证码，和用户输入的验证码是否一致
-        String imageCode = (String) request.getSession().getAttribute(userCourseDto.getImageCodeToken());
+       // String imageCode = (String) request.getSession().getAttribute(userCourseDto.getImageCodeToken());
+
+        //根据验证码token去获取redis中的验证码
+        String imageCode = (String) redisTemplate.opsForValue().get(userCourseDto.getImageCodeToken());
+        LOG.info("从redis中获取到的验证码：{}", imageCode);
         if (StringUtils.isEmpty(imageCode)) {
             responseDto.setSuccess(false);
             responseDto.setMessage("验证码已过期");
