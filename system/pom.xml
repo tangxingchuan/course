@@ -46,6 +46,14 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+
+        <!-- 图形验证码 -->
+        <dependency>
+            <groupId>com.github.penggle</groupId>
+            <artifactId>kaptcha</artifactId>
+        </dependency>
+
+
         <!--（作用：在system子模块中引入server子模块）-->
         <dependency>
             <groupId>com.course</groupId>
