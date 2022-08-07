@@ -31,6 +31,9 @@ const routes = [
         path: '/',
         name:'admin',
         component:Admin,
+        meta: {
+                loginRequire: true
+            },
         children:[
             {
                 name:'welcome',
