@@ -1,7 +1,9 @@
 package com.course.business.controller.admin;
 
+import com.alibaba.fastjson.JSON;
 import com.course.server.dto.*;
 import com.course.server.service.UserCourseService;
+import com.course.server.util.UuidUtil;
 import com.course.server.util.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.concurrent.TimeUnit;
 
 /**
 * @author TangKe（唐柯）
@@ -24,6 +27,7 @@ import javax.servlet.http.HttpSession;
 public class UserCourseController {
 
 private static final Logger LOG = LoggerFactory.getLogger(UserCourseController.class);
+    public static final String BUSINESS_NAME = "用户登录";
 
 
 @Resource
@@ -133,10 +137,17 @@ return  responseDto;
             return responseDto;
         } else {
             // 验证通过后，移除验证码
-            request.getSession().removeAttribute(userCourseDto.getImageCodeToken());
+            //request.getSession().removeAttribute(userCourseDto.getImageCodeToken());
+
+            //移除redis中的验证码
+            redisTemplate.delete(userCourseDto.getImageCodeToken());
         }
 
         LoginUserCourseDto loginUserDto = userCourseService.login(userCourseDto);
+        String token = UuidUtil.getShortUuid();
+        loginUserDto.setToken(token);
+
+        redisTemplate.opsForValue().set(token, JSON.toJSONString(loginUserDto),3600, TimeUnit.SECONDS);
         request.getSession().setAttribute(constant.LOGIN_USER,loginUserDto);
         responseDto.setContent(loginUserDto);
         return responseDto;
@@ -148,11 +159,17 @@ return  responseDto;
      * 退出登录
      */
 
-    @GetMapping("/loginOut")
-    public ResponseDto loginOut( HttpServletRequest request){
+    @GetMapping("/loginOut/{token}")
+    public ResponseDto loginOut(@PathVariable String token){
 
         ResponseDto responseDto = new ResponseDto();
-        request.getSession().removeAttribute(constant.LOGIN_USER);
+
+       //request.getSession().removeAttribute(constant.LOGIN_USER);
+
+        //移除redis中的验证码
+        redisTemplate.delete(token);
+
+        LOG.info("从redis中时删除token:{}",token);
         return responseDto;
 
 
