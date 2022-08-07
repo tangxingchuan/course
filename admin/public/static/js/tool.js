@@ -101,13 +101,14 @@ Tool = {
     return SessionStorage.get(SESSION_KEY_LOGIN_USER) || {};
   },
 
-  /**
+
+    /**
    * 随机生成[len]长度的[radix]进制数
    * @param len
    * @param radix 默认62
    * @returns {string}
    */
-  uuid  (len, radix) {
+  uuid (len, radix) {
     let chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
     let uuid = [];
     radix = radix || chars.length;
