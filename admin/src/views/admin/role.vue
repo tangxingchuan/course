@@ -256,40 +256,33 @@
             this.zTree.expandAll(true);
         },
 
+
         /**
          * 资源模态框点击【保存】
          */
+        saveResource() {
 
-        saveResource(){
+            let resources = this.zTree.getCheckedNodes();
+            console.log("勾选的资源：", resources);
 
-             let resources = this.zTree.getChangeCheckedNodes;
-
-             console.log("勾选的资源：" , resources);
-
-             let resourcesIds = [];
-
+            // 保存时，只需要保存资源id，所以使用id数组进行参数传递
+            let resourceIds = [];
             for (let i = 0; i < resources.length; i++) {
-
-                 resourcesIds.push(resources[i].id);
+                resourceIds.push(resources[i].id);
             }
 
-            axios.post(process.env.VUE_APP_SERVER + '/system/admin/role/save-resource',
-                {
-                    id: this.role.id,
-                    resourcesIds:resourcesIds
-                   }
-
-            ).then((response)=>{
-
+            axios.post(process.env.VUE_APP_SERVER + '/system/admin/role/save-resource', {
+                id: this.role.id,
+                resourceIds: resourceIds
+            }).then((response)=>{
                 let resp = response.data;
                 if (resp.success) {
-                    Toast.success("保存成功！");
+                    Toast.success("保存成功!");
                 } else {
-                    Toast.warning(resp.message)
+                    Toast.warning(resp.message);
                 }
             });
         },
-
 
 
     }
