@@ -1,7 +1,7 @@
 <template>
     <div>
         <p>
-            <button v-on:click="list(1)" class="btn btn-white btn-default btn-round">
+            <button v-on:click="list()" class="btn btn-white btn-default btn-round">
                 <i class="ace-icon fa fa-refresh"></i>
                 刷新
             </button>
@@ -9,7 +9,7 @@
 
         <div class="row">
             <div class="col-md-6">
-                <textarea id="resource-textarea" class="form-control" v-model="resourceStr" name="resource" rows="10"></textarea>
+                <textarea id="resource-textarea" class="form-control" v-model="resourcesStr" name="resource" rows="10"></textarea>
 
                 <br>
                 <button id="save-btn" type="button" class="btn btn-primary" v-on:click="save()">
@@ -40,7 +40,6 @@
     },
     mounted: function() {
 
-       this.$refs.pagination.size = 5;
        this.list();
       // sidebar激活样式方法一
       // this.$parent.activeSidebar("system-resource-sidebar");
@@ -53,7 +52,7 @@
       /**
        * 列表查询
        */
-      list(page) {
+      list() {
 
         Loading.show();
          axios.get(process.env.VUE_APP_SERVER + '/system/admin/resource/load-tree', {
@@ -74,7 +73,7 @@
       save() {
 
           if (Tool.isEmpty(this.resourcesStr)){
-              Toast.warning("资源不能为空")
+              Toast.warning("资源不能为空");
               return
           }
 
