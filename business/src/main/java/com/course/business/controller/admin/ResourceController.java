@@ -48,19 +48,16 @@ return responseDto;
 */
 
 @PostMapping("/save")
-public ResponseDto save(@RequestBody ResourceDto  resourceDto){
+public ResponseDto save(@RequestBody String jsonSte){
 
-LOG.info("ResourceDto:{}",resourceDto);
 
-//保存校验
-            ValidatorUtil.require(resourceDto.getName(), "名称");
-            ValidatorUtil.length(resourceDto.getName(), "名称", 1, 100);
-            ValidatorUtil.length(resourceDto.getPage(), "页面", 1, 50);
-            ValidatorUtil.length(resourceDto.getRequest(), "请求", 1, 200);
-ResponseDto responseDto = new ResponseDto();
-resourceService.save(resourceDto);
-responseDto.setContent(resourceDto);
-return responseDto;
+
+           //保存校验
+            ValidatorUtil.require(jsonSte,"资源");
+
+            ResponseDto responseDto = new ResponseDto();
+            resourceService.saveJson(jsonSte);
+            return responseDto;
 }
 
 
