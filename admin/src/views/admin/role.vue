@@ -231,6 +231,7 @@
                 this.resources = response.content;
                 // 初始化树
                 this.initTree();
+                this.listRoleResource();
             })
         },
 
@@ -284,6 +285,22 @@
             });
         },
 
+        /**
+         * 加载角色资源关联记录
+         */
+        listRoleResource() {
+            axios.get(process.env.VUE_APP_SERVER + '/system/admin/role/list-resource/' + this.role.id).then((response)=>{
+                let resp = response.data;
+                let resources = resp.content;
+
+                // 勾选查询到的资源：先把树的所有节点清空勾选，再勾选查询到的节点
+                this.zTree.checkAllNodes(false);
+                for (let i = 0; i < resources.length; i++) {
+                    let node = this.zTree.getNodeByParam("id", resources[i]);
+                    this.zTree.checkNode(node, true);
+                }
+            });
+        },
 
     }
 
