@@ -1,5 +1,6 @@
 package com.course.business.controller.admin;
 
+import com.course.server.dto.ResourceDto;
 import com.course.server.dto.RoleResourceDto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.ResponseDto;
@@ -74,6 +75,4 @@ roleResourceService.delete(id);
 
 return  responseDto;
 }
-
-
 }

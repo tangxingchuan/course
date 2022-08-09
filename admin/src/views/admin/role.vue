@@ -255,6 +255,43 @@
             this.zTree = $.fn.zTree.init($("#tree"), setting, this.resources);
             this.zTree.expandAll(true);
         },
+
+        /**
+         * 资源模态框点击【保存】
+         */
+
+        saveResource(){
+
+             let resources = this.zTree.getChangeCheckedNodes;
+
+             console.log("勾选的资源：" , resources);
+
+             let resourcesIds = [];
+
+            for (let i = 0; i < resources.length; i++) {
+
+                 resourcesIds.push(resources[i].id);
+            }
+
+            axios.post(process.env.VUE_APP_SERVER + '/system/admin/role/save-resource',
+                {
+                    id: this.role.id,
+                    resourcesIds:resourcesIds
+                   }
+
+            ).then((response)=>{
+
+                let resp = response.data;
+                if (resp.success) {
+                    Toast.success("保存成功！");
+                } else {
+                    Toast.warning(resp.message)
+                }
+            });
+        },
+
+
+
     }
 
   }
