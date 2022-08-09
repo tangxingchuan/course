@@ -51,9 +51,10 @@
         <!--<table tableName="course_content" domainObjectName="CourseContent"/>-->
         <!--<table tableName="teacher" domainObjectName="Teacher"/>-->
         <!--<table tableName="file" domainObjectName="File"/>-->
-        <!--<table tableName="course_content_file" domainObjectName="CourseContentFile"/>
--->
-          <table tableName="user_course" domainObjectName="UserCourse"/>
+        <!--<table tableName="course_content_file" domainObjectName="CourseContentFile"/>-->
+        <!--<table tableName="user_course" domainObjectName="UserCourse"/>-->
+
+            <table tableName="resource" domainObjectName="Resource"/>
 
 
 
