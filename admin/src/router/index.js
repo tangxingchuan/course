@@ -12,6 +12,7 @@ import File from "@/views/admin/file";
 import Content from "@/views/admin/content";
 import UserCourse from "@/views/admin/userCourse";
 import Resource from "@/views/admin/resource";
+import Role from "@/views/admin/role";
 
 Vue.use(VueRouter)
 
@@ -85,6 +86,11 @@ const routes = [
                 name: 'system/resource',
                 path: 'system/resource',
                 component:Resource,
+            },
+            {
+                name: 'system/role',
+                path: 'system/role',
+                component:Role,
             },
             ]
     }
