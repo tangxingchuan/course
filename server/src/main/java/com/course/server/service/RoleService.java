@@ -1,13 +1,12 @@
 package com.course.server.service;
 
-import com.course.server.domain.Role;
-import com.course.server.domain.RoleExample;
-import com.course.server.domain.RoleResource;
-import com.course.server.domain.RoleResourceExample;
+import com.course.server.domain.*;
 import com.course.server.dto.RoleDto;
 import com.course.server.dto.PageDto;
+import com.course.server.dto.RoleUserDto;
 import com.course.server.mapper.RoleMapper;
 import com.course.server.mapper.RoleResourceMapper;
+import com.course.server.mapper.RoleUserMapper;
 import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
@@ -27,6 +26,11 @@ private RoleMapper roleMapper;
 
 @Resource
 private RoleResourceMapper roleResourceMapper;
+
+
+    @Resource
+    private RoleUserMapper roleUserMapper;
+
 
 /**
 * 列表查询
@@ -77,7 +81,7 @@ List<RoleDto> roleDtoList = CopyUtil.copyList(roleList, RoleDto.class);
 
 
     /**
-     * 按角色保存资源树
+     * 按角色保存资源
      * @param roleDto
      */
     public void saveResource(RoleDto roleDto){
@@ -121,6 +125,32 @@ List<RoleDto> roleDtoList = CopyUtil.copyList(roleList, RoleDto.class);
             resourceIdList.add(roleResourceList.get(i).getResourceId());
         }
         return resourceIdList;
+    }
+
+
+    /**
+     * 按角色保存用户
+     * @param roleDto
+     */
+    public void saveUser(RoleDto roleDto){
+
+        String roleId = roleDto.getId();
+        List<String> userIds = roleDto.getUserIds();
+
+        //清空库中所有的当下角色的记录
+        RoleUserExample example = new RoleUserExample();
+        example.createCriteria().andIdEqualTo(roleId);
+        roleUserMapper.selectByExample(example);
+
+        for (int i = 0; i < userIds.size(); i++) {
+
+            RoleUser roleUser = new RoleUser();
+            roleUser.setId(UuidUtil.getShortUuid());
+            roleUser.setRoleId(roleId);
+            roleUser.setUserId(userIds.get(i));
+            roleUserMapper.insert(roleUser);
+        }
+
     }
 
     }

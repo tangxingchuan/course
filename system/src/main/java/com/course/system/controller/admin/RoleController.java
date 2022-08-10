@@ -104,4 +104,18 @@ return  responseDto;
         return responseDto;
     }
 
+
+    /**
+     * 保存用户
+     */
+    @PostMapping("/save-user")
+    public ResponseDto saveUser(@RequestBody RoleDto roleDto){
+
+        LOG.info("保存用户关联开始");
+        ResponseDto responseDto = new ResponseDto();
+        roleService.saveUser(roleDto);
+        responseDto.setContent(roleDto);
+        return responseDto;
+    }
+
 }

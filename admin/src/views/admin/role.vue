@@ -126,7 +126,7 @@
                                   <tr v-for="user in users">
                                       <td>{{user.loginName}}</td>
                                       <td class="text-right">
-                                          <a href="javascript:;" class="">
+                                          <a @click="addUser(user)" href="javascript:;" class="">
                                               <i class="ace-icon fa fa-arrow-circle-right blue"></i>
                                           </a>
                                       </td>
@@ -140,7 +140,7 @@
                                   <tr v-for="user in roleUsers">
                                       <td>{{user.loginName}}</td>
                                       <td class="text-right">
-                                          <a href="javascript:;" class="">
+                                          <a @click="deleteUser(user) " href="javascript:;" class="">
                                               <i class="ace-icon fa fa-trash blue"></i>
                                           </a>
                                       </td>
@@ -400,6 +400,69 @@
                 });
 
               },
+
+        /**
+         * 新增用户
+         * @param user
+         */
+          addUser(user){
+
+               let users = this.roleUsers;
+
+            // 如果当前要添加的用户在右边列表中已经有了，则不用再添加
+               for (let i = 0; i <users.length; i++) {
+                    if (user === users[i]){
+                        return;
+                    }
+
+               }
+
+            this.roleUsers.push(user);
+
+        },
+
+
+        /**
+         * 删除角色中的用户
+         */
+         deleteUser(user){
+
+            Tool.removeObj(this.roleUsers,user);
+
+        },
+
+
+        /**
+         * 保存 用户绑定的角色
+         */
+        saveUser(){
+
+              let users  = this.roleUsers;
+
+            // 保存时，只需要保存用户id，所以使用id数组进行参数传递
+            let userIds = [];
+            for (let i = 0; i <users.length ; i++) {
+
+                userIds.push(users[i].id);
+            }
+
+            Loading.show();
+            axios.post(process.env.VUE_APP_SERVER + '/system/admin/role/save-user',{
+
+                id:this.role.id,
+                userIds: userIds
+
+            }).then((res)=>{
+                console.log("保存角色用户结果：", res);
+                Loading.hide();
+                 let response = res.data;
+                 if (response.success){
+                    Toast.success("保存成功")
+                 }else {
+                     Toast.warning(response.message);
+                 }
+            });
+        },
 
 
     }
