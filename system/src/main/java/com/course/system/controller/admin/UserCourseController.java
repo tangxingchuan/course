@@ -1,4 +1,4 @@
-package com.course.business.controller.admin;
+package com.course.system.controller.admin;
 
 import com.alibaba.fastjson.JSON;
 import com.course.server.dto.*;

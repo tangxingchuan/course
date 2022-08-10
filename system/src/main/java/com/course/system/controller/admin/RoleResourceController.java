@@ -1,4 +1,4 @@
-package com.course.business.controller.admin;
+package com.course.system.controller.admin;
 
 import com.course.server.dto.ResourceDto;
 import com.course.server.dto.RoleResourceDto;
