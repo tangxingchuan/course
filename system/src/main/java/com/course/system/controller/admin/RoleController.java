@@ -118,4 +118,20 @@ return  responseDto;
         return responseDto;
     }
 
+
+    /**
+     * 保存用户
+     */
+    @PostMapping("/list-user/{roleId}")
+    public ResponseDto listUser(@PathVariable String roleId){
+
+
+        LOG.info("加载用户开始");
+        ResponseDto responseDto = new ResponseDto();
+        List<String> userIdList = roleService.listUser(roleId);
+        responseDto.setContent(userIdList);
+        return responseDto;
+    }
+
+
 }

@@ -393,7 +393,7 @@
                     this.resources = response.content;
                     if (response.success){
                       this.users = response.content.list;
-                        console.log(this.users)
+                      this.listRoleUser();
                     }else {
                         Toast.warning(response.message);
                     }
@@ -433,7 +433,7 @@
 
 
         /**
-         * 保存 用户绑定的角色
+         * 角色用户模态框点击【保存】
          */
         saveUser(){
 
@@ -461,6 +461,30 @@
                  }else {
                      Toast.warning(response.message);
                  }
+            });
+        },
+
+        /**
+         * 加载角色用户
+         */
+        listRoleUser() {
+
+            this.roleUsers = [];
+
+            axios.post(process.env.VUE_APP_SERVER + '/system/admin/role/list-user/' + this.role.id).then((res) => {
+
+                let response = res.data;
+                let userIds = response.content;
+
+                // 根据加载到用户ID，到【所有用户数组：users】中查找用户对象，用于列表显示
+                for (let i = 0; i < userIds.length; i++) {
+                    for (let j = 0; j < this.users.length; j++) {
+                        if ( userIds[i] === this.users[j].id ) {
+                            this.roleUsers.push(this.users[j]);
+                        }
+                    }
+                }
+
             });
         },
 
