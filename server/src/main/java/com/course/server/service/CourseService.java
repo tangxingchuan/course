@@ -8,12 +8,14 @@ import com.course.server.dto.CourseContentDto;
 import com.course.server.dto.CourseDto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.SortDto;
+import com.course.server.enums.CourseStatusEnum;
 import com.course.server.mapper.CourseCategoryMapper;
 import com.course.server.mapper.CourseContentMapper;
 import com.course.server.mapper.CourseMapper;
 import com.course.server.mapper.my.MyCourseMapper;
 import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -70,7 +72,28 @@ List<Course> courseList = courseMapper.selectByExample(courseExample);
             pageDto.setList(courseDtoList);
 
 
-            }
+}
+
+
+    /**
+     * 按照提交时间，查询最近提交的三个课程
+     * @param pageDto
+     * @return
+     */
+       public List<CourseDto>  listNew(PageDto pageDto){
+
+           PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
+
+           CourseExample example = new CourseExample();
+           example.createCriteria().andStatusEqualTo(CourseStatusEnum.PUBLISH.getCode());
+           example.setOrderByClause("created_at desc");
+           List<Course> courseList = courseMapper.selectByExample(example);
+           return CopyUtil.copyList(courseList,CourseDto.class);
+
+       }
+
+
+
 
             /**
             * 保存,id有值时更新，无值时新增
