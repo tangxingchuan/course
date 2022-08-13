@@ -25,6 +25,8 @@ public class LoginAdminGatewayFilter implements GatewayFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
 
+
+
         // 请求地址中不包含/admin/的，不是控台请求，不需要拦截
         if (!path.contains("/admin/")) {
             return chain.filter(exchange);
@@ -52,6 +54,8 @@ public class LoginAdminGatewayFilter implements GatewayFilter, Ordered {
             LOG.info("已登录：{}", object);
             return chain.filter(exchange);
         }
+
+
     }
 
     @Override
