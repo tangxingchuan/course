@@ -574,6 +574,10 @@
 
             //接收传过来的用户数据
             this.loginUser =Tool.getLoginUser();
+
+            if (!this.hasResourceRouter(this.$route.name)) {
+                this.$router.push("/login");
+            }
         },
 
         /*这个监听，只对admin下面的子路由有用，其他跳转过来的，就无效了*/
@@ -581,6 +585,12 @@
             $route:{
                 handler:function (val,oldVal) {
                     console.log("------->页面跳转：",val,oldVal)
+
+                    if (!this.hasResourceRouter(val.name)) {
+                        this.$router.push("/login");
+                        return;
+                    }
+
                     this.$nextTick(function () {//页面加载完成后执行
                         this.activeSidebar(this.$route.name.replace("/","-")+"-sidebar");
                     })
@@ -590,6 +600,25 @@
         },
 
         methods:{
+
+
+            /**
+             * 查找是否有权限
+             * @param router
+             */
+            hasResourceRouter(router) {
+                let _this = this;
+                let resources = Tool.getLoginUser().resources;
+                if (Tool.isEmpty(resources)) {
+                    return false;
+                }
+                for (let i = 0; i < resources.length; i++) {
+                    if (router === resources[i].page) {
+                        return true;
+                    }
+                }
+                return false;
+            },
 
             /**
              * 查找是否有权限
