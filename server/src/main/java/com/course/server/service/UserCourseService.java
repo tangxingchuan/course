@@ -1,13 +1,16 @@
 package com.course.server.service;
 
+import com.alibaba.fastjson.JSON;
 import com.course.server.domain.UserCourse;
 import com.course.server.domain.UserCourseExample;
 import com.course.server.dto.LoginUserCourseDto;
+import com.course.server.dto.ResourceDto;
 import com.course.server.dto.UserCourseDto;
 import com.course.server.dto.PageDto;
 import com.course.server.exception.BusinessException;
 import com.course.server.exception.BusinessExceptionCode;
 import com.course.server.mapper.UserCourseMapper;
+import com.course.server.mapper.my.MyUserMapper;
 import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
@@ -20,6 +23,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -27,6 +31,10 @@ public class UserCourseService {
 
 @Resource
 private UserCourseMapper userCourseMapper;
+
+
+    @Resource
+    private MyUserMapper myUserMapper;
 
 
     private static final Logger LOG = LoggerFactory.getLogger(UserCourseMapper.class);
@@ -153,6 +161,31 @@ List<UserCourseDto> userCourseDtoList = CopyUtil.copyList(userCourseList, UserCo
 
         }
 
+    }
+
+
+
+    /**
+     * 为登录用户读取权限
+     */
+    private void setAuth(LoginUserCourseDto loginUserCourseDto) {
+        List<ResourceDto> resourceDtoList = myUserMapper.findResources(loginUserCourseDto.getId());
+        loginUserCourseDto.setResources(resourceDtoList);
+
+        // 整理所有有权限的请求，用于接口拦截
+        HashSet<String> requestSet = new HashSet<>();
+        if (!CollectionUtils.isEmpty(resourceDtoList)) {
+            for (int i = 0, l = resourceDtoList.size(); i < l; i++) {
+                ResourceDto resourceDto = resourceDtoList.get(i);
+                String arrayString = resourceDto.getRequest();
+                List<String> requestList = JSON.parseArray(arrayString, String.class);
+                if (!CollectionUtils.isEmpty(requestList)) {
+                    requestSet.addAll(requestList);
+                }
+            }
+        }
+        LOG.info("有权限的请求：{}", requestSet);
+        loginUserCourseDto.setRequests(requestSet);
     }
 
 
