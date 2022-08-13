@@ -120,6 +120,8 @@ Tool = {
     return uuid.join('');
   },
 
+
+
   /**
    * 查找是否有权限
    * @param id 资源id
