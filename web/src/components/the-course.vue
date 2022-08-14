@@ -12,7 +12,7 @@
                 </div>
                 <span class="badge badge-info"><i class="fa fa-yen" aria-hidden="true"></i>&nbsp;{{course.price}}</span>
                 <span class="badge badge-info"><i class="fa fa-yen" aria-hidden="true"></i>&nbsp;{{course.enroll}}</span>
-
+                <span class="badge badge-info">{{COURSE_LEVEL | optionKV(course.level)}}</span>
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@
 
         data:function () {
             return{
-
+                COURSE_LEVEL:COURSE_LEVEL
 
             }
         }
