@@ -17,7 +17,7 @@ import java.util.List;
 * @author TangKe（唐柯）
 * @date
 */
-@RestController
+@RestController("webCourseController")
 @RequestMapping("/web/course")
 public class CourseController {
 
