@@ -4,6 +4,11 @@
         <div class="album py-5 bg-light">
             <div class="container">
                 <div class="title1"></div>
+                <div class="col-md-12">
+                    <pagination ref="pagination" v-bind:list="listCourse"></pagination>
+
+                </div>
+                <br>
                 <div class="row">
                     <div v-for=" o in courses" class="col-md-4">
                         <the v-bind:course="o"></the>
@@ -21,9 +26,10 @@
     import TheHeader from "../components/the-header";
     import TheFooter from "../components/the-footer";
     import TheCourse from "../components/the-course";
+    import Pagination from "../components/pagination";
 
     export default {
-        components: {TheFooter, TheHeader, TheCourse},
+        components: {Pagination, TheFooter, TheHeader, TheCourse},
         comments: {},
         name: "list",
         data: function () {
@@ -35,6 +41,7 @@
 
         mounted() {
 
+            this.$refs.pagination.size=3;
             this.listCourse(1);
 
 
@@ -48,14 +55,16 @@
                 axios.get(process.env.VUE_APP_SERVER + "/business/web/course/list",{
 
                     page:page,
-                    size:3
+                    size:this.$refs.pagination.size
                 }).then((response) => {
 
                     console.log("查询新上好课结果", response);
                     let res = response.data;
 
                     if ( res.success ) {
-                        this.courses = res.content;
+                        this.courses = res.content.list;
+                        this.$refs.pagination.render(page,res.content.total);
+
                     }
                 }).catch((response) => {
 
