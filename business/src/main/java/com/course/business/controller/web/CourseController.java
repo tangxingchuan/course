@@ -1,6 +1,7 @@
 package com.course.business.controller.web;
 
 import com.course.server.dto.*;
+import com.course.server.enums.CourseStatusEnum;
 import com.course.server.service.CourseCategoryService;
 import com.course.server.service.CourseService;
 import com.course.server.util.ValidatorUtil;
@@ -28,8 +29,10 @@ public static final String BUSINESS_NAME = "课程";
     private CourseService courseService;
 
 
-
-
+    /**
+     * 新上好课查询
+     * @return
+     */
     @GetMapping("/list-new")
     public ResponseDto listNew(){
 
@@ -43,5 +46,19 @@ public static final String BUSINESS_NAME = "课程";
     }
 
 
+    /**
+     * 全部查询课程
+     *
+     * @return
+     */
+    @GetMapping("/list")
+    public ResponseDto listCourse(CoursePageDto coursePageDto) {
+
+        ResponseDto responseDto = new ResponseDto();
+        coursePageDto.setStatus(CourseStatusEnum.PUBLISH.getCode());
+        courseService.list(coursePageDto);
+        responseDto.setContent(coursePageDto);
+        return responseDto;
+    }
 
 }

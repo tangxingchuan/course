@@ -4,10 +4,7 @@ package com.course.server.service;
 import com.course.server.domain.Course;
 import com.course.server.domain.CourseContent;
 import com.course.server.domain.CourseExample;
-import com.course.server.dto.CourseContentDto;
-import com.course.server.dto.CourseDto;
-import com.course.server.dto.PageDto;
-import com.course.server.dto.SortDto;
+import com.course.server.dto.*;
 import com.course.server.enums.CourseStatusEnum;
 import com.course.server.mapper.CourseCategoryMapper;
 import com.course.server.mapper.CourseContentMapper;
@@ -55,24 +52,25 @@ public class CourseService {
     private CourseContentMapper courseContentMapper;
 
 
-
-/**
-* 列表查询
-*/
-public void list(PageDto pageDto) {
-PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
-CourseExample courseExample = new CourseExample();
-CourseExample.Criteria criteria = courseExample.createCriteria();
-
-List<Course> courseList = courseMapper.selectByExample(courseExample);
-    PageInfo<Course> pageInfo = new PageInfo<>(courseList);
-        pageDto.setTotal(pageInfo.getTotal());
+    /**
+     * 列表查询
+     */
+    public void list(CoursePageDto coursePageDto) {
+        PageHelper.startPage(coursePageDto.getPage(), coursePageDto.getSize());
+        CourseExample courseExample = new CourseExample();
+        CourseExample.Criteria criteria = courseExample.createCriteria();
+        if (! StringUtils.isEmpty(coursePageDto.getStatus())) {
+            criteria.andStatusEqualTo(coursePageDto.getStatus());
+        }
+        List<Course> courseList = courseMapper.selectByExample(courseExample);
+        PageInfo<Course> pageInfo = new PageInfo<>(courseList);
+        coursePageDto.setTotal(pageInfo.getTotal());
 
         List<CourseDto> courseDtoList = CopyUtil.copyList(courseList, CourseDto.class);
-            pageDto.setList(courseDtoList);
+        coursePageDto.setList(courseDtoList);
 
 
-}
+    }
 
 
     /**
