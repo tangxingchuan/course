@@ -35,7 +35,6 @@ Object.keys(filter).forEach(key=>{
     console.log("全局过滤",f);
 });
 
-
 // 路由登录拦截
 router.beforeEach((to, from, next) => {
     // 要不要对meta.loginRequire属性做监控拦截

@@ -35,7 +35,7 @@ public static final String BUSINESS_NAME = "课程";
 * 列表查询
 */
 @PostMapping("/list")
-public ResponseDto list(@RequestBody  PageDto pageDto){
+public ResponseDto list(@RequestBody  CoursePageDto pageDto){
 
 LOG.info("pageDto:{}",pageDto);
 ResponseDto responseDto = new ResponseDto();

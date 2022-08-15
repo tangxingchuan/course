@@ -124,8 +124,8 @@
                            this.userCourse = rememberUser
                        }
 
-
-
+            // 初始时加载一次验证码图片
+             this.loadImageCode();
         },
 
 
@@ -171,7 +171,9 @@
                             LocalStorage.set(LOCAL_KEY_REMEMBER_USER,null)
                         }
 
+                        console.log("---------登录走到了这里，能不能跳转1");
                         this.$router.push('/welcome')
+
                     } else {
                         Toast.warning(resp.message);
                         this.userCourse.password='';
