@@ -14,90 +14,74 @@ import UserCourse from "@/views/admin/userCourse";
 import Resource from "@/views/admin/resource";
 import Role from "@/views/admin/role";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
-const routes = [
-    {
+
+export default new VueRouter({
+    mode: "history",
+    base: process.env.BASE_URL,
+    routes: [
+        {
         path: "*",
         redirect: "/login",
     }, {
         path: "",
         redirect: "/login",
-    }, {
+    },
+        {
         path: "/login",
         component: Login
-    },
-    {
-        path: '/',
-        name:'admin',
-        component:Admin,
+    }, {
+        path: "/",
+        name: "admin",
+        component: Admin,
         meta: {
-                loginRequire: true
-            },
-        children:[
-            {
-                name:'welcome',
-                path: 'welcome',
-                component:Welcome,
-            },
-            {
-                name: 'business/category',
-                path: 'business/category',
-                component:Category,
-            },
-            {
-                name: 'business/course',
-                path: 'business/course',
-                component:Course,
-            },
-            {
-                name: 'business/chapter',
-                path: 'business/chapter',
-                component:Chapter,
-            },
-            {
-                name: 'business/section',
-                path: 'business/section',
-                component:Section,
-            },
-            {
-                name: 'business/teacher',
-                path: 'business/teacher',
-                component:Teacher,
-            },
-            {
-                name: 'business/content',
-                path: 'business/content',
-                component:Content,
-            },
-            {
-                name: 'file/file',
-                path: 'file/file',
-                component:File,
-            },
-            {
-                name: 'system/userCourse',
-                path: 'system/userCourse',
-                component:UserCourse,
-            },
-            {
-                name: 'system/resource',
-                path: 'system/resource',
-                component:Resource,
-            },
-            {
-                name: 'system/role',
-                path: 'system/role',
-                component:Role,
-            },
-            ]
-    }
-]
-
-const router = new VueRouter({
-    mode:'history',
-    base:process.env.BASE_URL,
-    routes
+            loginRequire: true
+        },
+        children: [{
+            path: "welcome",
+            name: "welcome",
+            component: Welcome,
+        }, {
+            path: "business/category",
+            name: "business/category",
+            component: Category,
+        }, {
+            path: "business/course",
+            name: "business/course",
+            component: Course,
+        }, {
+            path: "business/chapter",
+            name: "business/chapter",
+            component: Chapter,
+        }, {
+            path: "business/section",
+            name: "business/section",
+            component: Section,
+        }, {
+            path: "business/content",
+            name: "business/content",
+            component: Content,
+        }, {
+            path: "business/teacher",
+            name: "business/teacher",
+            component: Teacher,
+        }, {
+            path: "file/file",
+            name: "file/file",
+            component: File,
+        }, {
+            path: "system/userCourse",
+            name: "system/userCourse",
+            component: UserCourse,
+        }, {
+            path: "system/resource",
+            name: "system/resource",
+            component: Resource,
+        }, {
+            path: "system/role",
+            name: "system/role",
+            component: Role,
+        }]
+    }]
 })
-
-export default router

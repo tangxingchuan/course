@@ -607,7 +607,6 @@
              * @param router
              */
             hasResourceRouter(router) {
-                let _this = this;
                 let resources = Tool.getLoginUser().resources;
                 if (Tool.isEmpty(resources)) {
                     return false;
