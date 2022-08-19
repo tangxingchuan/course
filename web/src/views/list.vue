@@ -63,6 +63,7 @@
                 courses: {},
                 level1:[],
                 level2:[],
+                categorys:[],
             }
         },
 
@@ -106,57 +107,9 @@
              * 所有分类查询
              */
             allCategory() {
-               
-               axios.post(process.env.VUE_APP_SERVER + '/business/web/category/all').then((response)=>{
-                    let resp = response.data;
-                    let categorys = resp.content;
+                axios.post(process.env.VUE_APP_SERVER + "/business/web/category/all").then((response) => {
 
-                    // 将所有记录格式化成树形结构
-                    this.level1 = [];
-                    for (let i = 0; i < categorys.length; i++) {
-                        let c = categorys[i];
-                        if (c.parent === '00000000') {
-                            this.level1.push(c);
-                            for (let j = 0; j < categorys.length; j++) {
-                                let child = categorys[j];
-                                if (child.parent === c.id) {
-                                    if (Tool.isEmpty(c.children)) {
-                                        c.children = [];
-                                    }
-                                    c.children.push(child);
-                                }
-                            }
-                        } else {
-                            this.level2.push(c);
-                        }
-                    }
-                })
-            },
-
-            /**
-             * 点击一级分类时
-             * @param level1Id
-             */
-            onClickLevel1(level1Id) {
-
-            },
-
-            /**
-             * 点击二级分类时
-             * @param level1Id
-             */
-            onClickLevel2(level2Id) {
-
-            },
-
-/*
-
-            /!**
-             * 所有分类查询
-             *!/
-            allCategory() {
-               
-                axios.post(process.env.VUE_APP_SERVER + '/business/web/category/all').then((response)=>{
+                    console.log("结果",response);
                     let resp = response.data;
                     let categorys = resp.content;
                     this.categorys = categorys;
@@ -174,10 +127,10 @@
                 })
             },
 
-            /!**
+            /**
              * 点击一级分类时
              * @param level1Id
-             *!/
+             */
             onClickLevel1(level1Id) {
 
 
@@ -224,10 +177,10 @@
                 this.listCourse(1);
             },
 
-            /!**
+            /**
              * 点击二级分类时
              * @param level1Id
-             *!/
+             */
             onClickLevel2(level2Id) {
 
                 $("#category-" + level2Id).siblings("a").removeClass("on");
@@ -244,7 +197,6 @@
                 // 重新加载课程列表
                 this.listCourse(1);
             },
-*/
 
 
         },
