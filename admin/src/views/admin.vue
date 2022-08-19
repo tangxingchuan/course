@@ -399,7 +399,7 @@
                                 <b class="arrow"></b>
                             </li>
 
-                            <li v-show="hasResource('0103')"  class="" id="system-role-sidebar">
+                            <li  v-show="hasResource('0103')" class="" id="system-role-sidebar">
                                 <router-link to="/system/role">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                    角色管理
@@ -439,7 +439,7 @@
                                 <b class="arrow"></b>
                             </li>
 
-                            <li v-show="hasResource('0203')" class="" id="business-teacher-sidebar">
+                            <li class="" id="business-teacher-sidebar">
                                 <router-link to="/business/teacher">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     讲师管理

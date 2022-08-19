@@ -64,6 +64,8 @@
                 level1:[],
                 level2:[],
                 categorys:[],
+                level1Id:[],
+                level2Id:[],
             }
         },
 

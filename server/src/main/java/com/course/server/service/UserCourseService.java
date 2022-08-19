@@ -152,7 +152,12 @@ List<UserCourseDto> userCourseDtoList = CopyUtil.copyList(userCourseList, UserCo
 
             if (user.getPassword().equals(userCourseDto.getPassword())){
                  // 登录成功
-                return CopyUtil.copy(user,LoginUserCourseDto.class);
+                LoginUserCourseDto loginUserDto = CopyUtil.copy(user, LoginUserCourseDto.class);
+
+                //为登录用户读取权限
+                setAuth(loginUserDto);
+                return loginUserDto;
+
             }else {
 
                 LOG.info("密码不对， 输入密码:{}  数据库密码:{}", userCourseDto.getPassword(),user.getPassword());
