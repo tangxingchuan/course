@@ -359,8 +359,8 @@
                     </div>
                 </div><!-- /.sidebar-shortcuts -->
 
-                <ul class="nav nav-list" id="welcome-sidebar">
-                    <li class="">
+                <ul  class="nav nav-list" >
+                    <li class="" id="welcome-sidebar">
                         <router-link to="/welcome">
                             <i class="menu-icon fa fa-tachometer"></i>
                             <span class="menu-text"> 欢迎：{{loginUser.name}} </span>
