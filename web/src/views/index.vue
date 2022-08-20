@@ -17,7 +17,7 @@
             <div class="container">
                 <div class="title1">最新上线</div>
                 <div class="row">
-                    <div v-for=" o in news"  class="col-md-4">
+                    <div v-for="o in news" class="col-md-4">
                         <the-course v-bind:course="o"></the-course>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
             <div class="container">
                 <div class="title1">好课推荐</div>
                 <div class="row">
-                    <div v-for=" o in news"  class="col-md-4">
+                    <div v-for="o in news"  class="col-md-4">
                         <the-course v-bind:course="o"></the-course>
                     </div>
 
@@ -44,7 +44,7 @@
     import axios from "axios";
     import TheCourse from "../components/the-course";
     export default {
-        name: "index",
+        name: " index ",
         components: {TheCourse},
         data:function () {
 
@@ -64,17 +64,17 @@
              */
             listNew(){
 
-                axios.get(process.env.VUE_APP_SERVER+"/business/web/course/list-new").then((response)=>{
+                axios.get(process.env.VUE_APP_SERVER+"/business/web/course/list-new").then((resp)=>{
 
-                    console.log("查询新上好课结果",response);
-                      let res = response.data;
+                    console.log("查询新上好课结果",resp);
+                      let res = resp.data;
 
                       if (res.success){
                           this.news = res.content;
                       }
-                }).catch((response)=>{
+                }).catch((resp)=>{
 
-                    console.log('error',response);
+                    console.log('error',resp);
                 })
 
             },

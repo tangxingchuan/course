@@ -1,6 +1,5 @@
 <template>
-
-    <div>
+    <main role="main">
         <div class="header-nav">
             <div class="clearfix">
                 <div class="container">
@@ -25,108 +24,95 @@
                 </div>
             </div>
         </div>
-
         <div class="album py-5 bg-light">
             <div class="container">
-                <div class="title1"></div>
-                <div class="col-md-12">
-                    <pagination ref="pagination" v-bind:list="listCourse"></pagination>
-
+                <div class="row">
+                    <div class="col-md-12">
+                        <pagination ref="pagination" v-bind:list="listCourse"></pagination>
+                    </div>
                 </div>
                 <br>
                 <div class="row">
-                    <div v-for=" o in courses" class="col-md-4">
-                        <the v-bind:course="o"></the>
+                    <div v-for="o in courses" class="col-md-4">
+                        <the-course v-bind:course="o"></the-course>
                     </div>
-                    <h3 v-show="courses.length===0">课程还未上架</h3>
+                    <h3 v-show="courses.length === 0">课程还未上架</h3>
                 </div>
             </div>
         </div>
 
-    </div>
+    </main>
 </template>
 
 <script>
+
     import axios from "axios";
-    import TheHeader from "../components/the-header";
-    import TheFooter from "../components/the-footer";
     import TheCourse from "../components/the-course";
     import Pagination from "../components/pagination";
 
     export default {
-        components: {Pagination, TheFooter, TheHeader, TheCourse},
-        comments: {},
-        name: "list",
+        components: {Pagination, TheCourse},
+        name: 'list',
         data: function () {
-
             return {
-                courses: {},
-                level1:[],
-                level2:[],
-                categorys:[],
-                level1Id:[],
-                level2Id:[],
+                courses: [],
+                level1: [],
+                level2: [],
+                categorys: [],
+                level1Id: "",
+                level2Id: "",
             }
         },
-
         mounted() {
-
-            this.$refs.pagination.size=3;
-            this.listCourse(1);
-            this.allCategory();
-
-
+            let _this = this;
+            _this.$refs.pagination.size = 3;
+            _this.listCourse(1);
+            _this.allCategory();
         },
         methods: {
             /**
-             * 查询新上好课
+             * 查询课程列表
              */
             listCourse(page) {
-
-                axios.get(process.env.VUE_APP_SERVER + "/business/web/course/list",{
-
-                    page:page,
-                    size:this.$refs.pagination.size
+                let _this = this;
+                axios.post(process.env.VUE_APP_SERVER + '/business/web/course/list', {
+                    page: page,
+                    size: _this.$refs.pagination.size,
+                    categoryId: _this.level2Id || _this.level1Id || "", // 优先取level2Id
                 }).then((response) => {
-
-                    console.log("查询新上好课结果", response);
-                    let res = response.data;
-
-                    if ( res.success ) {
-                        this.courses = res.content.list;
-                    this.$refs.pagination.render(page,res.content.total);
-
+                    let resp = response.data;
+                    console.log("————————————————")
+                    if (resp.success) {
+                        _this.courses = resp.content.list;
+                        _this.$refs.pagination.render(page, resp.content.total);
                     }
                 }).catch((response) => {
-
-                    console.log('error', response);
+                    console.log("error：", response);
                 })
-
             },
-
 
             /**
              * 所有分类查询
              */
             allCategory() {
-                axios.post(process.env.VUE_APP_SERVER + "/business/web/category/all").then((response) => {
-
-                    console.log("结果",response);
+                let _this = this;
+                axios.post(process.env.VUE_APP_SERVER + '/business/web/category/all').then((response)=>{
                     let resp = response.data;
                     let categorys = resp.content;
-                    this.categorys = categorys;
+                    _this.categorys = categorys;
 
                     // 将所有记录格式化成树形结构
-                    this.level1 = [];
+                    _this.level1 = [];
                     for (let i = 0; i < categorys.length; i++) {
                         let c = categorys[i];
                         if (c.parent === '00000000') {
-                            this.level1.push(c);
+                            _this.level1.push(c);
                         } else {
-                            this.level2.push(c);
+                            _this.level2.push(c);
                         }
                     }
                 })
+                console.log("————————————————")
             },
 
             /**
@@ -134,15 +120,15 @@
              * @param level1Id
              */
             onClickLevel1(level1Id) {
-
+                let _this = this;
 
                 // 点击一级分类时，设置变量，用于课程筛选
                 // 二级分类id为空，
                 // 如果点击的是【全部】，则一级分类id为空
-                this.level2Id = null;
-                this.level1Id = level1Id;
+                _this.level2Id = null;
+                _this.level1Id = level1Id;
                 if (level1Id === "00000000") {
-                    this.level1Id = null;
+                    _this.level1Id = null;
                 }
 
                 // 点击一级分类时，显示激活状态
@@ -154,14 +140,14 @@
                 $("#category-11111111").addClass("on");
 
                 // 注意：要先把level2中所有的值清空，再往里放
-                this.level2 = [];
-                let categorys = this.categorys;
+                _this.level2 = [];
+                let categorys = _this.categorys;
                 // 如果点击的是【全部】，则显示所有的二级分类
                 if (level1Id === '00000000') {
                     for (let i = 0; i < categorys.length; i++) {
                         let c = categorys[i];
                         if (c.parent !== "00000000") {
-                            this.level2.push(c);
+                            _this.level2.push(c);
                         }
                     }
                 }
@@ -170,13 +156,13 @@
                     for (let i = 0; i < categorys.length; i++) {
                         let c = categorys[i];
                         if (c.parent === level1Id) {
-                            this.level2.push(c);
+                            _this.level2.push(c);
                         }
                     }
                 }
 
                 // 重新加载课程列表
-                this.listCourse(1);
+                _this.listCourse(1);
             },
 
             /**
@@ -184,31 +170,26 @@
              * @param level1Id
              */
             onClickLevel2(level2Id) {
-
+                let _this = this;
                 $("#category-" + level2Id).siblings("a").removeClass("on");
                 $("#category-" + level2Id).addClass("on");
 
                 // 点击二级分类时，设置变量，用于课程筛选
                 // 如果点击的是【无限】，则二级分类id为空
                 if (level2Id === "11111111") {
-                    this.level2Id = null;
+                    _this.level2Id = null;
                 } else {
-                    this.level2Id = level2Id;
+                    _this.level2Id = level2Id;
                 }
 
                 // 重新加载课程列表
-                this.listCourse(1);
+                _this.listCourse(1);
             },
 
-
-        },
-
-
+        }
     }
 </script>
-
-<style scoped>
-
+<style>
     /* 头部 一级分类 */
     .header-nav {
         height: auto;
@@ -282,5 +263,4 @@
     .skill a:hover {
         background: #d9dde1;
     }
-
 </style>

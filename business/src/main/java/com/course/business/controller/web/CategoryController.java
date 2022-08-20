@@ -37,6 +37,7 @@ private CategoryService categoryService;
         ResponseDto responseDto = new ResponseDto();
         List<CategoryDto> categoryDtoList = categoryService.all();
         responseDto.setContent(categoryDtoList);
+        LOG.info("查找课程2：{}", responseDto);
         return responseDto;
     }
 
