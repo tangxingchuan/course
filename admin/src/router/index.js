@@ -35,9 +35,9 @@ export default new VueRouter({
         path: "/",
         name: "admin",
         component: Admin,
-        // meta: {
-        //     loginRequire: true
-        // },
+        meta: {
+            loginRequire: true
+        },
         children: [{
             path: "welcome",
             name: "welcome",

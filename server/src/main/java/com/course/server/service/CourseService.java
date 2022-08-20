@@ -57,17 +57,10 @@ public class CourseService {
      */
     public void list(CoursePageDto coursePageDto) {
         PageHelper.startPage(coursePageDto.getPage(), coursePageDto.getSize());
-        CourseExample courseExample = new CourseExample();
-        CourseExample.Criteria criteria = courseExample.createCriteria();
-        if (! StringUtils.isEmpty(coursePageDto.getStatus())) {
-            criteria.andStatusEqualTo(coursePageDto.getStatus());
-        }
-        List<Course> courseList = courseMapper.selectByExample(courseExample);
-        PageInfo<Course> pageInfo = new PageInfo<>(courseList);
+        List<CourseDto> courseDtoList = myCourseMapper.list(coursePageDto);
+        PageInfo<CourseDto> pageInfo = new PageInfo<>(courseDtoList);
         coursePageDto.setTotal(pageInfo.getTotal());
-
-        List<CourseDto> courseDtoList = CopyUtil.copyList(courseList, CourseDto.class);
-        coursePageDto.setList(courseDtoList);
+        coursePageDto.setList(pageInfo.getList());
 
 
     }
