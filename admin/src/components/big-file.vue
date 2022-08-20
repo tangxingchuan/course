@@ -9,6 +9,7 @@
 </template>
 
 <script>
+
     import axios from "axios";
     export default {
         name: 'big-file',
@@ -25,13 +26,12 @@
             use: {
                 default: ""
             },
-            shardSize:{
+            shardSize: {
                 default: 50 * 1024
-            } ,
-            url:{
-                default:"oss-append"
             },
-
+            url: {
+                default: "oss-append"
+            },
             afterUpload: {
                 type: Function,
                 default: null
@@ -43,9 +43,9 @@
         },
         methods: {
             uploadFile () {
-
+                let _this = this;
                 let formData = new window.FormData();
-                let file =  this.$refs.file.files[0];
+                let file = _this.$refs.file.files[0];
 
                 console.log(JSON.stringify(file));
                 /*
@@ -70,7 +70,7 @@
                  */
 
                 // 判断文件格式
-                let suffixs =  this.suffixs;
+                let suffixs = _this.suffixs;
                 let fileName = file.name;
                 let suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length).toLowerCase();
                 let validateSuffix = false;
@@ -82,14 +82,14 @@
                 }
                 if (!validateSuffix) {
                     Toast.warning("文件格式不正确！只支持上传：" + suffixs.join(","));
-                    $("#" +  this.inputId + "-input").val("");
+                    $("#" + _this.inputId + "-input").val("");
                     return;
                 }
 
                 // 文件分片
-                 //let shardSize = 10 * 1024 * 1024;    //以10MB为一个分片
-                //let shardSize = 50 * 1024;    //以50KB为一个分片
-                let shardSize = this.shardSize;
+                // let shardSize = 10 * 1024 * 1024;    //以10MB为一个分片
+                // let shardSize = 50 * 1024;    //以50KB为一个分片
+                let shardSize = _this.shardSize;
                 let shardIndex = 1;		//分片索引，1表示第1个分片
                 let size = file.size;
                 let shardTotal = Math.ceil(size / shardSize); //总片数
@@ -98,14 +98,14 @@
                     'shardIndex': shardIndex,
                     'shardSize': shardSize,
                     'shardTotal': shardTotal,
-                    'use':  this.use,
+                    'use': _this.use,
                     'name': file.name,
                     'suffix': suffix,
                     'size': file.size,
                     'key': key62
                 };
 
-                 this.check(param);
+                _this.check(param);
             },
 
 
@@ -114,28 +114,28 @@
              * 检查文件状态，是否已上传过？传到第几个分片？
              */
             check (param) {
-
-               axios.get(process.env.VUE_APP_SERVER + '/file/admin/check/' + param.key).then((response)=>{
+                let _this = this;
+                axios.get(process.env.VUE_APP_SERVER + '/file/admin/check/' + param.key).then((response)=>{
                     let resp = response.data;
                     if (resp.success) {
                         let obj = resp.content;
                         if (!obj) {
                             param.shardIndex = 1;
                             console.log("没有找到文件记录，从分片1开始上传");
-                             this.upload(param);
+                            _this.upload(param);
                         } else if (obj.shardIndex === obj.shardTotal) {
                             // 已上传分片 = 分片总数，说明已全部上传完，不需要再上传
                             Toast.success("文件极速秒传成功！");
-                             this.afterUpload(resp);
-                            $("#" +  this.inputId + "-input").val("");
+                            _this.afterUpload(resp);
+                            $("#" + _this.inputId + "-input").val("");
                         }  else {
                             param.shardIndex = obj.shardIndex + 1;
                             console.log("找到文件记录，从分片" + param.shardIndex + "开始上传");
-                             this.upload(param);
+                            _this.upload(param);
                         }
                     } else {
                         Toast.warning("文件上传失败");
-                        $("#" +  this.inputId + "-input").val("");
+                        $("#" + _this.inputId + "-input").val("");
                     }
                 })
             },
@@ -144,11 +144,11 @@
              * 将分片数据转成base64进行上传
              */
             upload (param) {
-
+                let _this = this;
                 let shardIndex = param.shardIndex;
                 let shardTotal = param.shardTotal;
                 let shardSize = param.shardSize;
-                let fileShard =  this.getFileShard(shardIndex, shardSize);
+                let fileShard = _this.getFileShard(shardIndex, shardSize);
                 // 将图片转为base64进行传输
                 let fileReader = new FileReader();
 
@@ -159,18 +159,18 @@
 
                     param.shard = base64;
 
-                    axios.post(process.env.VUE_APP_SERVER + '/file/admin/' + this.url, param).then((response) => {
-                            let resp  = response.data;
+                    axios.post(process.env.VUE_APP_SERVER + '/file/admin/oss-append' , param).then((response) => {
+                        let resp = response.data;
                         console.log("上传文件成功：", resp);
                         Progress.show(parseInt(shardIndex * 100 / shardTotal));
                         if (shardIndex < shardTotal) {
                             // 上传下一个分片
                             param.shardIndex = param.shardIndex + 1;
-                             this.upload(param);
+                            _this.upload(param);
                         } else {
                             Progress.hide();
-                             this.afterUpload(resp);
-                            $("#" +  this.inputId + "-input").val("");
+                            _this.afterUpload(resp);
+                            $("#" + _this.inputId + "-input").val("");
                         }
                     });
                 };
@@ -178,8 +178,8 @@
             },
 
             getFileShard (shardIndex, shardSize) {
-
-                let file =  this.$refs.file.files[0];
+                let _this = this;
+                let file = _this.$refs.file.files[0];
                 let start = (shardIndex - 1) * shardSize;	//当前分片起始位置
                 let end = Math.min(file.size, start + shardSize); //当前分片结束位置
                 let fileShard = file.slice(start, end); //从文件中截取当前的分片数据
@@ -187,8 +187,8 @@
             },
 
             selectFile () {
-
-                $("#" +  this.inputId + "-input").trigger("click");
+                let _this = this;
+                $("#" + _this.inputId + "-input").trigger("click");
             }
         }
     }
