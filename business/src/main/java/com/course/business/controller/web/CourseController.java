@@ -36,15 +36,12 @@ public static final String BUSINESS_NAME = "课程";
     @GetMapping("/list-new")
     public ResponseDto listNew(){
 
-
         PageDto pageDto = new PageDto();
         pageDto.setPage(1);
         pageDto.setSize(3);
         ResponseDto responseDto = new ResponseDto();
         List<CourseDto> courseDtos = courseService.listNew(pageDto);
         responseDto.setContent(courseDtos);
-
-        LOG.info("打印日志{}",courseDtos);
         return responseDto;
     }
 
@@ -54,14 +51,13 @@ public static final String BUSINESS_NAME = "课程";
      *
      * @return
      */
-    @PostMapping("/list")
-    public ResponseDto listCourse(@RequestBody CoursePageDto coursePageDto) {
+    @GetMapping("/list")
+    public ResponseDto listCourse(CoursePageDto coursePageDto) {
 
         ResponseDto responseDto = new ResponseDto();
         coursePageDto.setStatus(CourseStatusEnum.PUBLISH.getCode());
         courseService.list(coursePageDto);
         responseDto.setContent(coursePageDto);
-        LOG.info("查找课程：{}", responseDto);
         return responseDto;
     }
 
