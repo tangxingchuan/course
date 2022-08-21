@@ -84,4 +84,20 @@ List<TeacherDto> teacherDtoList = CopyUtil.copyList(teacherList, TeacherDto.clas
     public void delete(String id) {
     teacherMapper.deleteByPrimaryKey(id);
     }
+
+
+    /**
+     * 查找id
+     * @param id
+     * @return
+     */
+    public TeacherDto findId(String id){
+
+        Teacher teacher = teacherMapper.selectByPrimaryKey(id);
+        return CopyUtil.copy(teacher,TeacherDto.class);
+
+    }
+
+
+
     }

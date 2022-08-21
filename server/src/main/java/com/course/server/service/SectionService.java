@@ -111,5 +111,20 @@ public void list(SectionPageDto sectionPageDto) {
             }
 
 
+    /**
+     * 查询某一个课程下的所有节
+     * @param id
+     * @return
+     */
+    public List<SectionDto> listByCourse (String id){
+
+                SectionExample example = new SectionExample();
+                example.createCriteria().andChapterIdEqualTo(id);
+                List<Section> sectionList = sectionMapper.selectByExample(example);
+                List<SectionDto> sectionDtoList = CopyUtil.copyList(sectionList,SectionDto.class);
+
+                return sectionDtoList;
+            }
+
 
             }

@@ -3,6 +3,8 @@ package com.course.server.service;
 
 import com.course.server.domain.Chapter;
 import com.course.server.domain.ChapterExample;
+import com.course.server.domain.Course;
+import com.course.server.domain.CourseExample;
 import com.course.server.dto.ChapterDto;
 import com.course.server.dto.ChapterPageDto;
 import com.course.server.dto.PageDto;
@@ -93,6 +95,20 @@ public class ChapterService {
     public void delete(String id) {
         chapterMapper.deleteByPrimaryKey(id);
 
+    }
+
+    /**
+     * 查询某一课程下面的所有章
+     * @param id
+     * @return
+     */
+    public List<ChapterDto> listByCourse(String id){
+
+        ChapterExample example = new ChapterExample();
+        example.createCriteria().andCourseIdEqualTo(id);
+        List<Chapter> chapterList = chapterMapper.selectByExample(example);
+        List<ChapterDto> chapterDtoList = CopyUtil.copyList(chapterList,ChapterDto.class);
+        return chapterDtoList;
     }
 
 

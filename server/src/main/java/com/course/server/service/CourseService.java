@@ -6,9 +6,7 @@ import com.course.server.domain.CourseContent;
 import com.course.server.domain.CourseExample;
 import com.course.server.dto.*;
 import com.course.server.enums.CourseStatusEnum;
-import com.course.server.mapper.CourseCategoryMapper;
-import com.course.server.mapper.CourseContentMapper;
-import com.course.server.mapper.CourseMapper;
+import com.course.server.mapper.*;
 import com.course.server.mapper.my.MyCourseMapper;
 import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
@@ -44,12 +42,28 @@ public class CourseService {
     @Resource
     private MyCourseMapper myCourseMapper;
 
-
+    /*课程分类的业务层*/
     @Resource
     private CourseCategoryService courseCategoryService;
 
     @Resource
     private CourseContentMapper courseContentMapper;
+
+
+    /*讲师的业务层*/
+    @Resource
+    private TeacherService teacherService;
+
+    /*大章的业务层*/
+    @Resource
+    private ChapterService chapterService;
+
+    /*小节的业务层*/
+    @Resource
+    private SectionService sectionService;
+
+
+
 
 
     /**
@@ -204,6 +218,49 @@ public class CourseService {
 
           }
 
+     }
+
+
+    /**
+     * 查找某一课程，供web模块用，只能查已发布的
+     * @param id
+     * @return
+     */
+     public CourseDto findCourse(String id){
+
+         Course course  = courseMapper.selectByPrimaryKey(id);
+
+         if (course == null || !CourseStatusEnum.PUBLISH.getCode().equals(course.getStatus())){
+
+             return null;
+         }
+
+         CourseDto courseDto = CopyUtil.copy(course, CourseDto.class);
+
+         //查询内容
+         CourseContent courseContent = courseContentMapper.selectByPrimaryKey(id);
+
+          if (courseContent != null){
+              courseDto.setContent(courseContent.getContent());
+         }
+
+         //查询讲师信息 findById
+         TeacherDto teacherDto = teacherService.findId(id);
+          courseDto.setTeacher(teacherDto);
+
+
+         //查找章信息  listByCourse
+
+         List<ChapterDto> chapterDtoList = chapterService.listByCourse(id);
+         courseDto.setChapters(chapterDtoList);
+
+
+         //查找节信息  listBySection
+
+         List<SectionDto> sectionDtoList = sectionService.listByCourse(id);
+         courseDto.setSections(sectionDtoList);
+
+         return courseDto;
      }
 
 }
