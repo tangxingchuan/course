@@ -266,7 +266,7 @@ var apiContent = {
 			{id:414, pId:4, t:"getNodeByTId", name:"getNodeByTId (tId)", iconSkin:"core", showAPI:true},
 			{id:415, pId:4, t:"getNodeIndex", name:"getNodeIndex (node)", iconSkin:"core", showAPI:true},
 			{id:416, pId:4, t:"getNodes", name:"getNodes ()", iconSkin:"core", showAPI:true},
-			{id:431, pId:4, t:"getNodesByFilter", name:"getNodesByFilter (filter, isSingle, parentNode, invokeParam)", iconSkin:"core", showAPI:true},
+			{id:431, pId:4, t:"getNodesByFilter", name:"getNodesByFilter (filters, isSingle, parentNode, invokeParam)", iconSkin:"core", showAPI:true},
 			{id:417, pId:4, t:"getNodesByParam", name:"getNodesByParam (key, value, parentNode)", iconSkin:"core", showAPI:true},
 			{id:418, pId:4, t:"getNodesByParamFuzzy", name:"getNodesByParamFuzzy (key, value, parentNode)", iconSkin:"core", showAPI:true},
 			{id:419, pId:4, t:"getSelectedNodes", name:"getSelectedNodes ()", iconSkin:"core", showAPI:true},
