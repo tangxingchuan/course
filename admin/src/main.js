@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from "axios";
-import filter from "@/filter/filter";
+import filters from "@/filters/filters";
 
 Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;
@@ -30,8 +30,8 @@ axios.interceptors.response.use(function (response) {
 
 
 // 全局过滤器
-Object.keys(filter).forEach(key => {
-    Vue.filter(key, filter[key])
+Object.keys(filters).forEach(key => {
+    Vue.filter(key, filters[key])
 });
 
 // 路由登录拦截

@@ -39,8 +39,8 @@
           <td>{{section.id}}</td>
           <td>{{section.title}}</td>
           <td>{{section.vod}}</td>
-          <td>{{section.time | formatSecond }}</td>
-          <td>{{CHARGE | optionKV(section.charge) }}</td>
+          <td>{{section.time | formatSecond}}</td>
+          <td>{{CHARGE | optionKV(section.charge)}}</td>
           <td>{{section.sort}}</td>
       <td>
           <button v-on:click="play(section)" class="btn btn-xs btn-info">
@@ -106,19 +106,19 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">视频</label>
                     <div class="col-sm-10">
-                        <input v-model="section.video | formatSecond" class="form-control" disabled>
+                        <input v-model="section.video " class="form-control" disabled>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">VOD</label>
                     <div class="col-sm-10">
-                        <input v-model="section.vod | formatSecond" class="form-control" disabled>
+                        <input v-model="section.vod " class="form-control" disabled>
                     </div>
                 </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label">时长</label>
                 <div class="col-sm-10">
-                  <input v-model="section.time | formatSecond" class="form-control">
+                  <input v-model="section.time " class="form-control">
                 </div>
               </div>
               <div class="form-group">
