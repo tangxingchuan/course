@@ -2,14 +2,10 @@ package com.course.business.controller.web;
 
 import com.course.server.dto.*;
 import com.course.server.enums.CourseStatusEnum;
-import com.course.server.service.CourseCategoryService;
 import com.course.server.service.CourseService;
-import com.course.server.util.ValidatorUtil;
-import com.github.pagehelper.PageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import sun.jvm.hotspot.debugger.Page;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -59,6 +55,20 @@ public static final String BUSINESS_NAME = "课程";
         courseService.list(coursePageDto);
         responseDto.setContent(coursePageDto);
         return responseDto;
+    }
+
+
+    /**
+     * 根据课程id
+     * @param id
+     * @return
+     */
+      @GetMapping("/find/{id}")
+      public ResponseDto findCourse(@PathVariable String id){
+        ResponseDto responseDto = new ResponseDto();
+          CourseDto course = courseService.findCourse(id);
+          responseDto.setContent(course);
+          return responseDto;
     }
 
 }

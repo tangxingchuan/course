@@ -75,9 +75,40 @@ public class CourseDto {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatedAt;
 
+    /**
+     * 分类
+     */
     private List<CategoryDto> categorys;
 
+
+    /**
+     * 大章
+     */
+    private List<ChapterDto> chapters;
+
+    /**
+     * 小节
+     */
+    private List<SectionDto> sections;
+
+    /**
+     * 内容
+     */
+    private String content;
+
+
+    /**
+     * 讲师
+     */
+    private TeacherDto teacher;
+
+
+
+    /**
+     * 讲师id
+     */
     private String teacherId;
+
 
     public String getId() {
         return id;
@@ -191,6 +222,38 @@ public class CourseDto {
         this.categorys = categorys;
     }
 
+    public List<ChapterDto> getChapters() {
+        return chapters;
+    }
+
+    public void setChapters(List<ChapterDto> chapters) {
+        this.chapters = chapters;
+    }
+
+    public List<SectionDto> getSections() {
+        return sections;
+    }
+
+    public void setSections(List<SectionDto> sections) {
+        this.sections = sections;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public TeacherDto getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(TeacherDto teacher) {
+        this.teacher = teacher;
+    }
+
     public String getTeacherId() {
         return teacherId;
     }
@@ -216,8 +279,11 @@ public class CourseDto {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", categorys=" + categorys +
+                ", chapters=" + chapters +
+                ", sections=" + sections +
+                ", content='" + content + '\'' +
+                ", teacher=" + teacher +
                 ", teacherId='" + teacherId + '\'' +
                 '}';
     }
-
 }
