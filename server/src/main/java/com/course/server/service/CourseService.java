@@ -245,7 +245,7 @@ public class CourseService {
          }
 
          //查询讲师信息 findById
-         TeacherDto teacherDto = teacherService.findId(id);
+         TeacherDto teacherDto = teacherService.findId(courseDto.getTeacherId());
           courseDto.setTeacher(teacherDto);
 
 

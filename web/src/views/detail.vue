@@ -1,71 +1,72 @@
 <template>
-    <main role="main">
-        <div class="album py-5 bg-light">
-            <div class="container">
-                <div class="row course-head">
-                    <div class="col-sm-6" id="cover-video-div">
-                        <img class="img-fluid" v-bind:src="course.image">
+        <main role="main">
+            <div class="album py-5 bg-light">
+                <div class="container">
+                    <div class="row course-head">
+                        <div class="col-sm-6" id="cover-video-div">
+                            <img class="img-fluid" v-bind:src="course.image">
+                        </div>
+                        <div class="col-sm-6">
+                            <h1>{{course.name}}</h1>
+                            <p class="course-head-item">
+                                <span><i class="fa fa-clock-o"></i> {{(course.time) | formatSecond}}</span>
+                                <span>{{COURSE_LEVEL | optionKV(course.level)}}</span>
+                                <span><i class="fa fa-user"></i> {{course.enroll}}</span>
+                            </p>
+                            <p class="course-head-desc">{{course.summary}}</p>
+                            <p class="course-head-price">
+                                <span class="price-now text-danger"><i class="fa fa-yen"></i>&nbsp;{{course.price}}&nbsp;&nbsp;</span>
+                            </p>
+                            <p class="course-head-button-links">
+                                <a class="btn btn-lg btn-primary btn-shadow" href="javascript:;">立即报名</a>
+                            </p>
+                        </div>
                     </div>
-                    <div class="col-sm-6">
-                        <h1>{{course.name}}</h1>
-                        <p class="course-head-item">
-                            <span><i class="fa fa-clock-o"></i> {{(course.time) | formatSecond}}</span>
-                            <span>{{COURSE_LEVEL | optionKV(course.level)}}</span>
-                            <span><i class="fa fa-user"></i> {{course.enroll}}</span>
-                        </p>
-                        <p class="course-head-desc">{{course.summary}}</p>
-                        <p class="course-head-price">
-                            <span class="price-now text-danger"><i class="fa fa-yen"></i>&nbsp;{{course.price}}&nbsp;&nbsp;</span>
-                        </p>
-                        <p class="course-head-button-links">
-                            <a class="btn btn-lg btn-primary btn-shadow" href="javascript:;">立即报名</a>
-                        </p>
-                    </div>
-                </div>
 
-                <div class="row">
+                    <div class="row">
 
-                    <!-- 课程内容 & 大章小节 -->
-                    <div class="col-md-9">
-                        <!-- Nav tabs -->
-                        <ul class="nav nav-tabs">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#info" data-toggle="tab">课程介绍</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#chapter" data-toggle="tab">章节目录</a>
-                            </li>
-                        </ul>
+                        <!-- 课程内容 & 大章小节 -->
+                        <div class="col-md-9">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#info" data-toggle="tab">课程介绍</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#chapter" data-toggle="tab">章节目录</a>
+                                </li>
+                            </ul>
 
-                        <br>
+                            <br>
 
-                        <!-- Tab panes -->
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="info" v-html="course.content">
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="info" v-html="course.content">
+                                </div>
+                                <div class="tab-pane" id="chapter">
+                                </div>
                             </div>
-                            <div class="tab-pane" id="chapter">
+
+                        </div>
+
+                        <!-- 讲师信息 -->
+                        <div class="col-md-3">
+                            <div class="card" style="width: 18rem;">
+                                <img v-bind:src="teacher.image" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{teacher.name}}</h5>
+                                    <p class="card-text">{{teacher.motto}}</p>
+                                    <hr>
+                                    <p  class="card-text">{{teacher.intro}}</p>
+                                </div>
                             </div>
                         </div>
 
                     </div>
-
-                    <!-- 讲师信息 -->
-                    <div class="col-md-3">
-                        <div class="card" style="width: 18rem;">
-                            <img v-bind:src="teacher.image" class="card-img-top">
-                            <div class="card-body">
-                                <h5 class="card-title">{{teacher.name}}</h5>
-                                <p class="card-text">{{teacher.motto}}</p>
-                                <p class="card-text">{{teacher.intro}}</p>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
-        </div>
 
-    </main>
+        </main>
 </template>
 
 <script>
@@ -79,7 +80,7 @@
                 id:"",
                 course:{},
                 teacher:{},
-                chapters:[],
+                chapter:[],
                 sections:[],
                 COURSE_LEVEL:COURSE_LEVEL
             }
@@ -100,9 +101,11 @@
                            let res = resp.data;
                            this.course = res.content;
                            this.teacher = this.course.teacher ||{};
-                           this.chapters = this.course.chapters ||{};
+                           this.chapter = this.course.chapter ||{};
                            this.sections = this.course.sections ||{};
-                })
+                });
+
+                console.log("信息：",this.chapters)
 
             }
 
