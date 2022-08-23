@@ -1,14 +1,13 @@
-
 [{
     "id": "00", "name": "欢迎", "page": "welcome"
 }, {
     "id": "01", "name": "系统管理",
     "children": [{
-        "id": "0101", "name": "用户管理", "page": "system/UserCourse",
+        "id": "0101", "name": "用户管理", "page": "system/user",
         "children": [
-            {"id": "010101", "name": "保存", "request": ["/system/admin/UserCourse/list", "/system/admin/UserCourse/save"]},
-            {"id": "010102", "name": "删除", "request": ["/system/admin/UserCourse/delete"]},
-            {"id": "010103", "name": "重置密码", "request": ["/system/admin/UserCourse/save-password"]}
+            {"id": "010101", "name": "保存", "request": ["/system/admin/user/list", "/system/admin/user/save"]},
+            {"id": "010102", "name": "删除", "request": ["/system/admin/user/delete"]},
+            {"id": "010103", "name": "重置密码", "request": ["/system/admin/user/save-password"]}
         ]
     }, {
         "id": "0102", "name": "资源管理", "page": "system/resource",
