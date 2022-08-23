@@ -97,7 +97,7 @@
                           v-bind:use="FILE_USE.COURSE.key"></vod>
                     <div v-show="course.image" class="row">
                         <div class="col-md-9">
-                            <player v-bind:player-id=" 'form-plater-div' " ref="player"></player>
+                            <player v-bind:player-id=" 'form-player-div' " ref="player"></player>
                             <video  v-bind:src="section.video" class="hidden" content="controls" id="video"></video>
                         </div>
                     </div>
@@ -144,6 +144,7 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+      <modal-player ref="modalPlayer"></modal-player>
   </div>
 </template>
 
@@ -152,10 +153,9 @@
   import Pagination from "../../components/pagination";
   import vod from "../../components/vod";
   import Player from "../../components/player";
-
-
+  import ModalPlayer from "../../components/modal-player";
   export default {
-    components: {Player, vod, Pagination},
+    components: {ModalPlayer, Player, vod, Pagination},
     name: "business-section",
     data: function() {
       return {
@@ -233,7 +233,7 @@
         if (1 != 1
           || !Validator.require( this.section.title, "标题")
           || !Validator.length( this.section.title, "标题", 1, 50)
-          || !Validator.length( this.section.video, "视频", 1, 200)
+          || !Validator.length( this.section.video, "视频", 1, 2000)
         ) {
           return;
         }
