@@ -13,6 +13,7 @@ import Content from "@/views/admin/content";
 import UserCourse from "@/views/admin/userCourse";
 import Resource from "@/views/admin/resource";
 import Role from "@/views/admin/role";
+import Member from "@/views/admin/member";
 
 Vue.use(VueRouter);
 
@@ -62,6 +63,10 @@ export default new VueRouter({
             path: "business/content",
             name: "business/content",
             component: Content,
+        }, {
+            path: "business/member",
+            name: "business/member",
+            component: Member,
         }, {
             path: "business/teacher",
             name: "business/teacher",

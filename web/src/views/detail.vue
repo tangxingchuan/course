@@ -169,7 +169,7 @@
              */
 
             play(section){
-                
+
                 if(section.charge === this.SECTION_CHARGE.CHARGE.key){
 
                     Toast.warning("请先登录");
