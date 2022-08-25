@@ -75,13 +75,12 @@
              */
             listCourse(page) {
                 let _this = this;
-                axios.post(process.env.VUE_APP_SERVER + '/business/web/course/list', {
+                axios.get(process.env.VUE_APP_SERVER + '/business/web/course/list', {
                     page: page,
                     size: _this.$refs.pagination.size,
                     categoryId: _this.level2Id || _this.level1Id || "", // 优先取level2Id
                 }).then((response) => {
                     let resp = response.data;
-                    console.log("————————————————")
                     if (resp.success) {
                         _this.courses = resp.content.list;
                         _this.$refs.pagination.render(page, resp.content.total);

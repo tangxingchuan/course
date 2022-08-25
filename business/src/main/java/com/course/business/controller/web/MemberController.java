@@ -1,26 +1,23 @@
-package com.course.business.controller.admin;
+package com.course.business.controller.web;
 
 import com.course.server.dto.MemberDto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.ResponseDto;
-import com.course.server.exception.ValidatorException;
 import com.course.server.service.MemberService;
 import com.course.server.util.ValidatorUtil;
-import org.apache.ibatis.annotations.Delete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
 * @author TangKe（唐柯）
 * @date
 */
-@RestController
-@RequestMapping("/admin/member")
+@RestController("webMemberController")
+@RequestMapping("/web/member")
 public class MemberController {
 
 private static final Logger LOG = LoggerFactory.getLogger(MemberController.class);
@@ -48,8 +45,8 @@ return responseDto;
 * 保存，id有值时更新，无值时新增
 */
 
-@PostMapping("/save")
-public ResponseDto save(@RequestBody MemberDto  memberDto){
+@PostMapping("/register")
+public ResponseDto register(@RequestBody MemberDto  memberDto){
 
 LOG.info("MemberDto:{}",memberDto);
 
@@ -60,6 +57,8 @@ LOG.info("MemberDto:{}",memberDto);
             ValidatorUtil.length(memberDto.getName(), "昵称", 1, 50);
             ValidatorUtil.length(memberDto.getPhoto(), "头像url", 1, 200);
 
+            //密码加密
+           memberDto.setPassword(DigestUtils.md5DigestAsHex(memberDto.getPassword().getBytes()));
 
 ResponseDto responseDto = new ResponseDto();
 memberService.save(memberDto);
