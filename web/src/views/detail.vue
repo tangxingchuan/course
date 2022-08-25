@@ -131,8 +131,8 @@
                            this.sections = this.course.sections ||{};
 
 
-                    for (let i = 0; i < this.chapter.length; i++) {
-                        let c = this.chapter[i];
+                    for (let i = 0; i < this.chapters.length; i++) {
+                        let c = this.chapters[i];
                         c.sections=[];
                         for (let j = 0; j < this.sections.length; j++) {
                             let s = this.sections[j];

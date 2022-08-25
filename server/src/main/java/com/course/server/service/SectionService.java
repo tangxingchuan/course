@@ -116,10 +116,10 @@ public void list(SectionPageDto sectionPageDto) {
      * @param id
      * @return
      */
-    public List<SectionDto> listByCourse (String id){
+    public List<SectionDto> listByCourse (String courseId){
 
                 SectionExample example = new SectionExample();
-                example.createCriteria().andChapterIdEqualTo(id);
+                example.createCriteria().andChapterIdEqualTo(courseId);
                 List<Section> sectionList = sectionMapper.selectByExample(example);
                 List<SectionDto> sectionDtoList = CopyUtil.copyList(sectionList,SectionDto.class);
 
