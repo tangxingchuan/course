@@ -189,6 +189,10 @@
                 })
             },
 
+            /**
+             * 加载图形验证码
+             */
+
             loadImageCode(){
 
                      this.imageCodeToken = Tool.uuid(8);
