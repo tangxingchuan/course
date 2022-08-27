@@ -88,6 +88,7 @@ Tool = {
   /**
    * 保存登录用户信息
    */
+
   setLoginMember: function (loginMember) {
     SessionStorage.set(SESSION_KEY_LOGIN_MEMBER, loginMember);
   },
@@ -95,6 +96,7 @@ Tool = {
   /**
    * 获取登录用户信息
    */
+
   getLoginMember: function () {
     return SessionStorage.get(SESSION_KEY_LOGIN_MEMBER) || {};
   },

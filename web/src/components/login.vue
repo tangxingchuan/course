@@ -3,14 +3,13 @@
         <div class="modal-dialog modal-login" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <!--登录框-->
                     <div class="login-div" v-show="MODAL_STATUS === STATUS_LOGIN">
                         <h3>登&nbsp;&nbsp;录</h3>
                         <div class="form-group">
                             <input v-model="member.mobile" class="form-control" placeholder="手机号">
                         </div>
                         <div class="form-group">
-                            <input class="form-control" type="password" placeholder="密码" v-model="member.passwordOriginal">
+                            <input class="form-control" type="password" placeholder="密码" v-model="member.password">
                         </div>
                         <div class="form-group">
                             <div class="input-group">
@@ -22,14 +21,14 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <button class="btn btn-primary btn-block submit-button">
+                            <button v-on:click="login()" class="btn btn-primary btn-block submit-button">
                                 登&nbsp;&nbsp;录
                             </button>
                         </div>
                         <div class="form-group">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" class=" rememberMe" v-model="remember"> 记住密码
+                                    <input type="checkbox" class="remember" v-model="remember"> 记住密码
                                 </label>
                                 <div class="pull-right">
                                     <a href="javascript:;" v-on:click="toForgetDiv()">忘记密码</a>&nbsp;
@@ -40,7 +39,6 @@
                         <div class="form-group to-register-div">
                         </div>
                     </div>
-                    <!--注册框-->
                     <div class="register-div" v-show="MODAL_STATUS === STATUS_REGISTER">
                         <h3>注&nbsp;&nbsp;册</h3>
                         <div class="form-group">
@@ -80,7 +78,6 @@
                             <a href="javascript:;" v-on:click="toLoginDiv()">我要登录</a>
                         </div>
                     </div>
-                    <!--遗忘密码框-->
                     <div class="forget-div" v-show="MODAL_STATUS === STATUS_FORGET">
                         <h3>忘记密码</h3>
                         <div class="form-group">
@@ -139,12 +136,12 @@
                 memberRegister: {},
 
                 remember: true, // 记住密码
-                imageCodeToken: ""
+                imageCodeToken: "",
             }
         },
         mounted() {
-            let _this = this;
-            _this.toLoginDiv();
+
+            this.toLoginDiv();
         },
         methods: {
 
@@ -152,33 +149,38 @@
              * 打开登录注册窗口
              */
             openLoginModal() {
-                let _this = this;
-                //显示登录框时就刷新一次验证码图片
-                _this.loadImageCode();
                 $("#login-modal").modal("show");
             },
 
             //---------------登录框、注册框、忘记密码框切换-----------------
             toLoginDiv() {
-                let _this = this;
-                _this.MODAL_STATUS = _this.STATUS_LOGIN
 
+                // 从缓存中获取记住的用户名密码，如果获取不到，说明上一次没有勾选“记住我”
+                let rememberMember =LocalStorage.get(LOCAL_KEY_REMEMBER_MEMBER);
+                if (rememberMember ){
+                    this.member =rememberMember;
+                }
+
+                //显示登录框时就刷新一次验证码图片
+                this.loadImageCode();
+
+                this.MODAL_STATUS = this.STATUS_LOGIN
             },
             toRegisterDiv() {
-                let _this = this;
-                _this.MODAL_STATUS = _this.STATUS_REGISTER
+
+                this.MODAL_STATUS = this.STATUS_REGISTER
             },
             toForgetDiv() {
-                let _this = this;
-                _this.MODAL_STATUS = _this.STATUS_FORGET
+
+                this.MODAL_STATUS = this.STATUS_FORGET
             },
 
             register() {
-                let _this = this;
-                _this.memberRegister.password = hex_md5(_this.memberRegister.passwordOriginal + KEY);
+
+                this.memberRegister.password = hex_md5(this.memberRegister.passwordOriginal + KEY);
 
                 // 调服务端注册接口
-                axios.post(process.env.VUE_APP_SERVER + '/business/web/member/register', _this.memberRegister).then((response) => {
+                axios.post(process.env.VUE_APP_SERVER + '/business/web/member/register', this.memberRegister).then((response) => {
                     let resp = response.data;
                     if (resp.success) {
                         Toast.success("注册成功");
@@ -189,13 +191,64 @@
             },
 
             //------------------------登录框-------------------
+
+            login(){
+
+                // 如果密码是从缓存带出来的，则不需要重新加密
+                let md5 =  hex_md5(this.member.password);
+                let rememberUser  = LocalStorage.get(LOCAL_KEY_REMEMBER_MEMBER) || {};
+                if (md5 !== rememberUser.md5){
+
+                    this.member.password = hex_md5(this.member.password + KEY);
+                }
+
+                this.member.imageCodeToken = this.imageCodeToken;
+
+                axios.post(process.env.VUE_APP_SERVER + '/business/web/member/login',  this.member).then((response)=>{
+
+                    let resp = response.data;
+                    if (resp.success) {
+                        console.log("登录成功 ：",resp.content);
+                        let loginMember = resp.content;
+
+                        Tool.setLoginMember(resp.content);
+                        //判断"记住我"
+                        if (this.remember){
+
+                            // 如果勾选记住我，则将用户名密码保存到本地缓存
+                            // 原：这里需要保存密码明文，否则登录时又会再加一层密
+                            // 新：这里保存密码密文，并保存密文md5，用于检测密码是否被重新输入过
+                            let md5 = hex_md5(this.member.password);
+                            LocalStorage.set(LOCAL_KEY_REMEMBER_MEMBER,{
+                                mobile: loginMember.mobile,
+                                password: this.member.password,
+                                md5: md5
+                            });
+                        }else {
+                            //如果没有勾选"记住我"，要把本地缓存清空，否则按照mounted的逻辑，下次打开时会自动显示用户名和密码
+                            LocalStorage.set(LOCAL_KEY_REMEMBER_MEMBER,null)
+                        }
+
+
+                       //登录成功
+                        this.$parent.setLoginMember(loginMember);
+                        $("#login-modal".modal("hide"))
+
+                    } else {
+                        Toast.warning(resp.message);
+                        this.member.password='';
+                        this.loadImageCode();
+                    }
+                })
+            },
+
             /**
              * 加载图形验证码
              */
             loadImageCode(){
-                let _this = this;
-                _this.imageCodeToken = Tool.uuid(8);
-                $('#image-code').attr('src',process.env.VUE_APP_SERVER + '/business/web/kaptcha/image-code/'+ _this.imageCodeToken);
+
+                this.imageCodeToken = Tool.uuid(8);
+                $('#image-code').attr('src',process.env.VUE_APP_SERVER + '/business/web/kaptcha/image-code/'+ this.imageCodeToken);
             }
 
         }
