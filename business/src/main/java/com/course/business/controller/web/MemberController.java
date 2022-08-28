@@ -129,4 +129,26 @@ return  responseDto;
         return responseDto;
     }
 
+
+    /**
+     * 退出登录
+     */
+
+    @GetMapping("/loginOut/{token}")
+    public ResponseDto loginOut(@PathVariable String token){
+
+        ResponseDto responseDto = new ResponseDto();
+
+        //request.getSession().removeAttribute(constant.LOGIN_USER);
+
+        //移除redis中的验证码
+        redisTemplate.delete(token);
+
+        LOG.info("从redis中时删除token:{}",token);
+        return responseDto;
+
+
+    }
+
+
 }

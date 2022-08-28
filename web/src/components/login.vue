@@ -232,7 +232,7 @@
 
                        //登录成功
                         this.$parent.setLoginMember(loginMember);
-                        $("#login-modal".modal("hide"))
+                        $("#login-modal").modal("hide");
 
                     } else {
                         Toast.warning(resp.message);

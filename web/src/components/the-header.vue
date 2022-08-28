@@ -30,7 +30,8 @@
                         </li>
                     </ul>
                     <span v-show="loginMember.id" class="text-white">欢迎：{{ loginMember.name}}</span>
-                    <button v-on:click="openLoginModal()" class="btn btn-outline-light my-2 my-sm-0" type="submit">登录/注册</button>
+                    <button v-show="loginMember.id" v-on:click="logout()" class="btn btn-outline-light my-2 my-sm-0">退出登录</button>
+                    <button v-show="!loginMember.id" v-on:click="openLoginModal()" class="btn btn-outline-light my-2 my-sm-0">登录/注册</button>
                 </div>
             </div>
         </nav>
@@ -39,6 +40,7 @@
 </template>
 
 <script>
+    import axios from "axios";
     import TheLogin from "./login";
     export default {
         name: "the-header",
@@ -67,7 +69,21 @@
                 let _this = this;
                 _this.loginMember =loginMember;
 
-            }
+            },
+            logout () {
+
+                axios.get(process.env.VUE_APP_SERVER + '/business/web/member/loginOut/' + this.loginMember.token).then((response)=>{
+                    let resp = response.data;
+                    if (resp.success) {
+                        Tool.setLoginMember(null);
+                        this.loginMember = {};
+                        Toast.success("退出登录成功");
+                        this.$router.push("/");
+                    } else {
+                        Toast.warning(resp.message);
+                    }
+                });
+            },
 
         }
 
