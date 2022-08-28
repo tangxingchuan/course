@@ -4,6 +4,9 @@ import com.course.server.domain.Sms;
 import com.course.server.domain.SmsExample;
 import com.course.server.dto.SmsDto;
 import com.course.server.dto.PageDto;
+import com.course.server.enums.SmsStatusEnum;
+import com.course.server.exception.BusinessException;
+import com.course.server.exception.BusinessExceptionCode;
 import com.course.server.mapper.SmsMapper;
 import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
@@ -69,4 +72,54 @@ List<SmsDto> smsDtoList = CopyUtil.copyList(smsList, SmsDto.class);
     public void delete(String id) {
     smsMapper.deleteByPrimaryKey(id);
     }
+
+
+    /**
+     * 发送短信
+     * 在一分钟内，同样的操作，只能有一次
+     * @param smsDto
+     */
+    public void sendCode(SmsDto smsDto){
+
+        SmsExample example = new SmsExample();
+
+        SmsExample.Criteria criteria = example.createCriteria();
+
+        criteria.andMobileEqualTo(smsDto.getMobile())
+                .andUseEqualTo(smsDto.getUse())
+                .andStatusEqualTo(SmsStatusEnum.NOT_USED.getCode())
+                .andAtGreaterThan(new Date(new Date().getTime() - 1 * 60 * 1000));
+
+           List<Sms> smsList = smsMapper.selectByExample(example);
+
+           if (smsList == null || smsList.size() == 0){
+
+               saveAndSend(smsDto);
+           }else {
+
+                throw new BusinessException(BusinessExceptionCode.MOBILE_CODE_TOO_FREQUENT);
+           }
+
+
+    }
+
+
+    /**
+     * 保存并发送短信验证码
+     * @param smsDto
+     */
+    public  void  saveAndSend(SmsDto smsDto){
+
+           String code = String.valueOf((int) (((Math.random() * 9) + 1) * 100000));
+           smsDto.setAt(new Date());
+           smsDto.setStatus(SmsStatusEnum.NOT_USED.getCode());
+           smsDto.setCode(code);
+           this.save(smsDto);
+
+
+
+           //TODO 第三方短信接口发送短信
+
+       }
+
     }

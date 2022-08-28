@@ -242,6 +242,37 @@
                 })
             },
 
+
+            /**
+             * 发送注册短信
+             */
+            sendSmsForRegister() {
+                let sms = {
+                    mobile: this.memberRegister.mobile,
+                    use: SMS_USE.REGISTER.key
+                };
+
+                this.sendSmsCode(sms);
+            },
+
+            /**
+             * 发送短信
+             */
+            sendSmsCode(sms) {
+
+
+                // 调服务端发短信接口
+                axios.post(process.env.VUE_APP_SERVER + '/business/web/sms/send', sms).then((res)=> {
+                    let response = res.data;
+                    if (response.success) {
+                        Toast.success("短信已发送")
+                    } else {
+                        Toast.warning(response.message);
+                    }
+                })
+            },
+
+
             /**
              * 加载图形验证码
              */
