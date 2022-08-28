@@ -3,8 +3,6 @@
 <mapper namespace="com.course.server.mapper.my.MyCourseMapper">
 
 
-      <!-- web前端[全部课程]页面，查询课程列表   -->
-
     <!-- web端【全部课程】页面，查询课程列表 -->
     <select id="list" resultType="com.course.server.dto.CourseDto">
         select c.id, c.name, c.summary, time, price, image, level,
@@ -24,7 +22,6 @@
         </if>
         order by c.sort asc
     </select>
-
 
 
 

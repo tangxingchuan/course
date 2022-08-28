@@ -226,41 +226,32 @@ public class CourseService {
      * @param id
      * @return
      */
-     public CourseDto findCourse(String id){
+    public CourseDto findCourse(String id) {
+        Course course = courseMapper.selectByPrimaryKey(id);
+        if (course == null || !CourseStatusEnum.PUBLISH.getCode().equals(course.getStatus())) {
+            return null;
+        }
+        CourseDto courseDto = CopyUtil.copy(course, CourseDto.class);
 
-         Course course  = courseMapper.selectByPrimaryKey(id);
+        // 查询内容
+        CourseContent content = courseContentMapper.selectByPrimaryKey(id);
+        if (content != null) {
+            courseDto.setContent(content.getContent());
+        }
 
-         if (course == null || !CourseStatusEnum.PUBLISH.getCode().equals(course.getStatus())){
+        // 查找讲师信息
+        TeacherDto teacherDto = teacherService.findId(courseDto.getTeacherId());
+        courseDto.setTeacher(teacherDto);
 
-             return null;
-         }
+        // 查找章信息
+        List<ChapterDto> chapterDtoList = chapterService.listByCourse(id);
+        courseDto.setChapters(chapterDtoList);
 
-         CourseDto courseDto = CopyUtil.copy(course, CourseDto.class);
+        // 查找节信息
+        List<SectionDto> sectionDtoList = sectionService.listByCourse(id);
+        courseDto.setSections(sectionDtoList);
 
-         //查询内容
-         CourseContent courseContent = courseContentMapper.selectByPrimaryKey(id);
-
-          if (courseContent != null){
-              courseDto.setContent(courseContent.getContent());
-         }
-
-         //查询讲师信息 findById
-         TeacherDto teacherDto = teacherService.findId(courseDto.getTeacherId());
-          courseDto.setTeacher(teacherDto);
-
-
-         //查找章信息  listByCourse
-
-         List<ChapterDto> chapterDtoList = chapterService.listByCourse(id);
-         courseDto.setChapters(chapterDtoList);
-
-
-         //查找节信息  listBySection
-
-         List<SectionDto> sectionDtoList = sectionService.listByCourse(id);
-         courseDto.setSections(sectionDtoList);
-
-         return courseDto;
-     }
+        return courseDto;
+    }
 
 }

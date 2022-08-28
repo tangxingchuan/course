@@ -43,9 +43,9 @@
 
             playVod (vod) {
                 let _this = this;
-                Loading.show();
+
                 axios.get(process.env.VUE_APP_SERVER + '/file/web/get-auth/' + vod).then((response)=>{
-                    Loading.hide();
+
                     let resp = response.data;
                     if (resp.success) {
                         //如果已经有播放器了，则将播放器div删除

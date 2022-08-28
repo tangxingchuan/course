@@ -134,14 +134,14 @@
                            this.sections = this.course.sections ||{};
 
 
+                    // 将所有的节放入对应的章中
                     for (let i = 0; i < this.chapters.length; i++) {
                         let c = this.chapters[i];
-                        c.sections=[];
+                        c.sections = [];
                         for (let j = 0; j < this.sections.length; j++) {
                             let s = this.sections[j];
-
-                            if (c.id === s.chapterId ){
-                                c.sections.push(s)
+                            if (c.id === s.chapterId) {
+                                c.sections.push(s);
                             }
                         }
                          Tool.sortAsc(c.sections,"sort")
@@ -167,10 +167,9 @@
             /**
              * 播放视频
              */
+            play: function (section) {
 
-            play(section){
-
-                if(section.charge === this.SECTION_CHARGE.CHARGE.key){
+                if ( section.charge === this.SECTION_CHARGE.CHARGE.key ) {
 
                     Toast.warning("请先登录");
                 } else {

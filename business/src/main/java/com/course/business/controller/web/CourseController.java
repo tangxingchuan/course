@@ -65,9 +65,11 @@ public static final String BUSINESS_NAME = "课程";
      */
       @GetMapping("/find/{id}")
       public ResponseDto findCourse(@PathVariable String id){
+          LOG.info("课程查找开始:{}",id);
         ResponseDto responseDto = new ResponseDto();
           CourseDto course = courseService.findCourse(id);
           responseDto.setContent(course);
+          LOG.info("课程查找结束:{}",responseDto);
           return responseDto;
     }
 
