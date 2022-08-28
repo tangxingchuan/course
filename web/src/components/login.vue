@@ -252,24 +252,48 @@
                     use: SMS_USE.REGISTER.key
                 };
 
-                this.sendSmsCode(sms);
+                this.sendSmsCode(sms, "register-send-code-btn");
             },
 
             /**
              * 发送短信
              */
-            sendSmsCode(sms) {
-
+            sendSmsCode(sms, btnId) {
 
                 // 调服务端发短信接口
                 axios.post(process.env.VUE_APP_SERVER + '/business/web/sms/send', sms).then((res)=> {
                     let response = res.data;
                     if (response.success) {
                         Toast.success("短信已发送")
+
+                        // 开始倒计时
+                        this.countdown = 60;
+                        this.setTime(btnId)
                     } else {
                         Toast.warning(response.message);
                     }
                 })
+            },
+
+            /**
+             * 倒计时
+             * @param btnId
+             */
+            setTime(btnId) {
+                let btn = $("#" + btnId);
+                if (this.countdown === 0) {
+                    btn.removeAttr("disabled");
+                    btn.text("获取验证码");
+                    return;
+                } else {
+                    btn.attr("disabled", true);
+                    btn.text("重新发送(" + this.countdown + ")");
+                    this.countdown--;
+                }
+
+                setTimeout(function () {
+                   this.setTime(btnId)
+                }, 1000);
             },
 
 

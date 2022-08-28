@@ -18,7 +18,6 @@
         <th>用途</th>
         <th>生成时间</th>
         <th>用途</th>
-        <th>操作</th>
       </tr>
       </thead>
 
@@ -30,11 +29,6 @@
         <td>{{SMS_USE | optionKV(sms.use)}}</td>
         <td>{{sms.at}}</td>
         <td>{{SMS_STATUS | optionKV(sms.status)}}</td>
-      <td>
-        <div class="hidden-sm hidden-xs btn-group">
-
-        </div>
-      </td>
       </tr>
       </tbody>
     </table>
