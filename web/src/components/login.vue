@@ -289,6 +289,34 @@
 
             register() {
 
+                // 提交之前，先校验所有输入框
+                // 注意：当有一个文本框校验为false时，其它不校验
+                // let validateResult = this.onRegisterMobileBlur() &&
+                //     this.onRegisterMobileCodeBlur() &&
+                //     this.onRegisterNameBlur() &&
+                //     this.onRegisterPasswordBlur() &&
+                //     this.onRegisterConfirmPasswordBlur();
+                // if (!validateResult) {
+                //     return;
+                // }
+
+                let validateResult1 = this.onRegisterMobileBlur();
+                let validateResult2 = this.onRegisterMobileCodeBlur();
+                let validateResult3 = this.onRegisterNameBlur() ;
+                let validateResult4 = this.onRegisterPasswordBlur();
+                let validateResult5 = this.onRegisterConfirmPasswordBlur();
+
+                let validateResult = validateResult1 &&
+                    validateResult2&&
+                    validateResult3&&
+                    validateResult4&&
+                    validateResult5;
+
+                if (!validateResult) {
+                          return;
+                }
+
+
                 this.memberRegister.password = hex_md5(this.memberRegister.passwordOriginal + KEY);
 
                 // 调服务端注册接口
