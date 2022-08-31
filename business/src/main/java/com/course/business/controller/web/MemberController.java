@@ -151,4 +151,29 @@ return  responseDto;
     }
 
 
+    /**
+     * 校验手机号是否存在
+     * @param mobile
+     * @return
+     */
+    @GetMapping(value = "/is-mobile-exist/{mobile}")
+    public ResponseDto isMobileExist (@PathVariable(value = "mobile") String mobile){
+
+        LOG.info("查询手机号是否存在:{}",mobile);
+        ResponseDto responseDto = new ResponseDto();
+        MemberDto memberDto = memberService.findByMobile(mobile);
+
+
+        if (memberDto == null){
+
+            responseDto.setSuccess(false);
+        }else {
+            responseDto.setContent(true);
+        }
+
+        return responseDto;
+
+    }
+
+
 }

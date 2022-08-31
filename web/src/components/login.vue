@@ -252,7 +252,23 @@
                     use: SMS_USE.REGISTER.key
                 };
 
-                this.sendSmsCode(sms, "register-send-code-btn");
+                axios.get(process.env.VUE_APP_SERVER + '/business/web/member/is-mobile-exist/' + this.memberRegister.mobile).then((res)=> {
+                    let response = res.data;
+
+                    if (response.success){
+
+                        Toast.warning("手机号已经被注册")
+
+                    }else {
+
+                        //调用服务端去发送短信
+                        this.sendSmsCode(sms, "register-send-code-btn");
+                    }
+
+
+                })
+
+
             },
 
             /**
@@ -275,6 +291,7 @@
                 })
             },
 
+
             /**
              * 倒计时
              * @param btnId
@@ -292,10 +309,9 @@
                 }
 
                 setTimeout(function () {
-                   this.setTime(btnId)
+                    this.setTime(btnId)
                 }, 1000);
             },
-
 
             /**
              * 加载图形验证码
