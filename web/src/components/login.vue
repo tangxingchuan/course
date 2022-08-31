@@ -50,7 +50,9 @@
                         </div>
                         <div class="form-group">
                             <div class="input-group">
-                                <input  id="register-mobile-code" class="form-control"
+                                <input  v-on:blur="onRegisterMobileCodeBlur()"
+                                        v-bind:class="registerMobileCodeValidateClass"
+                                    id="register-mobile-code" class="form-control"
                                        placeholder="手机验证码" v-model="memberRegister.code">
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary" id="register-send-code-btn"
@@ -58,19 +60,30 @@
                                     </button>
                                 </div>
                             </div>
+                            <span v-show="registerMobileCodeValidate === false" class="text-danger">请输入短信6位验证码</span>
                         </div>
                         <div class="form-group">
-                            <input id="register-name" v-model="memberRegister.name"
+                            <input v-on:blur="onRegisterNameBlur()"
+                                   v-bind:class="registerNameValidateClass"
+                                id="register-name" v-model="memberRegister.name"
                                    class="form-control" placeholder="昵称">
+
+                            <span v-show="registerNameValidate === false" class="text-danger">昵称2到20位中文，字母，数字，下划线组合</span>
                         </div>
                         <div class="form-group">
-                            <input id="register-password" v-model="memberRegister.passwordOriginal"
+                            <input   v-on:blur="onRegisterPasswordBlur()"
+                                     v-bind:class="registerPasswordValidateClass"
+                                id="register-password" v-model="memberRegister.passwordOriginal"
                                    class="form-control" placeholder="密码" type="password">
+                            <span v-show="registerPasswordValidate === false" class="text-danger">密码最少8位，最少8位，包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符</span>
                         </div>
                         <div class="form-group">
-                            <input id="register-confirm-password" v-model="memberRegister.confirm"
+                            <input v-on:blur="onRegisterConfirmPasswordBlur()"
+                                   v-bind:class="registerConfirmPasswordValidateClass"
+                                id="register-confirm-password" v-model="memberRegister.confirm"
                                    class="form-control" placeholder="确认密码"
                                    name="memberRegisterConfirm" type="password">
+                            <span v-show="registerConfirmPasswordValidate === false" class="text-danger">确认密码和密码一致</span>
                         </div>
                         <div class="form-group">
                             <button class="btn btn-primary btn-block submit-button" v-on:click="register()">
@@ -143,18 +156,54 @@
 
                 //注册框显示错误信息
                 registerMobileValidate:'',
+                registerMobileCodeValidate:'',
+                registerNameValidate:'',
+                registerPasswordValidate:'',
+                registerConfirmPasswordValidate:'',
+
             }
         },
 
         computed:{
+            //---------------------------计算属性--------------------
+
             registerMobileValidateClass:function () {
                 return{
                     "border_success" : this.registerMobileValidate ===true,
                     "border_danger" : this.registerMobileValidate ===false,
 
                 }
-            }
+            },
 
+            registerMobileCodeValidateClass:function () {
+                return{
+                    "border_success" : this.registerMobileCodeValidate ===true,
+                    "border_danger" : this.registerMobileCodeValidate ===false,
+
+                }
+            },
+
+            registerNameValidateClass:function () {
+                return{
+                    "border_success" : this.registerNameValidate ===true,
+                    "border_danger" : this.registerNameValidate ===false,
+
+                }
+            },
+            registerPasswordValidateClass:function () {
+                return{
+                    "border_success" : this.registerPasswordValidate ===true,
+                    "border_danger" : this.registerPasswordValidate ===false,
+
+                }
+            },
+            registerConfirmPasswordValidateClass:function () {
+                return{
+                    "border_success" : this.registerConfirmPasswordValidate ===true,
+                    "border_danger" : this.registerConfirmPasswordValidate ===false,
+
+                }
+            },
         },
 
         mounted() {
@@ -162,6 +211,51 @@
             this.toLoginDiv();
         },
         methods: {
+
+            //---------------登录框注册校验-----------------
+
+            //手机号校验
+            onRegisterMobileBlur: function () {
+
+                this.registerMobileValidate  = Pattern.validateMobile(this.memberRegister.mobile);
+                return this.registerMobileValidate;
+            },
+
+            //验证码校验
+            onRegisterMobileCodeBlur: function () {
+
+                this.registerMobileCodeValidate  = Pattern.validateMobileCode(this.memberRegister.code);
+                return this.registerMobileValidate;
+            },
+
+            //昵称校验
+            onRegisterNameBlur: function () {
+
+                this.registerNameValidate  = Pattern.validateName(this.memberRegister.name);
+                return this.registerMobileValidate;
+            },
+
+            //密码校验
+            onRegisterPasswordBlur: function () {
+
+                this.registerPasswordValidate  = Pattern.validatePasswordStrong(this.memberRegister.password);
+                return this.registerMobileValidate;
+            },
+
+            //密码再次校验
+            onRegisterConfirmPasswordBlur: function () {
+
+                let confirmPassword  = $("#register-confirm-password").val();
+                if (Tool.isEmpty(confirmPassword) ){
+
+                    return this.registerConfirmPasswordValidate = false;
+                }
+
+                return this.registerConfirmPasswordValidate = (confirmPassword === this.memberRegister.passwordOriginal);
+
+            },
+
+
 
             /**
              * 打开登录注册窗口
@@ -209,6 +303,7 @@
             },
 
             //------------------------登录框-------------------
+
 
             login(){
 
@@ -349,12 +444,7 @@
             },
 
 
-            //---------------登录框注册校验-----------------
-            onRegisterMobileBlur: function () {
 
-               this.registerMobileValidate  = Pattern.validateMobile(this.memberRegister.mobile);
-               return this.registerMobileValidate;
-            }
 
         }
     }
