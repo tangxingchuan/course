@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 * @date
 */
 @RestController("webMemberCourseController")
-@RequestMapping("/web/memberCourse")
+@RequestMapping("/web/member-course")
 public class MemberCourseController {
 
 private static final Logger LOG = LoggerFactory.getLogger(MemberCourseController.class);
