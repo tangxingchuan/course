@@ -53,4 +53,4 @@ private MemberCourseService memberCourseService;
         return responseDto;
     }
 }
-}
+
