@@ -42,12 +42,15 @@
                     <div class="register-div" v-show="MODAL_STATUS === STATUS_REGISTER">
                         <h3>注&nbsp;&nbsp;册</h3>
                         <div class="form-group">
-                            <input id="register-mobile" v-model="memberRegister.mobile"
+                            <input v-on:blur="onRegisterMobileBlur()"
+                                   v-bind:class="registerMobileValidateClass"
+                                id="register-mobile" v-model="memberRegister.mobile"
                                    class="form-control" placeholder="手机号">
+                            <span v-show="registerMobileValidate  === false" class="text-danger">手机号11位数，且不能重复</span>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
-                                <input id="register-mobile-code" class="form-control"
+                                <input  id="register-mobile-code" class="form-control"
                                        placeholder="手机验证码" v-model="memberRegister.code">
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary" id="register-send-code-btn"
@@ -137,8 +140,23 @@
 
                 remember: true, // 记住密码
                 imageCodeToken: "",
+
+                //注册框显示错误信息
+                registerMobileValidate:'',
             }
         },
+
+        computed:{
+            registerMobileValidateClass:function () {
+                return{
+                    "border_success" : this.registerMobileValidate ===true,
+                    "border_danger" : this.registerMobileValidate ===false,
+
+                }
+            }
+
+        },
+
         mounted() {
 
             this.toLoginDiv();
@@ -243,10 +261,18 @@
             },
 
 
+
+            //------------------------注册短信验证-------------------
             /**
              * 发送注册短信
              */
             sendSmsForRegister() {
+
+
+                if(!this.onRegisterMobileBlur()){
+                    return false;
+                }
+
                 let sms = {
                     mobile: this.memberRegister.mobile,
                     use: SMS_USE.REGISTER.key
@@ -320,6 +346,14 @@
 
                 this.imageCodeToken = Tool.uuid(8);
                 $('#image-code').attr('src',process.env.VUE_APP_SERVER + '/business/web/kaptcha/image-code/'+ this.imageCodeToken);
+            },
+
+
+            //---------------登录框注册校验-----------------
+            onRegisterMobileBlur: function () {
+
+               this.registerMobileValidate  = Pattern.validateMobile(this.memberRegister.mobile);
+               return this.registerMobileValidate;
             }
 
         }
