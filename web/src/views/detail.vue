@@ -168,15 +168,22 @@
 
             /**
              * 播放视频
+             * @param section
              */
-            play: function (section) {
-
-                if ( section.charge === this.SECTION_CHARGE.CHARGE.key ) {
-
-                    Toast.warning("请先登录");
-                } else {
-                    this.$refs.modalPlayer.playVod(section.vod);
+            play(section) {
+                if (section.charge === this.SECTION_CHARGE.CHARGE.key ) {
+                    let loginMember = Tool.getLoginMember();
+                    if (Tool.isEmpty(loginMember)) {
+                        Toast.warning("请先登录");
+                        return;
+                    } else {
+                        if (Tool.isEmpty(this.memberCourse)) {
+                            Toast.warning("请先报名");
+                            return;
+                        }
+                    }
                 }
+                this.$refs.modalPlayer.playVod(section.vod);
             },
 
 
