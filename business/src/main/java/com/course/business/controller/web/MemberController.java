@@ -3,6 +3,7 @@ package com.course.business.controller.web;
 import com.alibaba.fastjson.JSON;
 import com.course.server.dto.*;
 import com.course.server.enums.SmsUseEnum;
+import com.course.server.exception.BusinessException;
 import com.course.server.service.MemberService;
 import com.course.server.service.SmsService;
 import com.course.server.util.UuidUtil;
@@ -187,6 +188,27 @@ return  responseDto;
 
         return responseDto;
 
+    }
+
+
+    @PostMapping("/reset-password")
+    public ResponseDto resetPassword(@RequestBody MemberDto memberDto) throws BusinessException {
+        LOG.info("会员密码重置开始:");
+        memberDto.setPassword(DigestUtils.md5DigestAsHex(memberDto.getPassword().getBytes()));
+        ResponseDto<MemberDto> responseDto = new ResponseDto();
+
+        // 校验短信验证码
+        SmsDto smsDto = new SmsDto();
+        smsDto.setMobile(memberDto.getMobile());
+        smsDto.setCode(memberDto.getSmsCode());
+        smsDto.setUse(SmsUseEnum.FORGET.getCode());
+        smsService.validCode(smsDto);
+        LOG.info("短信验证码校验通过");
+
+        // 重置密码
+        memberService.resetPassword(memberDto);
+
+        return responseDto;
     }
 
 
