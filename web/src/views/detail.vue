@@ -135,6 +135,8 @@
                            this.chapters = this.course.chapters ||{};
                            this.sections = this.course.sections ||{};
 
+                    // 获取报名信息
+                   this.getEnroll();
 
                     // 将所有的节放入对应的章中
                     for (let i = 0; i < this.chapters.length; i++) {
@@ -210,6 +212,26 @@
             }
         });
     },
+
+            /**
+             * 获取报名
+             */
+            getEnroll() {
+                let loginMember = Tool.getLoginMember();
+                if (Tool.isEmpty(loginMember)) {
+                    console.log("未登录");
+                    return;
+                }
+              axios.post(process.env.VUE_APP_SERVER + '/business/web/member-course/get-enroll', {
+                    courseId: this.course.id,
+                    memberId: loginMember.id
+                }).then((response)=>{
+                    let resp = response.data;
+                    if (resp.success) {
+                        this.memberCourse = resp.content || {};
+                    }
+                });
+            },
     }
     }
 </script>
