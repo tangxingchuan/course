@@ -272,7 +272,7 @@ create table `role_user` (
 
 insert into `role_user` values ('00000000', '00000000', '10000000');
 
-
+# --会员表
 drop table if exists `member`;
 create table `member` (
   `id` char(8) not null default '' comment 'id',
