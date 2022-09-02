@@ -587,7 +587,7 @@
             this.activeSidebar(this.$route.name.replace("/","-")+"-sidebar");
 
             //关闭ace的js文件的自动刷新
-            $.getScript('/ace/assets/js/ace.min.js')
+            //$.getScript('/ace/assets/js/ace.min.js')
 
             //接收传过来的用户数据
             this.loginUser =Tool.getLoginUser();

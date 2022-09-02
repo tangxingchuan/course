@@ -177,9 +177,10 @@
                         }
 
 
-                        console.log("---------登录走到了这里，能不能跳转1");
 
-                        this.$router.push("/welcome")
+                       // this.$router.push("/welcome")
+
+                        Window.open("/welcome" ,"_self")
 
                     } else {
                         Toast.warning(resp.message);
