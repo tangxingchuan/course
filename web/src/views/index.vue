@@ -64,6 +64,14 @@
              */
             listNew(){
 
+                let news = SessionStorage.get("news");
+
+                //判断是否有缓存
+                if(!Tool.isEmpty(news)){
+                    this.news=news;
+                    return;
+                }
+
                 axios.get(process.env.VUE_APP_SERVER+"/business/web/course/list-new").then((resp)=>{
 
                     console.log("查询新上好课结果",resp);
@@ -71,6 +79,8 @@
 
                       if (res.success){
                           this.news = res.content;
+                          //保存到缓存
+                          SessionStorage.set("news",this.news);
                       }
                 }).catch((resp)=>{
 
