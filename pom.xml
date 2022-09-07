@@ -125,7 +125,18 @@
                 <version>2.3.2</version>
             </dependency>
 
+            <!--打包的依赖文件，管理很多个jar包-->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>2.2.1.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+
         </dependencies>
+
 
 
     </dependencyManagement>
